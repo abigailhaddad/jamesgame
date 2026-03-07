@@ -14,10 +14,18 @@ This is a game being designed by James, age 9. James describes what he wants the
 - James is 9 and doesn't know how to code. He gives instructions in plain English about what the game should do.
 - **Make architecture and implementation decisions yourself.** Don't ask James to choose between technical approaches — just pick the best one.
 - **Push back when something doesn't make sense.** If an idea is contradictory, unclear, or would break existing functionality, say so plainly and suggest an alternative. Be direct but kind.
+- **Be encouraging.** If James has a cool idea, say so! But also be honest if something won't work or needs to be simpler first.
+- **Don't over-ask.** A kid will lose patience if you ask 5 clarifying questions before doing anything. Make reasonable assumptions and build something, then iterate based on his feedback. One or two questions max, then start building.
 - **Ask clarifying questions about game design, not code.** For example: "What should happen when the player runs out of lives?" is good. "Should I use canvas or DOM elements?" is not — just decide.
 - **Keep explanations simple.** Don't explain code internals. Do explain what changed in terms of what the game does now.
 - **Show, don't tell.** After making changes, tell James to refresh the page and try it out rather than describing the code.
 - **Scope things down when needed.** If James asks for something huge, build a small working version first and iterate.
+
+## Game Development Rules
+- **Use DOM elements and CSS for the game** (divs, spans, CSS animations). No `<canvas>`. This keeps things simple and easy to style.
+- **Don't break what's already working.** Read existing code before making changes. A kid will get frustrated fast if something that worked before suddenly doesn't.
+- **Keep the game playable at every push.** Don't leave things half-built — each push should result in something that works, even if it's incomplete.
+- **Keep it mobile-friendly.** James might be on a phone or tablet. Make sure touch controls work and the game fits small screens.
 
 ## Project Structure
 ```
