@@ -369,13 +369,13 @@
         .gnome-face { width: 22px; height: 14px; background: #ffcc99; border-radius: 4px; position: absolute; top: 18px; left: 6px; z-index: 2; }
         .gnome-face::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 4px; left: 4px; box-shadow: 10px 0 0 #333; }
         .gnome-beard { width: 18px; height: 10px; background: #eee; position: absolute; top: 28px; left: 8px; border-radius: 0 0 10px 10px; z-index: 2; }
-        .gnome-body-part { width: 24px; height: 12px; background: #886644; position: absolute; top: 34px; left: 5px; border-radius: 4px; z-index: 1; }
-        .gnome-leg { width: 7px; height: 10px; background: #554433; position: absolute; top: 44px; border-radius: 2px 2px 3px 3px; transform-origin: top center; }
+        .gnome-body-part { width: 24px; height: 12px; background: #3377cc; position: absolute; top: 34px; left: 5px; border-radius: 4px; z-index: 1; }
+        .gnome-leg { width: 7px; height: 10px; background: #225599; position: absolute; top: 44px; border-radius: 2px 2px 3px 3px; transform-origin: top center; }
         .gnome-leg.left { left: 8px; animation: gLegL .3s ease-in-out infinite; }
         .gnome-leg.right { right: 8px; animation: gLegR .3s ease-in-out infinite; }
         @keyframes gLegL { 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(18deg)} }
         @keyframes gLegR { 0%,100%{transform:rotate(18deg)} 50%{transform:rotate(-18deg)} }
-        .gnome-arm { width: 6px; height: 14px; background: #886644; position: absolute; top: 34px; border-radius: 3px; transform-origin: top center; }
+        .gnome-arm { width: 6px; height: 14px; background: #3377cc; position: absolute; top: 34px; border-radius: 3px; transform-origin: top center; }
         .gnome-arm.left { left: 0; animation: gArmL .3s ease-in-out infinite; }
         .gnome-arm.right { right: 0; animation: gArmR .3s ease-in-out infinite; }
         @keyframes gArmL { 0%,100%{transform:rotate(15deg)} 50%{transform:rotate(-15deg)} }
@@ -396,19 +396,96 @@
         .hench-leg.right { right: 12px; animation: gLegR .35s ease-in-out infinite; }
         @keyframes henchBob { from{transform:translateY(0)} to{transform:translateY(-3px)} }
 
-        /* Gideon-bot */
-        .gbot-char { width: 38px; height: 52px; position: relative; }
-        .gbot-head { width: 26px; height: 20px; background: linear-gradient(#ccc, #999); border-radius: 4px 4px 2px 2px; position: absolute; top: 4px; left: 6px; z-index: 2; border: 1px solid #888; }
-        .gbot-visor { width: 18px; height: 6px; background: #ff3333; position: absolute; top: 8px; left: 4px; border-radius: 2px; animation: visorBlink 2s step-end infinite; box-shadow: 0 0 6px rgba(255,0,0,0.5); }
-        @keyframes visorBlink { 0%,90%{opacity:1} 95%{opacity:0} 100%{opacity:1} }
-        .gbot-body { width: 30px; height: 18px; background: linear-gradient(#aaa, #777); border-radius: 4px; position: absolute; top: 22px; left: 4px; border: 1px solid #888; }
-        .gbot-star { position: absolute; top: 4px; left: 9px; font-size: 10px; color: #ffdd00; line-height: 1; }
-        .gbot-arm { width: 8px; height: 16px; background: linear-gradient(#bbb, #888); border-radius: 3px; position: absolute; top: 23px; transform-origin: top center; }
+        /* Gideon */
+        .gbot-char { width: 44px; height: 58px; position: relative; }
+        .gbot-hair { width: 32px; height: 20px; background: white; border-radius: 55% 55% 10% 10%; position: absolute; top: 0; left: 6px; z-index: 3; box-shadow: 0 -5px 4px rgba(220,220,220,0.8); }
+        .gbot-head { width: 30px; height: 24px; background: #ffb3a0; border-radius: 40% 40% 38% 38%; position: absolute; top: 15px; left: 7px; z-index: 2; }
+        .gbot-eyes { width: 5px; height: 5px; background: #333; border-radius: 50%; position: absolute; top: 9px; left: 5px; box-shadow: 13px 0 0 #333; }
+        .gbot-head::after { content: ''; position: absolute; width: 10px; height: 6px; background: #ee9988; border-radius: 50%; top: 14px; left: 10px; }
+        .gbot-body { width: 36px; height: 20px; background: #5588cc; border-radius: 5px; position: absolute; top: 36px; left: 4px; border: 1px solid #3366aa; }
+        .gbot-star { position: absolute; top: 4px; left: 12px; font-size: 10px; color: #ffdd00; line-height: 1; }
+        .gbot-arm { width: 9px; height: 15px; background: #5588cc; border-radius: 4px; position: absolute; top: 37px; transform-origin: top center; border: 1px solid #3366aa; }
         .gbot-arm.left { left: -2px; animation: gArmL .4s ease-in-out infinite; }
         .gbot-arm.right { right: -2px; animation: gArmR .4s ease-in-out infinite; }
-        .gbot-leg { width: 8px; height: 12px; background: linear-gradient(#999, #666); border-radius: 2px 2px 4px 4px; position: absolute; top: 40px; transform-origin: top center; }
-        .gbot-leg.left { left: 8px; animation: gLegL .4s ease-in-out infinite; }
-        .gbot-leg.right { right: 8px; animation: gLegR .4s ease-in-out infinite; }
+        .gbot-leg { width: 9px; height: 13px; background: #3366aa; border-radius: 2px 2px 4px 4px; position: absolute; top: 54px; transform-origin: top center; }
+        .gbot-leg.left { left: 9px; animation: gLegL .4s ease-in-out infinite; }
+        .gbot-leg.right { right: 9px; animation: gLegR .4s ease-in-out infinite; }
+
+        /* Golf People */
+        .golf-char { width: 38px; height: 54px; position: relative; }
+        .golf-body { width: 28px; height: 28px; background: radial-gradient(circle at 35% 35%, #66aaff, #3366cc); border-radius: 50%; position: absolute; top: 16px; left: 5px; z-index: 2; }
+        .golf-body::before { content: ''; position: absolute; width: 5px; height: 5px; background: #111; border-radius: 50%; top: 9px; left: 5px; box-shadow: 12px 0 0 #111; }
+        .golf-body::after { content: ''; position: absolute; width: 12px; height: 5px; border-bottom: 2px solid #111; border-radius: 0 0 5px 5px; top: 17px; left: 8px; }
+        .golf-arm { width: 5px; height: 11px; background: #3366cc; border-radius: 3px; position: absolute; top: 26px; transform-origin: top center; }
+        .golf-arm.left { left: 1px; animation: gArmL .35s ease-in-out infinite; }
+        .golf-arm.right { right: 1px; animation: gArmR .35s ease-in-out infinite; }
+        .golf-leg { width: 6px; height: 10px; background: #224488; border-radius: 2px 2px 4px 4px; position: absolute; top: 43px; transform-origin: top center; }
+        .golf-leg.left { left: 10px; animation: gLegL .35s ease-in-out infinite; }
+        .golf-leg.right { right: 10px; animation: gLegR .35s ease-in-out infinite; }
+        .golf-hat { position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 3; }
+        .hat-crown { margin: 0 auto; position: relative; border-radius: 3px 3px 0 0; }
+        .hat-brim { margin: 0 auto; border-radius: 3px; }
+        /* Villager - wide brown hat with red feather */
+        .golf-hat.villager .hat-crown { width: 20px; height: 14px; background: #8B4513; }
+        .golf-hat.villager .hat-crown::after { content: ''; position: absolute; top: -7px; right: 1px; width: 4px; height: 11px; background: #dd3333; border-radius: 3px 3px 0 0; transform: rotate(15deg); }
+        .golf-hat.villager .hat-brim { width: 34px; height: 6px; background: #aa6622; margin-top: -1px; }
+        /* Miner - yellow hard hat with lamp */
+        .golf-hat.miner .hat-crown { width: 24px; height: 13px; background: #ffcc00; border-radius: 8px 8px 2px 2px; border: 1px solid #ccaa00; }
+        .golf-hat.miner .hat-crown::after { content: ''; position: absolute; top: 3px; left: 50%; transform: translateX(-50%); width: 7px; height: 5px; background: white; border-radius: 50%; border: 1px solid #aaa; }
+        .golf-hat.miner .hat-brim { width: 30px; height: 5px; background: #ddaa00; }
+        /* Pirate - black hat with skull */
+        .golf-hat.pirate .hat-crown { width: 22px; height: 16px; background: #111; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+        .golf-hat.pirate .hat-brim { width: 34px; height: 5px; background: #222; }
+        /* Knight - grey helmet with visor */
+        .golf-hat.knight { top: -2px; }
+        .golf-hat.knight .hat-crown { width: 26px; height: 22px; background: #aaa; border-radius: 8px 8px 3px 3px; border: 1px solid #888; }
+        .golf-hat.knight .hat-crown::after { content: ''; position: absolute; top: 12px; left: 4px; right: 4px; height: 4px; background: #444; border-radius: 1px; }
+        .golf-hat.knight .hat-brim { width: 30px; height: 4px; background: #999; border: 1px solid #777; }
+
+        /* ===== HENCHMANIACS (Mini-bosses) ===== */
+        .miniboss-label { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; color: #ff44ff; font-weight: bold; white-space: nowrap; text-shadow: 1px 1px 0 #000, 0 0 8px #ff00ff; }
+
+        /* 8 Ball */
+        .eightball-char { width: 62px; height: 72px; position: relative; }
+        .eightball-body { width: 54px; height: 54px; background: radial-gradient(circle at 35% 30%, #888, #2a2a2a); border-radius: 50%; position: absolute; top: 4px; left: 4px; border: 2px solid #111; overflow: hidden; }
+        .eightball-body::before { content: '8'; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.25); font-size: 20px; font-weight: bold; font-family: serif; }
+        .eightball-eye { width: 12px; height: 12px; background: #fffacc; border-radius: 50%; position: absolute; top: 13px; z-index: 2; }
+        .eightball-eye.left { left: 8px; }
+        .eightball-eye.right { left: 30px; }
+        .eightball-pupil { width: 6px; height: 7px; background: #111; border-radius: 50%; position: absolute; top: 2px; left: 3px; }
+        .eightball-mouth { width: 38px; height: 16px; background: #111; border-radius: 0 0 19px 19px; position: absolute; top: 32px; left: 8px; overflow: hidden; }
+        .eightball-teeth { width: 100%; height: 7px; background: repeating-linear-gradient(90deg, white 0, white 7px, #111 7px, #111 10px); position: absolute; top: 0; }
+        .eightball-arm { width: 11px; height: 20px; background: #555; border-radius: 5px; position: absolute; top: 36px; transform-origin: top center; }
+        .eightball-arm.left { left: -2px; animation: gArmL .45s ease-in-out infinite; }
+        .eightball-arm.right { right: -2px; animation: gArmR .45s ease-in-out infinite; }
+        .eightball-leg { width: 13px; height: 16px; background: #333; border-radius: 3px 3px 6px 6px; position: absolute; top: 56px; transform-origin: top center; }
+        .eightball-leg.left { left: 14px; animation: gLegL .45s ease-in-out infinite; }
+        .eightball-leg.right { right: 14px; animation: gLegR .45s ease-in-out infinite; }
+
+        /* Pyronica */
+        .pyronica-char { width: 54px; height: 76px; position: relative; }
+        .pyronica-horn { position: absolute; top: 2px; left: 23px; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 22px solid #cc0077; z-index: 4; }
+        .pyronica-body { width: 42px; height: 58px; background: linear-gradient(180deg, #ff44aa 0%, #cc0077 55%, #880044 100%); clip-path: polygon(50% 0%, 88% 18%, 100% 48%, 78% 78%, 88% 100%, 12% 100%, 22% 78%, 0% 48%, 12% 18%); position: absolute; top: 12px; left: 6px; }
+        .pyronica-eye { width: 18px; height: 18px; background: #ffdd00; border-radius: 50%; position: absolute; top: 32px; left: 24px; border: 2px solid #aa0055; z-index: 3; }
+        .pyronica-pupil { width: 8px; height: 11px; background: #111; border-radius: 50%; position: absolute; top: 2px; left: 4px; }
+        .pyronica-arm { width: 9px; height: 22px; background: #ff44aa; border-radius: 4px; position: absolute; top: 38px; transform-origin: top center; }
+        .pyronica-arm.left { left: 3px; animation: gArmL .45s ease-in-out infinite; }
+        .pyronica-arm.right { right: 3px; animation: gArmR .45s ease-in-out infinite; }
+
+        /* Teeth */
+        .teeth-char { width: 68px; height: 62px; position: relative; animation: teethBounce .25s ease-in-out infinite alternate; }
+        @keyframes teethBounce { from{transform:scaleY(1)} to{transform:scaleY(0.88) scaleX(1.06)} }
+        .teeth-upper { width: 60px; height: 28px; background: #ff3366; border-radius: 30px 30px 0 0; position: absolute; top: 6px; left: 4px; overflow: hidden; }
+        .teeth-upper::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 14px; background: repeating-linear-gradient(90deg, white 0, white 9px, #ff3366 9px, #ff3366 13px); }
+        .teeth-lower { width: 60px; height: 22px; background: #cc2244; border-radius: 0 0 30px 30px; position: absolute; top: 34px; left: 4px; overflow: hidden; }
+        .teeth-lower::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 12px; background: repeating-linear-gradient(90deg, white 0, white 9px, #cc2244 9px, #cc2244 13px); }
+        .teeth-eye { width: 11px; height: 11px; background: #ffdd00; border-radius: 50%; position: absolute; top: 2px; z-index: 3; border: 1px solid #cc2244; }
+        .teeth-eye.left { left: 12px; }
+        .teeth-eye.right { right: 12px; }
+        .teeth-pupil { width: 5px; height: 6px; background: #111; border-radius: 50%; position: absolute; top: 2px; left: 2px; }
+        .teeth-leg { width: 13px; height: 14px; background: #ff3366; border-radius: 2px 2px 6px 6px; position: absolute; top: 54px; transform-origin: top center; }
+        .teeth-leg.left { left: 18px; animation: gLegL .3s ease-in-out infinite; }
+        .teeth-leg.right { right: 18px; animation: gLegR .3s ease-in-out infinite; }
 
         /* Death effect */
         .enemy-death { position: absolute; pointer-events: none; z-index: 25; }
@@ -1648,6 +1725,11 @@ function startWave() {
     dom.waveAnnounce.style.display = 'block';
     dom.waveAnnounce.className = '';
     setTimeout(function() { dom.waveAnnounce.style.display = 'none'; }, 2500);
+
+    // Spawn a henchmaniac mini-boss mid-wave starting at wave 5
+    if (state.wave >= 5) {
+        setTimeout(spawnHenchmaniakBoss, 4000);
+    }
     dom.waveDisplay.textContent = 'WAVE ' + state.wave + ' - ' + state.waveTarget.name;
     dom.waveDisplay.style.color = '#ff4444';
     var diff = difficultySettings[currentDifficulty];
@@ -1732,6 +1814,84 @@ function spawnBillCipher(bossNum) {
     hpFill.style.width = '100%';
 
     state.enemies.push(enemy);
+}
+
+function spawnHenchmaniakBoss() {
+    if (!state.running) return;
+    var enemy = el('div', 'enemy', dom.gameWorld);
+    var types = ['eightball', 'pyronica', 'teeth'];
+    var bossType = types[Math.floor(Math.random() * types.length)];
+    var names = { eightball: '8 Ball', pyronica: 'Pyronica', teeth: 'Teeth' };
+
+    if (bossType === 'eightball') {
+        var ec = el('div', 'eightball-char', enemy);
+        var eb = el('div', 'eightball-body', ec);
+        var el1 = el('div', 'eightball-eye left', eb); el('div', 'eightball-pupil', el1);
+        var el2 = el('div', 'eightball-eye right', eb); el('div', 'eightball-pupil', el2);
+        var em = el('div', 'eightball-mouth', eb); el('div', 'eightball-teeth', em);
+        var ea1 = el('div', 'eightball-arm left', ec); var ea2 = el('div', 'eightball-arm right', ec);
+        el('div', 'eightball-leg left', ec); el('div', 'eightball-leg right', ec);
+    } else if (bossType === 'pyronica') {
+        var pc = el('div', 'pyronica-char', enemy);
+        el('div', 'pyronica-horn', pc);
+        var pb = el('div', 'pyronica-body', pc);
+        var pe = el('div', 'pyronica-eye', pb); el('div', 'pyronica-pupil', pe);
+        el('div', 'pyronica-arm left', pc); el('div', 'pyronica-arm right', pc);
+    } else {
+        var tc = el('div', 'teeth-char', enemy);
+        var tu = el('div', 'teeth-upper', tc);
+        var tel1 = el('div', 'teeth-eye left', tc); el('div', 'teeth-pupil', tel1);
+        var tel2 = el('div', 'teeth-eye right', tc); el('div', 'teeth-pupil', tel2);
+        el('div', 'teeth-lower', tc);
+        el('div', 'teeth-leg left', tc); el('div', 'teeth-leg right', tc);
+    }
+
+    var lbl = el('div', 'miniboss-label', enemy);
+    lbl.textContent = '★ ' + names[bossType];
+
+    enemy.dataset.type = 'miniboss';
+    enemy.dataset.subtype = bossType;
+
+    var target = state.waveTarget;
+    if (!target || !target.alive) {
+        var aliveLocs = locations.filter(function(l){return l.alive;});
+        if (aliveLocs.length === 0) { enemy.remove(); return; }
+        target = aliveLocs[Math.floor(Math.random() * aliveLocs.length)];
+    }
+    enemy.dataset.target = target.id;
+
+    var side = Math.random() > 0.5 ? 'left' : 'right';
+    var x = side === 'left' ? -80 : WORLD_W + 10;
+    var y = SCREEN_H * 0.55 + Math.random() * SCREEN_H * 0.1;
+    enemy.style.left = x + 'px';
+    enemy.style.top = y + 'px';
+
+    var diff = difficultySettings[currentDifficulty];
+    var maxHp = 12 + state.wave * 2;
+    maxHp = Math.max(10, Math.round(maxHp * diff.enemyHpMult));
+    enemy.dataset.hp = maxHp;
+    enemy.dataset.maxhp = maxHp;
+    enemy.dataset.speed = (0.7 + state.wave * 0.06) * diff.enemySpeedMult;
+    enemy.dataset.boss = 'true';
+
+    var hpBar = el('div', 'char-hp-bar', enemy);
+    hpBar.style.width = '70px';
+    hpBar.style.height = '6px';
+    var hpFill = el('div', 'char-hp-fill', hpBar);
+    hpFill.style.width = '100%';
+
+    state.enemies.push(enemy);
+
+    // Announce
+    dom.waveAnnounce.textContent = names[bossType] + ' APPEARS!';
+    dom.waveAnnounce.style.display = 'block';
+    dom.waveAnnounce.style.color = '#ff44ff';
+    dom.waveAnnounce.style.textShadow = '0 0 20px #ff00ff';
+    setTimeout(function() {
+        dom.waveAnnounce.style.display = 'none';
+        dom.waveAnnounce.style.color = '';
+        dom.waveAnnounce.style.textShadow = '';
+    }, 2500);
 }
 
 function startSpecialWave(type) {
@@ -1866,17 +2026,19 @@ function spawnEnemy() {
     var enemy = el('div', 'enemy', dom.gameWorld);
 
     // Pick enemy type based on wave and randomness
-    // Early waves: gnomes and eye-bats. Henchmanians appear wave 3+. Gideon-bots appear wave 5+.
+    // Early waves: gnomes, eyebats, golf people. Henchmanians wave 3+. Gideon wave 5+.
     var roll = Math.random();
     var enemyType;
     if (state.wave >= 5 && roll < 0.2) {
         enemyType = 'gbot';
-    } else if (state.wave >= 3 && roll < 0.4) {
+    } else if (state.wave >= 3 && roll < 0.35) {
         enemyType = 'hench';
-    } else if (roll < 0.7) {
+    } else if (roll < 0.55) {
         enemyType = 'eyebat';
-    } else {
+    } else if (roll < 0.75) {
         enemyType = 'gnome';
+    } else {
+        enemyType = 'golf';
     }
 
     var isFlyer = (enemyType === 'eyebat');
@@ -1902,11 +2064,24 @@ function spawnEnemy() {
         el('div', 'hench-leg left', hc); el('div', 'hench-leg right', hc);
     } else if (enemyType === 'gbot') {
         var gb = el('div', 'gbot-char', enemy);
-        var head = el('div', 'gbot-head', gb); el('div', 'gbot-visor', head);
+        el('div', 'gbot-hair', gb);
+        var head = el('div', 'gbot-head', gb); el('div', 'gbot-eyes', head);
         var gbody = el('div', 'gbot-body', gb);
         var star = el('div', 'gbot-star', gbody); star.textContent = '\u2605';
         el('div', 'gbot-arm left', gb); el('div', 'gbot-arm right', gb);
         el('div', 'gbot-leg left', gb); el('div', 'gbot-leg right', gb);
+    } else if (enemyType === 'golf') {
+        var gc = el('div', 'golf-char', enemy);
+        var variants = ['villager', 'miner', 'pirate', 'knight'];
+        var variant = variants[Math.floor(Math.random() * variants.length)];
+        var ghat = el('div', 'golf-hat ' + variant, gc);
+        var hatCrown = el('div', 'hat-crown', ghat);
+        if (variant === 'pirate') hatCrown.textContent = '\u2620';
+        el('div', 'hat-brim', ghat);
+        el('div', 'golf-body', gc);
+        el('div', 'golf-arm left', gc); el('div', 'golf-arm right', gc);
+        el('div', 'golf-leg left', gc); el('div', 'golf-leg right', gc);
+        enemy.dataset.variant = variant;
     }
     enemy.dataset.type = enemyType;
 
@@ -1935,6 +2110,7 @@ function spawnEnemy() {
     if (enemyType === 'eyebat') maxHp = 2 + Math.floor(state.wave / 3);
     else if (enemyType === 'gnome') maxHp = 3 + Math.floor(state.wave / 2);
     else if (enemyType === 'hench') maxHp = 3 + Math.floor(state.wave / 2);
+    else if (enemyType === 'golf') maxHp = 2 + Math.floor(state.wave / 2);
     else maxHp = 5 + Math.floor(state.wave / 2); // gbot - tanky
     maxHp = Math.max(1, Math.round(maxHp * diff.enemyHpMult));
     enemy.dataset.hp = maxHp;
@@ -1943,6 +2119,7 @@ function spawnEnemy() {
     if (enemyType === 'eyebat') spd = 1.5 + state.wave * 0.2;
     else if (enemyType === 'hench') spd = 1.3 + state.wave * 0.15;
     else if (enemyType === 'gbot') spd = 0.8 + state.wave * 0.1;
+    else if (enemyType === 'golf') spd = 1.2 + state.wave * 0.13;
     else spd = 1 + state.wave * 0.12;
     enemy.dataset.speed = spd * diff.enemySpeedMult;
 
@@ -2569,7 +2746,9 @@ function updateCharHpBar(element, hp, maxHp) {
 function spawnDeathEffect(x, y, type) {
     var colorMap = {
         eyebat: ['#ff4444','#cc0000','#ff6666','#880000'],
-        gnome: ['#cc0000','#886644','#fff','#554433'],
+        gnome: ['#cc0000','#3377cc','#fff','#225599'],
+        golf: ['#3366cc','#224488','#ffcc00','#66aaff'],
+        miniboss: ['#ff44ff','#cc00cc','#ffdd00','#ff88ff'],
         hench: ['#ffcc00','#ffdd44','#333','#ffaa00'],
         gbot: ['#cccccc','#888888','#ff3333','#666666'],
         bill: ['#ffdd00','#ffee44','#111','#ffaa00','#ff6600']
@@ -3160,6 +3339,20 @@ function dropEnemyLoot(enemyType, ex, ey) {
     } else if (enemyType === 'gnome') {
         if (Math.random() < 0.4) {
             var t = types[Math.floor(Math.random()*types.length)];
+            state[t]++;
+            dropped.push('+1 ' + t);
+        }
+    } else if (enemyType === 'miniboss') {
+        // Always drops good loot
+        var amt1 = 2 + Math.floor(Math.random() * 3);
+        var amt2 = 1 + Math.floor(Math.random() * 2);
+        state.metal += amt1; state.crystal += amt2;
+        dropped.push('+' + amt1 + ' metal');
+        dropped.push('+' + amt2 + ' crystal');
+        if (Math.random() < 0.3) { state.journal++; dropped.push('+1 journal'); }
+    } else if (enemyType === 'golf') {
+        if (Math.random() < 0.5) {
+            var t = Math.random() < 0.6 ? 'wood' : 'metal';
             state[t]++;
             dropped.push('+1 ' + t);
         }
