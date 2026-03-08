@@ -411,36 +411,6 @@
         .gbot-leg.left { left: 9px; animation: gLegL .4s ease-in-out infinite; }
         .gbot-leg.right { right: 9px; animation: gLegR .4s ease-in-out infinite; }
 
-        /* Golf People */
-        .golf-char { width: 38px; height: 54px; position: relative; }
-        .golf-body { width: 28px; height: 28px; background: radial-gradient(circle at 35% 35%, #66aaff, #3366cc); border-radius: 50%; position: absolute; top: 16px; left: 5px; z-index: 2; }
-        .golf-body::before { content: ''; position: absolute; width: 5px; height: 5px; background: #111; border-radius: 50%; top: 9px; left: 5px; box-shadow: 12px 0 0 #111; }
-        .golf-body::after { content: ''; position: absolute; width: 12px; height: 5px; border-bottom: 2px solid #111; border-radius: 0 0 5px 5px; top: 17px; left: 8px; }
-        .golf-arm { width: 5px; height: 11px; background: #3366cc; border-radius: 3px; position: absolute; top: 26px; transform-origin: top center; }
-        .golf-arm.left { left: 1px; animation: gArmL .35s ease-in-out infinite; }
-        .golf-arm.right { right: 1px; animation: gArmR .35s ease-in-out infinite; }
-        .golf-leg { width: 6px; height: 10px; background: #224488; border-radius: 2px 2px 4px 4px; position: absolute; top: 43px; transform-origin: top center; }
-        .golf-leg.left { left: 10px; animation: gLegL .35s ease-in-out infinite; }
-        .golf-leg.right { right: 10px; animation: gLegR .35s ease-in-out infinite; }
-        .golf-hat { position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 3; }
-        .hat-crown { margin: 0 auto; position: relative; border-radius: 3px 3px 0 0; }
-        .hat-brim { margin: 0 auto; border-radius: 3px; }
-        /* Villager - wide brown hat with red feather */
-        .golf-hat.villager .hat-crown { width: 20px; height: 14px; background: #8B4513; }
-        .golf-hat.villager .hat-crown::after { content: ''; position: absolute; top: -7px; right: 1px; width: 4px; height: 11px; background: #dd3333; border-radius: 3px 3px 0 0; transform: rotate(15deg); }
-        .golf-hat.villager .hat-brim { width: 34px; height: 6px; background: #aa6622; margin-top: -1px; }
-        /* Miner - yellow hard hat with lamp */
-        .golf-hat.miner .hat-crown { width: 24px; height: 13px; background: #ffcc00; border-radius: 8px 8px 2px 2px; border: 1px solid #ccaa00; }
-        .golf-hat.miner .hat-crown::after { content: ''; position: absolute; top: 3px; left: 50%; transform: translateX(-50%); width: 7px; height: 5px; background: white; border-radius: 50%; border: 1px solid #aaa; }
-        .golf-hat.miner .hat-brim { width: 30px; height: 5px; background: #ddaa00; }
-        /* Pirate - black hat with skull */
-        .golf-hat.pirate .hat-crown { width: 22px; height: 16px; background: #111; display: flex; align-items: center; justify-content: center; font-size: 9px; }
-        .golf-hat.pirate .hat-brim { width: 34px; height: 5px; background: #222; }
-        /* Knight - grey helmet with visor */
-        .golf-hat.knight { top: -2px; }
-        .golf-hat.knight .hat-crown { width: 26px; height: 22px; background: #aaa; border-radius: 8px 8px 3px 3px; border: 1px solid #888; }
-        .golf-hat.knight .hat-crown::after { content: ''; position: absolute; top: 12px; left: 4px; right: 4px; height: 4px; background: #444; border-radius: 1px; }
-        .golf-hat.knight .hat-brim { width: 30px; height: 4px; background: #999; border: 1px solid #777; }
 
         /* ===== HENCHMANIACS (Mini-bosses) ===== */
         .miniboss-label { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; color: #ff44ff; font-weight: bold; white-space: nowrap; text-shadow: 1px 1px 0 #000, 0 0 8px #ff00ff; }
@@ -906,7 +876,7 @@
             <li><strong style="color:#3377cc;">Gnomes</strong> — Blue little gnomes with red hats, hit hard in groups</li>
             <li><strong style="color:#ffcc00;">Henchmanians</strong> — Bill's tiny triangle minions, appear wave 3+</li>
             <li><strong style="color:#5588cc;">Gideon</strong> — Gideon in his blue suit, tough and tanky, appears wave 5+</li>
-            <li><strong style="color:#66aaff;">Golf People</strong> — Round blue creatures with different hats: villagers, miners, pirates, and knights!</li>
+
         </ul>
 
         <h3>MINI-BOSSES ★</h3>
@@ -2041,7 +2011,7 @@ function spawnEnemy() {
     var enemy = el('div', 'enemy', dom.gameWorld);
 
     // Pick enemy type based on wave and randomness
-    // Early waves: gnomes, eyebats, golf people. Henchmanians wave 3+. Gideon wave 5+.
+    // Early waves: gnomes, eyebats. Henchmanians wave 3+. Gideon wave 5+.
     var roll = Math.random();
     var enemyType;
     if (state.wave >= 5 && roll < 0.2) {
@@ -2053,7 +2023,7 @@ function spawnEnemy() {
     } else if (roll < 0.75) {
         enemyType = 'gnome';
     } else {
-        enemyType = 'golf';
+        enemyType = 'gnome';
     }
 
     var isFlyer = (enemyType === 'eyebat');
@@ -2085,18 +2055,6 @@ function spawnEnemy() {
         var star = el('div', 'gbot-star', gbody); star.textContent = '\u2605';
         el('div', 'gbot-arm left', gb); el('div', 'gbot-arm right', gb);
         el('div', 'gbot-leg left', gb); el('div', 'gbot-leg right', gb);
-    } else if (enemyType === 'golf') {
-        var gc = el('div', 'golf-char', enemy);
-        var variants = ['villager', 'miner', 'pirate', 'knight'];
-        var variant = variants[Math.floor(Math.random() * variants.length)];
-        var ghat = el('div', 'golf-hat ' + variant, gc);
-        var hatCrown = el('div', 'hat-crown', ghat);
-        if (variant === 'pirate') hatCrown.textContent = '\u2620';
-        el('div', 'hat-brim', ghat);
-        el('div', 'golf-body', gc);
-        el('div', 'golf-arm left', gc); el('div', 'golf-arm right', gc);
-        el('div', 'golf-leg left', gc); el('div', 'golf-leg right', gc);
-        enemy.dataset.variant = variant;
     }
     enemy.dataset.type = enemyType;
 
@@ -2125,7 +2083,7 @@ function spawnEnemy() {
     if (enemyType === 'eyebat') maxHp = 2 + Math.floor(state.wave / 3);
     else if (enemyType === 'gnome') maxHp = 3 + Math.floor(state.wave / 2);
     else if (enemyType === 'hench') maxHp = 3 + Math.floor(state.wave / 2);
-    else if (enemyType === 'golf') maxHp = 2 + Math.floor(state.wave / 2);
+
     else maxHp = 5 + Math.floor(state.wave / 2); // gbot - tanky
     maxHp = Math.max(1, Math.round(maxHp * diff.enemyHpMult));
     enemy.dataset.hp = maxHp;
@@ -2134,7 +2092,7 @@ function spawnEnemy() {
     if (enemyType === 'eyebat') spd = 1.5 + state.wave * 0.2;
     else if (enemyType === 'hench') spd = 1.3 + state.wave * 0.15;
     else if (enemyType === 'gbot') spd = 0.8 + state.wave * 0.1;
-    else if (enemyType === 'golf') spd = 1.2 + state.wave * 0.13;
+
     else spd = 1 + state.wave * 0.12;
     enemy.dataset.speed = spd * diff.enemySpeedMult;
 
@@ -2762,7 +2720,7 @@ function spawnDeathEffect(x, y, type) {
     var colorMap = {
         eyebat: ['#ff4444','#cc0000','#ff6666','#880000'],
         gnome: ['#cc0000','#3377cc','#fff','#225599'],
-        golf: ['#3366cc','#224488','#ffcc00','#66aaff'],
+
         miniboss: ['#ff44ff','#cc00cc','#ffdd00','#ff88ff'],
         hench: ['#ffcc00','#ffdd44','#333','#ffaa00'],
         gbot: ['#cccccc','#888888','#ff3333','#666666'],
@@ -3365,12 +3323,6 @@ function dropEnemyLoot(enemyType, ex, ey) {
         dropped.push('+' + amt1 + ' metal');
         dropped.push('+' + amt2 + ' crystal');
         if (Math.random() < 0.3) { state.journal++; dropped.push('+1 journal'); }
-    } else if (enemyType === 'golf') {
-        if (Math.random() < 0.5) {
-            var t = Math.random() < 0.6 ? 'wood' : 'metal';
-            state[t]++;
-            dropped.push('+1 ' + t);
-        }
     } else {
         // eyebat
         if (Math.random() < 0.3) {
