@@ -513,7 +513,7 @@
         .build-card h4 { font-size: 12px; color: #ffdd00; margin-bottom: 4px; }
         .build-card .cost { font-size: 10px; color: #aaa; margin-bottom: 4px; }
         .build-card .effect { font-size: 10px; color: #88ff88; margin-bottom: 6px; }
-        .build-btn { padding: 5px 12px; font-size: 11px; background: #ffdd00; color: #111; border: none; border-radius: 4px; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; }
+        .build-btn { padding: 9px 12px; font-size: 12px; background: #ffdd00; color: #111; border: none; border-radius: 6px; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; min-height: 40px; width: 100%; }
         .build-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
         .close-build-btn { background: #ff4444; color: white; border: none; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; margin-left: 10px; }
 
@@ -634,10 +634,22 @@
         #game-over p { color: #ffdd00; font-size: clamp(1rem,3vw,1.5rem); margin-bottom: 20px; }
 
         /* Mobile */
-        #mobile-controls { position: fixed; bottom: 70px; left: 10px; z-index: 98; display: none; }
-        .dpad { display: grid; grid-template-columns: 40px 40px 40px; grid-template-rows: 40px 40px 40px; gap: 2px; }
-        .dpad-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 5px; color: white; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        #mobile-controls { position: fixed; bottom: 10px; left: 10px; z-index: 98; display: none; }
+        .dpad { display: grid; grid-template-columns: 52px 52px 52px; grid-template-rows: 52px 52px 52px; gap: 3px; }
+        .dpad-btn { background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.4); border-radius: 10px; color: white; font-size: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .dpad-btn:active { background: rgba(255,255,255,0.45); }
         .dpad-center { background: transparent; border: none; }
+        /* On touch devices: move ability button left of build button, weapon display stays right */
+        @media (hover: none) and (pointer: coarse) {
+            #ability-btn { left: 170px; right: auto; bottom: 10px; }
+            #weapon-display { bottom: 70px !important; }
+        }
+        /* Small screen tweaks */
+        @media (max-width: 400px) {
+            .char-card { width: 130px; }
+            .build-options { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            #hud { font-size: 11px; }
+        }
 
         /* Scenery */
         .tree { position: absolute; z-index: 8; pointer-events: none; }
@@ -743,11 +755,11 @@
         /* ===== ABILITY BUTTON ===== */
         #ability-btn {
             position: fixed; bottom: 70px; right: 10px; z-index: 99;
-            padding: 8px 14px; background: #4488ff; color: #fff;
-            border: 2px solid #66aaff; border-radius: 8px;
-            font-family: 'Courier New', monospace; font-size: 11px;
+            padding: 10px 16px; background: #4488ff; color: #fff;
+            border: 2px solid #66aaff; border-radius: 10px;
+            font-family: 'Courier New', monospace; font-size: 13px;
             font-weight: bold; cursor: pointer; text-align: center;
-            min-width: 80px;
+            min-width: 85px; min-height: 44px;
         }
         #ability-btn:disabled { background: #335; border-color: #446; color: #668; cursor: not-allowed; }
         #ability-btn .ability-cooldown { font-size: 9px; color: #aaccff; display: block; margin-top: 2px; }
@@ -979,9 +991,9 @@
     </div>
     <div id="mobile-controls">
         <div class="dpad">
-            <div></div><div class="dpad-btn" data-dir="up">^</div><div></div>
-            <div class="dpad-btn" data-dir="left">&lt;</div><div class="dpad-center"></div><div class="dpad-btn" data-dir="right">&gt;</div>
-            <div></div><div class="dpad-btn" data-dir="down">v</div><div></div>
+            <div></div><div class="dpad-btn" data-dir="up">▲</div><div></div>
+            <div class="dpad-btn" data-dir="left">◀</div><div class="dpad-center"></div><div class="dpad-btn" data-dir="right">▶</div>
+            <div></div><div class="dpad-btn" data-dir="down">▼</div><div></div>
         </div>
     </div>
     <div id="weapon-display"><span class="weapon-icon">👊</span>Fists</div>
@@ -3499,8 +3511,6 @@ function setupAbilityButton() {
     btn.style.display = 'block';
     btn.textContent = ability.name;
     btn.disabled = false;
-    // Move weapon display up to make room
-    document.getElementById('weapon-display').style.bottom = '130px';
     btn.addEventListener('click', useAbility);
     btn.addEventListener('touchstart', function(e) { e.preventDefault(); useAbility(); });
 }
@@ -3694,8 +3704,6 @@ function restartGame() {
     // Hide ability button
     var abilityBtn = document.getElementById('ability-btn');
     if (abilityBtn) abilityBtn.style.display = 'none';
-    // Reset weapon display position
-    document.getElementById('weapon-display').style.bottom = '70px';
 }
 
 window.addEventListener('resize', function() {
