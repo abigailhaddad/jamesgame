@@ -219,8 +219,9 @@
         .ally-head.soos-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 9px; left: 6px; box-shadow: 9px 0 0 #333; }
         .soos-cap { position: absolute; top: 2px; left: 6px; width: 32px; height: 12px; background: #335588; border-radius: 6px 6px 0 0; z-index: 4; }
         .soos-cap::after { content: '?'; position: absolute; top: 0; left: 11px; color: #ffdd00; font-size: 10px; font-weight: bold; }
-        .ally-body.soos-body { background: #228833; width: 28px; height: 22px; left: 8px; }
+        .ally-body.soos-body { background: #228833; width: 28px; height: 22px; left: 8px; position: relative; }
         .soos-belly { position: absolute; top: 6px; left: 4px; width: 20px; height: 14px; background: #1a7728; border-radius: 50%; z-index: 1; }
+        .soos-question { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); color: #ffdd00; font-size: 11px; font-weight: bold; z-index: 2; }
         .ally-arm.soos-arm { background: #228833; width: 8px; }
         .ally-leg.soos-leg { background: #445; width: 9px; }
         /* Ford */
@@ -228,15 +229,17 @@
         .ally-head.ford-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 8px; left: 5px; box-shadow: 8px 0 0 #333; }
         .ford-hair { position: absolute; top: 2px; left: 8px; width: 28px; height: 12px; background: #888; border-radius: 8px 8px 0 0; z-index: 2; }
         .ford-glasses { position: absolute; top: 14px; left: 7px; width: 30px; height: 8px; border: 2px solid #555; border-radius: 4px; z-index: 5; background: rgba(200,200,255,0.3); }
-        .ally-body.ford-body { background: #8B4513; }
-        .ford-coat { position: absolute; inset: 0; border-left: 3px solid #6B3410; border-right: 3px solid #6B3410; border-radius: 4px; }
-        .ally-arm.ford-arm { background: #8B4513; }
+        .ally-body.ford-body { background: #f0f0f0; }
+        .ford-coat { position: absolute; inset: 0; border-left: 3px solid #ddd; border-right: 3px solid #ddd; border-radius: 4px; border-bottom: 1px solid #ccc; }
+        .ford-coat::after { content: ''; position: absolute; top: 2px; left: 50%; width: 2px; height: 80%; background: #ccc; transform: translateX(-50%); }
+        .ally-arm.ford-arm { background: #f0f0f0; }
         .ally-leg.ford-leg { background: #334; }
         /* McGucket */
         .ally-head.mcgucket-head { background: #ffcc99; width: 20px; height: 20px; left: 12px; }
         .ally-head.mcgucket-head::before { content: ''; position: absolute; width: 3px; height: 3px; background: #333; border-radius: 50%; top: 6px; left: 4px; box-shadow: 7px 0 0 #333; }
-        .mcgucket-hat { position: absolute; top: -2px; left: 8px; width: 28px; height: 14px; background: #aa8844; border-radius: 4px 4px 0 0; z-index: 4; }
-        .mcgucket-hat::after { content: ''; position: absolute; bottom: 0; left: -4px; width: 36px; height: 4px; background: #886633; border-radius: 2px; }
+        .mcgucket-hat { position: absolute; top: -2px; left: 8px; width: 28px; height: 14px; background: #222; border-radius: 4px 4px 0 0; z-index: 4; }
+        .mcgucket-hat::before { content: ''; position: absolute; top: -4px; left: 6px; width: 16px; height: 6px; background: #222; border-radius: 3px 3px 0 0; }
+        .mcgucket-hat::after { content: ''; position: absolute; bottom: 0; left: -4px; width: 36px; height: 4px; background: #111; border-radius: 2px; }
         .mcgucket-beard { position: absolute; top: 26px; left: 10px; width: 22px; height: 16px; background: #ddd; border-radius: 0 0 12px 12px; z-index: 2; }
         .ally-body.mcgucket-body { background: #667744; }
         .ally-arm.mcgucket-arm { background: #667744; }
@@ -821,6 +824,7 @@ function buildCharPreview(parent, charId) {
             el('div', 'ally-arm soos-arm right', wrap);
             var soosb = el('div', 'ally-body soos-body', wrap);
             el('div', 'soos-belly', soosb);
+            var sq = el('div', 'soos-question', soosb); sq.textContent = '?';
             el('div', 'ally-leg soos-leg left', wrap);
             el('div', 'ally-leg soos-leg right', wrap);
         } else if (charId === 'ford') {
@@ -1150,6 +1154,7 @@ function buildPlayerDOM() {
         el('div', 'ally-arm soos-arm right', ch);
         var soosb = el('div', 'ally-body soos-body', ch);
         el('div', 'soos-belly', soosb);
+        var sq2 = el('div', 'soos-question', soosb); sq2.textContent = '?';
         el('div', 'ally-leg soos-leg left', ch);
         el('div', 'ally-leg soos-leg right', ch);
     } else if (selectedChar === 'ford') {
@@ -1798,6 +1803,7 @@ function spawnAlly(typeId, assignedLoc) {
         el('div', 'ally-arm soos-arm right', charDiv);
         var sbody = el('div', 'ally-body soos-body', charDiv);
         el('div', 'soos-belly', sbody);
+        var sq3 = el('div', 'soos-question', sbody); sq3.textContent = '?';
         el('div', 'ally-leg soos-leg left', charDiv);
         el('div', 'ally-leg soos-leg right', charDiv);
     } else if (typeId === 'ford') {

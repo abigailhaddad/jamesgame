@@ -24,6 +24,7 @@ A Gravity Falls tower defense game set during Weirdmageddon. Pick your character
 17. **Weapons** (Memory Gun, Wendy's Axe, Grappling Hook) - DONE
 18. **More recruitable allies** (Soos, Ford, McGucket) - DONE
 19. **Character selection** at game start (chosen character can't be recruited) - DONE
+20. **Character costume details** - Ford's labcoat, Soos's ? shirt, McGucket's black scarecrow hat - DONE
 
 ## Current Features
 
