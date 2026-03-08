@@ -214,6 +214,33 @@
         .ally-body.wendy-body { background: #336633; }
         .ally-arm.wendy-arm { background: #336633; }
         .ally-leg.wendy-leg { background: #446; }
+        /* Soos */
+        .ally-head.soos-head { background: #dda866; width: 26px; height: 24px; left: 9px; }
+        .ally-head.soos-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 9px; left: 6px; box-shadow: 9px 0 0 #333; }
+        .soos-cap { position: absolute; top: 2px; left: 6px; width: 32px; height: 12px; background: #335588; border-radius: 6px 6px 0 0; z-index: 4; }
+        .soos-cap::after { content: '?'; position: absolute; top: 0; left: 11px; color: #ffdd00; font-size: 10px; font-weight: bold; }
+        .ally-body.soos-body { background: #228833; width: 28px; height: 22px; left: 8px; }
+        .soos-belly { position: absolute; top: 6px; left: 4px; width: 20px; height: 14px; background: #1a7728; border-radius: 50%; z-index: 1; }
+        .ally-arm.soos-arm { background: #228833; width: 8px; }
+        .ally-leg.soos-leg { background: #445; width: 9px; }
+        /* Ford */
+        .ally-head.ford-head { background: #ffbb88; }
+        .ally-head.ford-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 8px; left: 5px; box-shadow: 8px 0 0 #333; }
+        .ford-hair { position: absolute; top: 2px; left: 8px; width: 28px; height: 12px; background: #888; border-radius: 8px 8px 0 0; z-index: 2; }
+        .ford-glasses { position: absolute; top: 14px; left: 7px; width: 30px; height: 8px; border: 2px solid #555; border-radius: 4px; z-index: 5; background: rgba(200,200,255,0.3); }
+        .ally-body.ford-body { background: #8B4513; }
+        .ford-coat { position: absolute; inset: 0; border-left: 3px solid #6B3410; border-right: 3px solid #6B3410; border-radius: 4px; }
+        .ally-arm.ford-arm { background: #8B4513; }
+        .ally-leg.ford-leg { background: #334; }
+        /* McGucket */
+        .ally-head.mcgucket-head { background: #ffcc99; width: 20px; height: 20px; left: 12px; }
+        .ally-head.mcgucket-head::before { content: ''; position: absolute; width: 3px; height: 3px; background: #333; border-radius: 50%; top: 6px; left: 4px; box-shadow: 7px 0 0 #333; }
+        .mcgucket-hat { position: absolute; top: -2px; left: 8px; width: 28px; height: 14px; background: #aa8844; border-radius: 4px 4px 0 0; z-index: 4; }
+        .mcgucket-hat::after { content: ''; position: absolute; bottom: 0; left: -4px; width: 36px; height: 4px; background: #886633; border-radius: 2px; }
+        .mcgucket-beard { position: absolute; top: 26px; left: 10px; width: 22px; height: 16px; background: #ddd; border-radius: 0 0 12px 12px; z-index: 2; }
+        .ally-body.mcgucket-body { background: #667744; }
+        .ally-arm.mcgucket-arm { background: #667744; }
+        .ally-leg.mcgucket-leg { background: #554; }
         /* Ally walking */
         .ally.walking .ally-leg.left { animation: aLegL .35s ease-in-out infinite; }
         .ally.walking .ally-leg.right { animation: aLegR .35s ease-in-out infinite; }
@@ -439,6 +466,27 @@
             position: fixed; z-index: 90; pointer-events: none;
             color: #ffdd00; font-size: 9px; font-weight: bold;
         }
+        /* ===== CHARACTER SELECT ===== */
+        .char-card {
+            background: rgba(255,255,255,0.08); border: 2px solid #555;
+            border-radius: 8px; padding: 12px; width: 130px; cursor: pointer;
+            text-align: center; transition: all 0.2s;
+        }
+        .char-card:hover { border-color: #ffdd00; transform: scale(1.05); }
+        .char-card .char-name { color: #ffdd00; font-weight: bold; font-size: 0.9rem; margin-top: 8px; }
+        .char-card .char-desc { color: #aaa; font-size: 0.7rem; margin-top: 4px; }
+        .char-card .char-preview { height: 70px; display: flex; align-items: center; justify-content: center; }
+
+        /* ===== WEAPON INDICATOR ===== */
+        #weapon-display {
+            position: fixed; bottom: 70px; right: 10px; z-index: 50;
+            background: rgba(0,0,0,0.7); border: 1px solid #ffdd00;
+            border-radius: 6px; padding: 6px 10px;
+            font-size: 10px; color: #ffdd00; text-align: center;
+            pointer-events: none;
+        }
+        #weapon-display .weapon-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+
         /* ===== INSTRUCTIONS MODAL ===== */
         #instructions-modal {
             display: none; position: fixed; inset: 0;
@@ -485,12 +533,20 @@
     <button class="start-btn" id="how-to-play-btn" style="margin-top:10px;font-size:0.9rem;padding:8px 20px;background:transparent;color:#ffdd00;border:2px solid #ffdd00;">HOW TO PLAY</button>
 </div>
 
+<div id="char-select" style="display:none;position:fixed;inset:0;background:linear-gradient(180deg,#2d0a4e 0%,#1a0a2e 40%,#0a0a1e 100%);z-index:1001;overflow-y:auto;padding:20px;">
+    <div style="max-width:500px;margin:0 auto;text-align:center;">
+        <h1 style="color:#ffdd00;font-size:1.8rem;margin-bottom:5px;">CHOOSE YOUR CHARACTER</h1>
+        <p style="color:#ff6644;font-size:0.9rem;margin-bottom:20px;">Your character can't be recruited as an ally</p>
+        <div id="char-options" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;"></div>
+    </div>
+</div>
+
 <div id="instructions-modal">
     <div class="modal-content">
         <h2>HOW TO PLAY</h2>
 
         <h3>THE STORY</h3>
-        <p>Bill Cipher has opened a rift above Gravity Falls! Monsters are pouring through. You play as Dipper — defend the town's buildings and survive as many waves as you can!</p>
+        <p>Bill Cipher has opened a rift above Gravity Falls! Monsters are pouring through. Pick your character and defend the town's buildings — survive as many waves as you can!</p>
 
         <h3>CONTROLS</h3>
         <ul>
@@ -532,12 +588,25 @@
             <li><strong style="color:#ff4444;">Hard</strong> — Less time, weaker buildings, more and stronger enemies</li>
         </ul>
 
+        <h3>WEAPONS</h3>
+        <p>Craft weapons from the build menu to power up your attacks:</p>
+        <ul>
+            <li><strong style="color:#ffdd00;">Memory Gun</strong> — Stuns enemies briefly</li>
+            <li><strong style="color:#ffdd00;">Wendy's Axe</strong> — Big damage and knockback</li>
+            <li><strong style="color:#ffdd00;">Grappling Hook</strong> — Long range, pulls enemies closer</li>
+        </ul>
+
+        <h3>CHARACTER SELECT</h3>
+        <p>Choose your character before each game! Whoever you play as can't be recruited as an ally, so choose wisely.</p>
+
         <h3>TIPS</h3>
         <ul>
             <li>Don't forget to build defenses during the collect phase!</li>
             <li>Allies are really helpful — recruit them early</li>
+            <li>Craft a weapon as soon as you can — it makes a big difference</li>
             <li>You can save your game from the pause menu</li>
             <li>Journals are rare but needed for the most powerful upgrades</li>
+            <li>Soos heals buildings, McGucket builds turrets — great support allies!</li>
         </ul>
 
         <button class="instructions-close" id="close-instructions">GOT IT!</button>
@@ -589,6 +658,7 @@
             <div></div><div class="dpad-btn" data-dir="down">v</div><div></div>
         </div>
     </div>
+    <div id="weapon-display"><span class="weapon-icon">👊</span>Fists</div>
     <div id="game-over">
         <h1>BILL WINS...</h1>
         <p>Gravity Falls has fallen!</p>
@@ -619,11 +689,25 @@ var upgrades = [
     { name: 'Zodiac Shield', cost: { journal: 2, crystal: 5, metal: 5 }, defenseBoost: 50, desc: '+50 Defense!' },
 ];
 
+// ===== WEAPONS =====
+var weapons = [
+    { id: 'fists', name: 'Fists', dmg: 1, range: 40, knockback: 30, icon: '👊', desc: 'Default' },
+    { id: 'memory_gun', name: 'Memory Gun', dmg: 2, range: 55, knockback: 40, icon: '🔫', desc: 'Stuns enemies briefly', special: 'stun',
+      cost: { metal: 5, crystal: 3 } },
+    { id: 'wendys_axe', name: "Wendy's Axe", dmg: 3, range: 50, knockback: 50, icon: '🪓', desc: 'Hits hard, big knockback', special: 'cleave',
+      cost: { wood: 4, metal: 4 } },
+    { id: 'grappling_hook', name: 'Grappling Hook', dmg: 1, range: 80, knockback: 20, icon: '🪝', desc: 'Long range, pulls enemies in', special: 'pull',
+      cost: { metal: 3, crystal: 2, wood: 2 } },
+];
+
 // ===== ALLIES =====
 var allyTypes = [
     { id: 'mabel', name: 'Mabel', cost: { wood: 3, crystal: 2 }, desc: 'Fast fighter, loves sparkles', speed: 3.5, range: 45, dmg: 1 },
     { id: 'stan', name: 'Grunkle Stan', cost: { metal: 4, wood: 3 }, desc: 'Tough brawler, hits hard', speed: 2, range: 50, dmg: 2 },
     { id: 'wendy', name: 'Wendy', cost: { wood: 2, metal: 2, crystal: 1 }, desc: 'Fast and strong', speed: 4, range: 45, dmg: 1 },
+    { id: 'soos', name: 'Soos', cost: { wood: 3, metal: 2 }, desc: 'Tough guy, heals buildings nearby', speed: 2.5, range: 45, dmg: 1, special: 'repair' },
+    { id: 'ford', name: 'Ford', cost: { crystal: 4, journal: 1 }, desc: 'Genius inventor, high damage', speed: 2.5, range: 60, dmg: 3 },
+    { id: 'mcgucket', name: 'McGucket', cost: { metal: 5, wood: 2 }, desc: 'Mad genius, builds robot turrets', speed: 2, range: 45, dmg: 1, special: 'turret' },
 ];
 
 // ===== STATE =====
@@ -645,6 +729,7 @@ var state = {
     enemies: [], materials: [], allies: [],
     gameLoop: null, spawnTimer: null, waveTimer: null,
     spawningDone: false,
+    currentWeapon: 'fists',
 };
 
 // ===== DOM =====
@@ -671,11 +756,47 @@ function cacheDom() {
 }
 cacheDom();
 
+// ===== CHARACTER SELECT =====
+var playableChars = [
+    { id: 'dipper', name: 'Dipper', desc: 'The classic hero', color: '#ff6644' },
+    { id: 'mabel', name: 'Mabel', desc: 'Fast and sparkly', color: '#ff66cc' },
+    { id: 'stan', name: 'Grunkle Stan', desc: 'Tough brawler', color: '#cc0000' },
+    { id: 'wendy', name: 'Wendy', desc: 'Fast and strong', color: '#336633' },
+    { id: 'soos', name: 'Soos', desc: 'Tough handyman', color: '#228833' },
+    { id: 'ford', name: 'Ford', desc: 'Genius inventor', color: '#8B4513' },
+    { id: 'mcgucket', name: 'McGucket', desc: 'Mad scientist', color: '#aa8844' },
+];
+var selectedChar = 'dipper';
+
+function showCharSelect() {
+    dom.titleScreen.style.display = 'none';
+    var charSelect = document.getElementById('char-select');
+    charSelect.style.display = 'block';
+    var opts = document.getElementById('char-options');
+    while (opts.firstChild) opts.removeChild(opts.firstChild);
+    playableChars.forEach(function(ch) {
+        var card = el('div', 'char-card', opts);
+        card.style.borderColor = ch.color;
+        var preview = el('div', 'char-preview', card);
+        var icon = el('div', null, preview);
+        icon.style.width = '40px'; icon.style.height = '50px';
+        icon.style.background = ch.color; icon.style.borderRadius = '8px';
+        icon.style.margin = '0 auto';
+        var nm = el('div', 'char-name', card); nm.textContent = ch.name;
+        var desc = el('div', 'char-desc', card); desc.textContent = ch.desc;
+        card.addEventListener('click', function() {
+            selectedChar = ch.id;
+            charSelect.style.display = 'none';
+            startGame();
+        });
+    });
+}
+
 // ===== EVENTS =====
 document.querySelectorAll('.diff-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
         currentDifficulty = btn.dataset.diff;
-        startGame();
+        showCharSelect();
     });
 });
 document.getElementById('restart-btn').addEventListener('click', restartGame);
@@ -737,6 +858,8 @@ function saveGame() {
         wood: state.wood, metal: state.metal, crystal: state.crystal, journal: state.journal,
         wave: state.wave, phase: state.phase,
         difficulty: currentDifficulty,
+        currentWeapon: state.currentWeapon,
+        selectedChar: selectedChar,
         playerX: state.playerX, playerY: state.playerY,
         locations: locations.map(function(l){ return { id: l.id, health: l.health, defense: l.defense, alive: l.alive }; }),
         allies: state.allies.map(function(a){ return { type: a.type, locId: a.assignedLoc.id, x: a.x, y: a.y }; }),
@@ -787,6 +910,9 @@ function loadGame() {
         state.playerX = data.playerX; state.playerY = data.playerY;
         state.running = true; state.paused = false;
         state.spawningDone = false;
+        state.currentWeapon = data.currentWeapon || 'fists';
+        selectedChar = data.selectedChar || 'dipper';
+        updateWeaponDisplay();
 
         // Restore locations
         data.locations.forEach(function(saved) {
@@ -900,17 +1026,76 @@ function buildPlayerDOM() {
     hpBar.style.width = '40px';
     var hpFill = el('div', 'char-hp-fill', hpBar);
     hpFill.style.width = '100%';
-    // Character
+    // Character — build based on selectedChar
     var ch = el('div', 'player-char', p);
-    var hat = el('div', 'player-hat', ch);
-    el('div', 'player-hat-top', hat);
-    el('div', 'player-head', ch);
-    el('div', 'player-arm left', ch);
-    el('div', 'player-arm right', ch);
-    var body = el('div', 'player-body', ch);
-    el('div', 'player-vest', body);
-    el('div', 'player-leg left', ch);
-    el('div', 'player-leg right', ch);
+    if (selectedChar === 'dipper') {
+        var hat = el('div', 'player-hat', ch);
+        el('div', 'player-hat-top', hat);
+        el('div', 'player-head', ch);
+        el('div', 'player-arm left', ch);
+        el('div', 'player-arm right', ch);
+        var body = el('div', 'player-body', ch);
+        el('div', 'player-vest', body);
+        el('div', 'player-leg left', ch);
+        el('div', 'player-leg right', ch);
+    } else if (selectedChar === 'mabel') {
+        el('div', 'mabel-band', ch);
+        el('div', 'mabel-hair', ch);
+        el('div', 'ally-head mabel-head', ch);
+        el('div', 'ally-arm mabel-arm left', ch);
+        el('div', 'ally-arm mabel-arm right', ch);
+        var mb = el('div', 'ally-body mabel-body', ch);
+        var star = el('div', 'mabel-star', mb); star.textContent = '*';
+        el('div', 'ally-leg mabel-leg left', ch);
+        el('div', 'ally-leg mabel-leg right', ch);
+    } else if (selectedChar === 'stan') {
+        el('div', 'stan-fez', ch);
+        el('div', 'ally-head stan-head', ch);
+        el('div', 'stan-glasses', ch);
+        el('div', 'ally-arm stan-arm left', ch);
+        el('div', 'ally-arm stan-arm right', ch);
+        var sb = el('div', 'ally-body stan-body', ch);
+        el('div', 'stan-tie', sb);
+        el('div', 'ally-leg stan-leg left', ch);
+        el('div', 'ally-leg stan-leg right', ch);
+    } else if (selectedChar === 'wendy') {
+        el('div', 'wendy-hat', ch);
+        el('div', 'wendy-hair', ch);
+        el('div', 'ally-head wendy-head', ch);
+        el('div', 'ally-arm wendy-arm left', ch);
+        el('div', 'ally-arm wendy-arm right', ch);
+        el('div', 'ally-body wendy-body', ch);
+        el('div', 'ally-leg wendy-leg left', ch);
+        el('div', 'ally-leg wendy-leg right', ch);
+    } else if (selectedChar === 'soos') {
+        el('div', 'soos-cap', ch);
+        el('div', 'ally-head soos-head', ch);
+        el('div', 'ally-arm soos-arm left', ch);
+        el('div', 'ally-arm soos-arm right', ch);
+        var soosb = el('div', 'ally-body soos-body', ch);
+        el('div', 'soos-belly', soosb);
+        el('div', 'ally-leg soos-leg left', ch);
+        el('div', 'ally-leg soos-leg right', ch);
+    } else if (selectedChar === 'ford') {
+        el('div', 'ford-hair', ch);
+        el('div', 'ally-head ford-head', ch);
+        el('div', 'ford-glasses', ch);
+        el('div', 'ally-arm ford-arm left', ch);
+        el('div', 'ally-arm ford-arm right', ch);
+        var fb = el('div', 'ally-body ford-body', ch);
+        el('div', 'ford-coat', fb);
+        el('div', 'ally-leg ford-leg left', ch);
+        el('div', 'ally-leg ford-leg right', ch);
+    } else if (selectedChar === 'mcgucket') {
+        el('div', 'mcgucket-hat', ch);
+        el('div', 'ally-head mcgucket-head', ch);
+        el('div', 'mcgucket-beard', ch);
+        el('div', 'ally-arm mcgucket-arm left', ch);
+        el('div', 'ally-arm mcgucket-arm right', ch);
+        el('div', 'ally-body mcgucket-body', ch);
+        el('div', 'ally-leg mcgucket-leg left', ch);
+        el('div', 'ally-leg mcgucket-leg right', ch);
+    }
     dom.player = p;
     state.playerHp = state.playerMaxHp;
     state.playerHitCooldown = 0;
@@ -933,6 +1118,7 @@ function initGame() {
     state.enemies = []; state.materials = []; state.allies = [];
     state.running = true; state.paused = false; state.collectTimer = 0;
     state.spawningDone = false;
+    state.currentWeapon = 'fists';
     state.collectDuration = diff.collectDuration;
     state.playerMaxHp = diff.playerMaxHp;
     state.playerHp = diff.playerMaxHp;
@@ -965,6 +1151,7 @@ function initGame() {
     spawnMaterials(15);
     updateHUD();
     updateCamera();
+    updateWeaponDisplay();
     startCollectPhase();
 
     if (state.gameLoop) cancelAnimationFrame(state.gameLoop);
@@ -1192,6 +1379,12 @@ function moveEnemies() {
     state.enemies.forEach(function(enemy) {
         if (!enemy.parentNode) { toRemove.push(enemy); return; }
 
+        // Stun check (from memory gun)
+        if (enemy.dataset.stunned && parseInt(enemy.dataset.stunned) > 0) {
+            enemy.dataset.stunned = parseInt(enemy.dataset.stunned) - 1;
+            return; // Skip movement while stunned
+        }
+
         var targetLoc = locations.find(function(l){return l.id === enemy.dataset.target;});
         if (!targetLoc || !targetLoc.alive) {
             // Retarget
@@ -1231,13 +1424,14 @@ function moveEnemies() {
             updateHUD(); return;
         }
 
-        // Player collision
+        // Player collision — use current weapon stats
+        var wpn = weapons.find(function(w){return w.id===state.currentWeapon;}) || weapons[0];
         var px = state.playerX; var py = state.playerY;
         var pd = Math.sqrt((px-ex)*(px-ex)+(py-ey)*(py-ey));
-        if (pd < 40) {
+        if (pd < wpn.range) {
             dom.player.classList.add('attacking');
             setTimeout(function(){dom.player.classList.remove('attacking');}, 200);
-            var hp = parseInt(enemy.dataset.hp) - 1;
+            var hp = parseInt(enemy.dataset.hp) - wpn.dmg;
             if (hp <= 0) {
                 spawnDeathEffect(ex, ey, enemy.dataset.type);
                 enemy.remove(); toRemove.push(enemy);
@@ -1257,8 +1451,19 @@ function moveEnemies() {
             updateCharHpBar(enemy, hp, parseInt(enemy.dataset.maxhp));
             enemy.classList.add('hit');
             setTimeout(function(){enemy.classList.remove('hit');}, 150);
-            enemy.style.left = (ex - dx/dist*30)+'px';
-            enemy.style.top = (ey - dy/dist*30)+'px';
+            // Weapon special effects
+            if (wpn.special === 'stun') {
+                enemy.style.filter = 'brightness(3) hue-rotate(180deg)';
+                enemy.dataset.stunned = '20';
+                setTimeout(function(){enemy.style.filter='';}, 333);
+            }
+            if (wpn.special === 'pull') {
+                enemy.style.left = (ex + dx/dist*20)+'px';
+                enemy.style.top = (ey + dy/dist*20)+'px';
+            } else {
+                enemy.style.left = (ex - dx/dist*wpn.knockback)+'px';
+                enemy.style.top = (ey - dy/dist*wpn.knockback)+'px';
+            }
             return;
         }
 
@@ -1349,8 +1554,31 @@ function renderBuildOptions() {
         btn.addEventListener('click', (function(idx){return function(){buildUpgrade(idx);};})(i));
     });
 
-    // Recruit allies
-    allyTypes.forEach(function(at) {
+    // Weapons
+    weapons.forEach(function(wpn) {
+        if (!wpn.cost) return; // skip fists
+        var owned = state.currentWeapon === wpn.id;
+        var card = el('div', 'build-card', dom.buildOptions);
+        card.style.borderColor = owned ? '#ffdd00' : '#ff8844';
+        var title = el('h4', null, card); title.textContent = wpn.icon + ' ' + wpn.name;
+        var cost = el('div', 'cost', card);
+        cost.textContent = owned ? 'EQUIPPED' : Object.entries(wpn.cost).map(function(e){return e[1]+' '+e[0];}).join(', ');
+        var eff = el('div', 'effect', card); eff.textContent = wpn.desc + ' (DMG: ' + wpn.dmg + ')';
+        if (owned) {
+            var btn = el('button', 'build-btn', card);
+            btn.textContent = 'EQUIPPED'; btn.disabled = true;
+            btn.style.background = '#ffdd00'; btn.style.color = '#111';
+        } else {
+            var can = Object.entries(wpn.cost).every(function(e){return state[e[0]]>=e[1];});
+            var btn = el('button', 'build-btn', card);
+            btn.textContent = 'CRAFT'; btn.disabled = !can;
+            btn.style.background = can ? '#ff8844' : '#555';
+            btn.addEventListener('click', (function(wId){return function(){craftWeapon(wId);};})(wpn.id));
+        }
+    });
+
+    // Recruit allies (skip selected character — they're already the player)
+    allyTypes.filter(function(at){return at.id !== selectedChar;}).forEach(function(at) {
         var card = el('div', 'build-card', dom.buildOptions);
         card.style.borderColor = '#88ff88';
         var title = el('h4', null, card); title.textContent = 'Recruit ' + at.name;
@@ -1389,6 +1617,28 @@ function recruitAlly(typeId) {
     spawnAlly(typeId, nearest);
     updateHUD(); renderBuildOptions();
     announce(atype.name + ' joins the fight!');
+}
+
+function craftWeapon(weaponId) {
+    var wpn = weapons.find(function(w){return w.id===weaponId;});
+    if (!wpn || !wpn.cost) return;
+    var can = Object.entries(wpn.cost).every(function(e){return state[e[0]]>=e[1];});
+    if (!can) return;
+    Object.entries(wpn.cost).forEach(function(e){ state[e[0]] -= e[1]; });
+    state.currentWeapon = wpn.id;
+    updateHUD(); renderBuildOptions(); updateWeaponDisplay();
+    announce('Equipped ' + wpn.name + '!');
+}
+
+function updateWeaponDisplay() {
+    var disp = document.getElementById('weapon-display');
+    while (disp.firstChild) disp.removeChild(disp.firstChild);
+    var wpn = weapons.find(function(w){return w.id===state.currentWeapon;}) || weapons[0];
+    var iconSpan = document.createElement('span');
+    iconSpan.className = 'weapon-icon';
+    iconSpan.textContent = wpn.icon;
+    disp.appendChild(iconSpan);
+    disp.appendChild(document.createTextNode(wpn.name));
 }
 
 // ===== HUD =====
@@ -1465,6 +1715,34 @@ function spawnAlly(typeId, assignedLoc) {
         el('div', 'ally-body wendy-body', charDiv);
         el('div', 'ally-leg wendy-leg left', charDiv);
         el('div', 'ally-leg wendy-leg right', charDiv);
+    } else if (typeId === 'soos') {
+        el('div', 'soos-cap', charDiv);
+        el('div', 'ally-head soos-head', charDiv);
+        el('div', 'ally-arm soos-arm left', charDiv);
+        el('div', 'ally-arm soos-arm right', charDiv);
+        var sbody = el('div', 'ally-body soos-body', charDiv);
+        el('div', 'soos-belly', sbody);
+        el('div', 'ally-leg soos-leg left', charDiv);
+        el('div', 'ally-leg soos-leg right', charDiv);
+    } else if (typeId === 'ford') {
+        el('div', 'ford-hair', charDiv);
+        el('div', 'ally-head ford-head', charDiv);
+        el('div', 'ford-glasses', charDiv);
+        el('div', 'ally-arm ford-arm left', charDiv);
+        el('div', 'ally-arm ford-arm right', charDiv);
+        var fbody = el('div', 'ally-body ford-body', charDiv);
+        el('div', 'ford-coat', fbody);
+        el('div', 'ally-leg ford-leg left', charDiv);
+        el('div', 'ally-leg ford-leg right', charDiv);
+    } else if (typeId === 'mcgucket') {
+        el('div', 'mcgucket-hat', charDiv);
+        el('div', 'ally-head mcgucket-head', charDiv);
+        el('div', 'mcgucket-beard', charDiv);
+        el('div', 'ally-arm mcgucket-arm left', charDiv);
+        el('div', 'ally-arm mcgucket-arm right', charDiv);
+        el('div', 'ally-body mcgucket-body', charDiv);
+        el('div', 'ally-leg mcgucket-leg left', charDiv);
+        el('div', 'ally-leg mcgucket-leg right', charDiv);
     }
 
     // Health bar for ally
@@ -1473,7 +1751,7 @@ function spawnAlly(typeId, assignedLoc) {
     var hpFill = el('div', 'char-hp-fill', hpBar);
     hpFill.style.width = '100%';
 
-    var allyMaxHp = typeId === 'stan' ? 6 : 4;
+    var allyMaxHp = (typeId === 'stan' || typeId === 'soos') ? 6 : typeId === 'ford' ? 3 : 4;
     var allyData = {
         el: ally,
         type: typeId,
@@ -1613,6 +1891,67 @@ function moveAllies() {
         }
 
         if (moving) { a.el.classList.add('walking'); } else { a.el.classList.remove('walking'); }
+
+        // Soos special: slowly repairs nearby building
+        var atype = allyTypes.find(function(t){return t.id===a.type;});
+        if (atype && atype.special === 'repair' && loc.alive && loc.health < loc.maxHealth) {
+            if (!a.repairTimer) a.repairTimer = 0;
+            a.repairTimer++;
+            if (a.repairTimer >= 120) { // every ~2 seconds
+                loc.health = Math.min(loc.maxHealth, loc.health + 2);
+                updateHUD();
+                a.repairTimer = 0;
+            }
+        }
+
+        // McGucket special: spawns a turret projectile occasionally
+        if (atype && atype.special === 'turret' && state.phase === 'defend') {
+            if (!a.turretTimer) a.turretTimer = 0;
+            a.turretTimer++;
+            if (a.turretTimer >= 180 && state.enemies.length > 0) { // every ~3 seconds
+                a.turretTimer = 0;
+                var target = state.enemies.find(function(e){return e.parentNode;});
+                if (target) {
+                    var tex = parseFloat(target.style.left); var tey = parseFloat(target.style.top);
+                    var bolt = el('div', 'turret-bolt', dom.gameWorld);
+                    bolt.style.left = a.x + 'px'; bolt.style.top = a.y + 'px';
+                    bolt.style.position = 'absolute'; bolt.style.zIndex = '25';
+                    bolt.style.width = '8px'; bolt.style.height = '8px';
+                    bolt.style.background = '#00ffff'; bolt.style.borderRadius = '50%';
+                    bolt.style.boxShadow = '0 0 8px #00ffff';
+                    bolt.style.pointerEvents = 'none';
+                    var bdx = tex - a.x; var bdy = tey - a.y;
+                    var bdist = Math.sqrt(bdx*bdx+bdy*bdy);
+                    var bvx = bdx/bdist*6; var bvy = bdy/bdist*6;
+                    var boltLife = 60;
+                    (function animBolt() {
+                        if (boltLife-- <= 0 || !bolt.parentNode) { if(bolt.parentNode) bolt.remove(); return; }
+                        var bx = parseFloat(bolt.style.left) + bvx;
+                        var by = parseFloat(bolt.style.top) + bvy;
+                        bolt.style.left = bx + 'px'; bolt.style.top = by + 'px';
+                        // Check hit
+                        state.enemies.forEach(function(enemy) {
+                            if (!enemy.parentNode) return;
+                            var eex = parseFloat(enemy.style.left); var eey = parseFloat(enemy.style.top);
+                            if (Math.sqrt((bx-eex)*(bx-eex)+(by-eey)*(by-eey)) < 30) {
+                                var ehp = parseInt(enemy.dataset.hp) - 2;
+                                if (ehp <= 0) {
+                                    spawnDeathEffect(eex, eey, enemy.dataset.type);
+                                    enemy.remove();
+                                } else {
+                                    enemy.dataset.hp = ehp;
+                                    updateCharHpBar(enemy, ehp, parseInt(enemy.dataset.maxhp));
+                                    enemy.classList.add('hit');
+                                    setTimeout(function(){enemy.classList.remove('hit');}, 150);
+                                }
+                                bolt.remove();
+                            }
+                        });
+                        if (bolt.parentNode) requestAnimationFrame(animBolt);
+                    })();
+                }
+            }
+        }
 
         // Keep on ground
         a.y = Math.max(SCREEN_H * 0.5, Math.min(SCREEN_H * 0.8, a.y));
