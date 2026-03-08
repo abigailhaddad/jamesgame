@@ -2,25 +2,1697 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>James's Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Weirdmageddon Defense</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #1a1a2e;
+            background: #1a0a2e;
             color: white;
-            font-family: sans-serif;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            height: 100vh;
+            width: 100vw;
         }
-        h1 {
-            font-size: 3rem;
+
+        /* ===== TITLE SCREEN ===== */
+        #title-screen {
+            position: fixed; inset: 0;
+            background: linear-gradient(180deg, #2d0a4e 0%, #1a0a2e 40%, #0a0a1e 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+        #title-screen h1 {
+            font-size: clamp(2rem, 7vw, 4rem); color: #ffdd00;
+            text-shadow: 0 0 20px #ff6600, 0 0 40px #ff3300;
+            text-align: center; margin-bottom: 10px; animation: flicker 3s infinite;
+        }
+        #title-screen h2 { font-size: clamp(1rem, 3vw, 1.5rem); color: #ff6644; margin-bottom: 40px; text-align: center; }
+        .bill-triangle {
+            width: 0; height: 0;
+            border-left: 60px solid transparent; border-right: 60px solid transparent;
+            border-bottom: 100px solid #ffdd00;
+            position: relative; margin-bottom: 30px; animation: float 2s ease-in-out infinite;
+        }
+        .bill-triangle::after {
+            content: ''; position: absolute; width: 20px; height: 20px;
+            background: #1a0a2e; border-radius: 50%; top: 30px; left: -10px;
+        }
+        .start-btn {
+            padding: 15px 40px; font-size: clamp(1.2rem, 3vw, 1.8rem);
+            background: #ffdd00; color: #1a0a2e; border: none;
+            font-family: 'Courier New', monospace; font-weight: bold;
+            cursor: pointer; border-radius: 5px; text-transform: uppercase;
+        }
+        .start-btn:hover { background: #ffee44; transform: scale(1.05); }
+        @keyframes flicker { 0%,100%{opacity:1} 50%{opacity:.9} 52%{opacity:.4} 54%{opacity:1} }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+        /* ===== GAME CONTAINER ===== */
+        #game-container { display: none; width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+
+        /* ===== GAME WORLD (scrolls) ===== */
+        #game-world {
+            position: absolute; top: 0; left: 0;
+            width: 1800px; height: 100vh;
+            background: linear-gradient(180deg, #4a1040 0%, #2d0a3e 25%, #1a1a3e 55%, #0d2a0d 85%, #0a1a0a 100%);
+            transition: transform 0.1s ease-out;
+        }
+        #game-world::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 40%;
+            background: radial-gradient(ellipse at 20% 20%, rgba(255,100,0,0.3) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 10%, rgba(255,0,100,0.2) 0%, transparent 40%),
+                        radial-gradient(ellipse at 80% 15%, rgba(255,200,0,0.15) 0%, transparent 40%);
+            pointer-events: none; z-index: 1;
+        }
+        .ground { position: absolute; bottom: 0; left: 0; right: 0; height: 25%;
+            background: linear-gradient(180deg, #1a3a1a 0%, #0d1f0d 100%); z-index: 3; }
+
+        /* Sky rift */
+        .sky-rift {
+            position: absolute; top: 3%; left: 900px; transform: translateX(-50%);
+            width: 200px; height: 120px;
+            background: radial-gradient(ellipse, rgba(255,255,100,0.9) 0%, rgba(255,150,0,0.7) 20%, rgba(255,50,0,0.4) 40%, transparent 65%);
+            border-radius: 50%; animation: riftPulse 2s ease-in-out infinite;
+            z-index: 2; pointer-events: none;
+        }
+        @keyframes riftPulse {
+            0%,100%{ transform:translateX(-50%) scale(1); opacity:.8 }
+            50%{ transform:translateX(-50%) scale(1.2); opacity:1 }
+        }
+
+        /* ===== LOCATIONS ===== */
+        .location {
+            position: absolute; z-index: 10;
+        }
+        .location-label {
+            text-align: center; font-size: 10px; color: #ffdd00; font-weight: bold;
+            text-shadow: 1px 1px 2px black; margin-bottom: 4px; white-space: nowrap;
+        }
+        /* Health bar above each location */
+        .location-healthbar {
+            width: 100px; height: 8px; background: rgba(0,0,0,0.6);
+            border-radius: 4px; margin: 0 auto 4px; overflow: hidden;
+        }
+        .location-healthfill {
+            height: 100%; background: linear-gradient(90deg, #ff4444, #44ff44);
+            border-radius: 4px; transition: width 0.3s;
+        }
+        .location-defensebar {
+            width: 100px; height: 5px; background: rgba(0,0,0,0.4);
+            border-radius: 3px; margin: 0 auto 2px; overflow: hidden;
+        }
+        .location-defensefill {
+            height: 100%; background: linear-gradient(90deg, #4488ff, #44ddff);
+            border-radius: 3px; transition: width 0.3s;
+        }
+
+        /* Mystery Shack */
+        .shack-body { width: 120px; height: 80px; background: linear-gradient(180deg, #8B6914, #6B4914); border: 2px solid #4a3010; position: relative; }
+        .shack-roof { width: 0; height: 0; border-left: 75px solid transparent; border-right: 75px solid transparent; border-bottom: 50px solid #5a2a2a; position: relative; left: -15px; }
+        .shack-door { width: 25px; height: 35px; background: #3a2010; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border: 1px solid #2a1508; }
+        .shack-window { width: 20px; height: 20px; background: #ffee88; border: 2px solid #4a3010; position: absolute; top: 15px; }
+        .shack-window.l { left: 15px; } .shack-window.r { right: 15px; }
+        .location.shaking { animation: locShake 0.3s ease-out; }
+        @keyframes locShake { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-2deg) translateY(-3px)} 50%{transform:rotate(2deg)} 75%{transform:rotate(-1deg)} }
+
+        /* Water Tower */
+        .tower-tank { width: 70px; height: 50px; background: linear-gradient(180deg, #778899, #556677); border: 2px solid #445566; border-radius: 8px 8px 0 0; position: relative; }
+        .tower-tank::after { content: 'GF'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #334455; font-size: 18px; font-weight: bold; }
+        .tower-legs { display: flex; justify-content: space-between; width: 60px; margin: 0 auto; }
+        .tower-leg { width: 6px; height: 60px; background: #556677; }
+
+        /* Greasy's Diner */
+        .diner-body { width: 130px; height: 60px; background: linear-gradient(180deg, #cc8844, #aa6633); border: 2px solid #885522; position: relative; border-radius: 0 0 4px 4px; }
+        .diner-roof { width: 140px; height: 16px; background: #dd4444; border-radius: 4px 4px 0 0; margin: 0 auto; }
+        .diner-sign { text-align: center; font-size: 8px; color: #ffdd00; background: #dd4444; padding: 1px 6px; border-radius: 2px; display: inline-block; }
+        .diner-window { width: 25px; height: 20px; background: #ffee88; border: 2px solid #885522; position: absolute; top: 10px; }
+        .diner-window.l { left: 12px; } .diner-window.m { left: 52px; } .diner-window.r { right: 12px; }
+        .diner-door { width: 22px; height: 35px; background: #664422; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border: 1px solid #553311; }
+
+        /* Gravity Falls Sign (bonus location) */
+        .sign-post { width: 8px; height: 70px; background: #6B4914; margin: 0 auto; }
+        .sign-board { width: 100px; height: 40px; background: #2a5a1a; border: 3px solid #6B4914; border-radius: 4px; position: relative; display: flex; align-items: center; justify-content: center; }
+        .sign-board span { color: #ffdd00; font-size: 9px; font-weight: bold; text-align: center; }
+
+        /* ===== PLAYER ===== */
+        #player { position: absolute; width: 50px; height: 70px; z-index: 20; }
+        .player-char { position: relative; width: 50px; height: 70px; }
+        .player-head { width: 26px; height: 26px; background: #ffcc99; border-radius: 50%; position: absolute; top: 10px; left: 12px; z-index: 3; }
+        .player-head::before { content: ''; position: absolute; width: 4px; height: 5px; background: #333; border-radius: 50%; top: 10px; left: 7px; box-shadow: 10px 0 0 #333; }
+        .player-hat { position: absolute; top: 0; left: 8px; width: 34px; height: 14px; background: #fff; border-radius: 6px 6px 0 0; z-index: 4; }
+        .player-hat-top { position: absolute; top: -10px; left: 17px; width: 16px; height: 12px; background: #0055cc; border-radius: 4px 4px 0 0; z-index: 5; }
+        .player-hat-top::after { content: ''; position: absolute; top: 2px; left: 4px; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 7px solid #00cc44; }
+        .player-body { width: 28px; height: 24px; background: #ff6644; border-radius: 4px; position: absolute; top: 32px; left: 11px; z-index: 2; }
+        .player-vest { position: absolute; inset: 0; border-left: 6px solid #4488ff; border-right: 6px solid #4488ff; border-radius: 4px; }
+        .player-arm { width: 8px; height: 20px; background: #ff6644; position: absolute; top: 33px; z-index: 1; border-radius: 4px; transform-origin: top center; }
+        .player-arm.left { left: 4px; } .player-arm.right { right: 4px; }
+        .player-arm::after { content: ''; position: absolute; bottom: -2px; left: 1px; width: 6px; height: 6px; background: #ffcc99; border-radius: 50%; }
+        .player-leg { width: 9px; height: 16px; background: #335; position: absolute; top: 54px; z-index: 1; border-radius: 2px 2px 4px 4px; transform-origin: top center; }
+        .player-leg.left { left: 14px; } .player-leg.right { right: 14px; }
+        .player-leg::after { content: ''; position: absolute; bottom: 0; left: -1px; width: 11px; height: 5px; background: #fff; border-radius: 3px; }
+        #player.walking .player-char { animation: pBounce .3s ease-in-out infinite; }
+        #player.walking .player-leg.left { animation: legL .3s ease-in-out infinite; }
+        #player.walking .player-leg.right { animation: legR .3s ease-in-out infinite; }
+        #player.walking .player-arm.left { animation: armL .3s ease-in-out infinite; }
+        #player.walking .player-arm.right { animation: armR .3s ease-in-out infinite; }
+        @keyframes pBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+        @keyframes legL { 0%,100%{transform:rotate(-20deg)} 50%{transform:rotate(20deg)} }
+        @keyframes legR { 0%,100%{transform:rotate(20deg)} 50%{transform:rotate(-20deg)} }
+        @keyframes armL { 0%,100%{transform:rotate(15deg)} 50%{transform:rotate(-15deg)} }
+        @keyframes armR { 0%,100%{transform:rotate(-15deg)} 50%{transform:rotate(15deg)} }
+        #player.facing-left .player-char { transform: scaleX(-1); }
+        #player.facing-left.walking .player-char { animation: pBounceFlip .3s ease-in-out infinite; }
+        @keyframes pBounceFlip { 0%,100%{transform:scaleX(-1) translateY(0)} 50%{transform:scaleX(-1) translateY(-3px)} }
+        #player.attacking .player-arm.right { animation: armPunch .2s ease-out forwards !important; }
+        @keyframes armPunch { 0%{transform:rotate(0)} 40%{transform:rotate(-90deg) translateY(-8px)} 100%{transform:rotate(0)} }
+
+        /* ===== ALLIES ===== */
+        .ally {
+            position: absolute; z-index: 19; pointer-events: none;
+        }
+        .ally-char { position: relative; width: 44px; height: 62px; }
+        .ally-name {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            font-size: 8px; color: #88ff88; font-weight: bold; white-space: nowrap;
+            text-shadow: 1px 1px 2px black;
+        }
+        /* Mabel */
+        .ally-head { width: 22px; height: 22px; border-radius: 50%; position: absolute; top: 8px; left: 11px; z-index: 3; }
+        .ally-head.mabel-head { background: #ffcc99; }
+        .ally-head.mabel-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 8px; left: 5px; box-shadow: 8px 0 0 #333; }
+        .mabel-hair { position: absolute; top: 2px; left: 5px; width: 34px; height: 20px; background: #663300; border-radius: 12px 12px 0 0; z-index: 2; }
+        .mabel-band { position: absolute; top: 4px; left: 8px; width: 28px; height: 6px; background: #ff66aa; border-radius: 3px; z-index: 4; }
+        .ally-body { width: 24px; height: 20px; border-radius: 4px; position: absolute; top: 28px; left: 10px; z-index: 2; }
+        .ally-body.mabel-body { background: #ff66cc; }
+        .mabel-star { position: absolute; top: 5px; left: 7px; color: #ffdd00; font-size: 10px; line-height: 1; }
+        .ally-arm { width: 7px; height: 16px; border-radius: 3px; position: absolute; top: 29px; z-index: 1; transform-origin: top center; }
+        .ally-arm.mabel-arm { background: #ff66cc; }
+        .ally-arm.left { left: 4px; } .ally-arm.right { right: 4px; }
+        .ally-leg { width: 8px; height: 14px; border-radius: 2px 2px 3px 3px; position: absolute; top: 46px; transform-origin: top center; }
+        .ally-leg.mabel-leg { background: #335; }
+        .ally-leg.left { left: 12px; } .ally-leg.right { right: 12px; }
+        .ally-leg::after { content: ''; position: absolute; bottom: 0; left: -1px; width: 10px; height: 4px; background: #333; border-radius: 2px; }
+        /* Stan */
+        .ally-head.stan-head { background: #ffbb88; }
+        .ally-head.stan-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 8px; left: 5px; box-shadow: 8px 0 0 #333; }
+        .stan-fez { position: absolute; top: -2px; left: 8px; width: 28px; height: 14px; background: #cc0000; border-radius: 4px 4px 0 0; z-index: 4; }
+        .stan-fez::after { content: ''; position: absolute; top: 3px; left: 10px; width: 8px; height: 8px; background: #ffdd00; border-radius: 50%; }
+        .stan-glasses { position: absolute; top: 14px; left: 7px; width: 30px; height: 8px; border: 2px solid #333; border-radius: 4px; z-index: 5; background: rgba(200,200,255,0.3); }
+        .ally-body.stan-body { background: #444; }
+        .stan-tie { position: absolute; top: 0; left: 9px; width: 6px; height: 12px; background: #cc0000; border-radius: 0 0 3px 3px; z-index: 3; }
+        .ally-arm.stan-arm { background: #444; }
+        .ally-leg.stan-leg { background: #333; }
+        /* Wendy */
+        .ally-head.wendy-head { background: #ffcc99; }
+        .ally-head.wendy-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 8px; left: 5px; box-shadow: 8px 0 0 #333; }
+        .wendy-hair { position: absolute; top: 0; left: 3px; width: 38px; height: 28px; background: #cc3300; border-radius: 10px 10px 0 0; z-index: 2; }
+        .wendy-hat { position: absolute; top: -4px; left: 8px; width: 28px; height: 10px; background: #336633; border-radius: 4px; z-index: 4; }
+        .wendy-hat::after { content: ''; position: absolute; top: -4px; left: 8px; width: 12px; height: 6px; background: #336633; border-radius: 3px 3px 0 0; }
+        .ally-body.wendy-body { background: #336633; }
+        .ally-arm.wendy-arm { background: #336633; }
+        .ally-leg.wendy-leg { background: #446; }
+        /* Ally walking */
+        .ally.walking .ally-leg.left { animation: aLegL .35s ease-in-out infinite; }
+        .ally.walking .ally-leg.right { animation: aLegR .35s ease-in-out infinite; }
+        .ally.walking .ally-arm.left { animation: aArmL .35s ease-in-out infinite; }
+        .ally.walking .ally-arm.right { animation: aArmR .35s ease-in-out infinite; }
+        .ally.walking .ally-char { animation: allyBounce .35s ease-in-out infinite; }
+        @keyframes aLegL { 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(18deg)} }
+        @keyframes aLegR { 0%,100%{transform:rotate(18deg)} 50%{transform:rotate(-18deg)} }
+        @keyframes aArmL { 0%,100%{transform:rotate(12deg)} 50%{transform:rotate(-12deg)} }
+        @keyframes aArmR { 0%,100%{transform:rotate(-12deg)} 50%{transform:rotate(12deg)} }
+        @keyframes allyBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-2px)} }
+        .ally.facing-left .ally-char { transform: scaleX(-1); }
+        .ally.facing-left.walking .ally-char { animation: allyBounceFlip .35s ease-in-out infinite; }
+        @keyframes allyBounceFlip { 0%,100%{transform:scaleX(-1) translateY(0)} 50%{transform:scaleX(-1) translateY(-2px)} }
+        .ally.attacking .ally-arm.right { animation: allyPunch .2s ease-out forwards !important; }
+        @keyframes allyPunch { 0%{transform:rotate(0)} 40%{transform:rotate(-80deg)} 100%{transform:rotate(0)} }
+        .ally.healing { animation: healPulse 1s ease-in-out infinite; pointer-events: none; }
+        @keyframes healPulse { 0%,100%{opacity:0.2; filter:hue-rotate(0deg);} 50%{opacity:0.5; filter:hue-rotate(90deg) brightness(1.5);} }
+
+        /* ===== CHARACTER HEALTH BARS ===== */
+        .char-hp-bar {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 36px; height: 5px; background: rgba(0,0,0,0.5);
+            border-radius: 3px; overflow: hidden; z-index: 30;
+        }
+        .char-hp-fill {
+            height: 100%; background: #44ff44; border-radius: 3px;
+            transition: width 0.2s;
+        }
+        .char-hp-fill.hurt { background: #ffaa00; }
+        .char-hp-fill.critical { background: #ff4444; }
+
+        /* Dust */
+        .dust-puff { position: absolute; width: 10px; height: 10px; background: rgba(200,180,140,0.6); border-radius: 50%; pointer-events: none; z-index: 19; animation: dustFade .6s ease-out forwards; }
+        @keyframes dustFade { from{opacity:.7;transform:scale(1)} to{opacity:0;transform:scale(3)} }
+
+        /* ===== MATERIALS ===== */
+        .material { position: absolute; z-index: 15; cursor: pointer; animation: matBob 2s ease-in-out infinite; }
+        @keyframes matBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+        .material-wood { width: 32px; height: 18px; background: linear-gradient(90deg,#8B6914,#a07a20,#8B6914); border: 2px solid #6B4914; border-radius: 4px; }
+        .material-metal { width: 22px; height: 22px; background: linear-gradient(135deg,#ccc,#888,#aaa); border: 2px solid #555; border-radius: 3px; }
+        .material-crystal { width: 18px; height: 28px; background: linear-gradient(180deg,#ee66ff,#aa00dd); clip-path: polygon(50% 0%,100% 35%,80% 100%,20% 100%,0% 35%); animation: matBob 2s ease-in-out infinite, crystGlow 1s ease-in-out infinite alternate; }
+        @keyframes crystGlow { from{filter:brightness(1) drop-shadow(0 0 4px #dd44ff)} to{filter:brightness(1.6) drop-shadow(0 0 12px #ff66ff)} }
+        .material-journal { width: 22px; height: 28px; background: linear-gradient(180deg,#dd2200,#991100); border: 2px solid #770000; border-radius: 3px; position: relative; }
+        .material-journal::after { content: '3'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #ffdd00; font-size: 14px; font-weight: bold; }
+
+        /* ===== ENEMIES ===== */
+        .enemy { position: absolute; z-index: 18; }
+        .enemy.hit { filter: brightness(3); transition: filter 0.1s; }
+        .eye-bat { width: 54px; height: 40px; position: relative; animation: ebHover .6s ease-in-out infinite; }
+        @keyframes ebHover { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-8px) rotate(2deg)} }
+        .eye-bat-body { width: 34px; height: 34px; background: radial-gradient(circle at 35% 35%,#ff6666,#ff3333 40%,#bb0000); border-radius: 50%; position: absolute; left: 10px; top: 3px; box-shadow: 0 0 14px rgba(255,0,0,0.6); }
+        .eye-bat-body::before { content: ''; position: absolute; top: 4px; left: 6px; width: 8px; height: 3px; border-top: 1px solid rgba(200,0,0,0.6); border-radius: 50%; box-shadow: 12px 3px 0 rgba(200,0,0,0.4), 6px 18px 0 rgba(200,0,0,0.5); }
+        .eye-bat-pupil { width: 14px; height: 14px; background: radial-gradient(circle at 40% 40%,#333 50%,#000); border-radius: 50%; position: absolute; top: 10px; left: 10px; animation: eyeLook 2s ease-in-out infinite; }
+        .eye-bat-pupil::after { content: ''; width: 4px; height: 4px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; }
+        @keyframes eyeLook { 0%,100%{transform:translate(0,0)} 25%{transform:translate(3px,-2px)} 50%{transform:translate(-2px,1px)} 75%{transform:translate(1px,2px)} }
+        .eye-bat-wing { width: 20px; height: 16px; position: absolute; top: 0; overflow: hidden; }
+        .eye-bat-wing.left { left: -4px; transform-origin: right center; animation: flapL .15s ease-in-out infinite alternate; }
+        .eye-bat-wing.right { right: -4px; transform-origin: left center; animation: flapR .15s ease-in-out infinite alternate; }
+        .wing-membrane { width: 100%; height: 100%; background: #880000; border-radius: 60% 60% 0 0; }
+        @keyframes flapL { from{transform:rotate(-35deg) scaleY(.8)} to{transform:rotate(25deg)} }
+        @keyframes flapR { from{transform:rotate(35deg) scaleY(.8)} to{transform:rotate(-25deg)} }
+        .eye-bat-tail { width: 3px; height: 12px; background: #990000; position: absolute; bottom: -8px; left: 25px; border-radius: 0 0 2px 2px; animation: tailWag .4s ease-in-out infinite alternate; transform-origin: top; }
+        @keyframes tailWag { from{transform:rotate(-10deg)} to{transform:rotate(10deg)} }
+        .gnome-char { width: 34px; height: 48px; position: relative; }
+        .gnome-hat { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 20px solid #cc0000; position: absolute; top: 0; left: 5px; z-index: 3; }
+        .gnome-hat::after { content: ''; position: absolute; top: 18px; left: -14px; width: 28px; height: 4px; background: #aa0000; border-radius: 2px; }
+        .gnome-face { width: 22px; height: 14px; background: #ffcc99; border-radius: 4px; position: absolute; top: 18px; left: 6px; z-index: 2; }
+        .gnome-face::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 4px; left: 4px; box-shadow: 10px 0 0 #333; }
+        .gnome-beard { width: 18px; height: 10px; background: #eee; position: absolute; top: 28px; left: 8px; border-radius: 0 0 10px 10px; z-index: 2; }
+        .gnome-body-part { width: 24px; height: 12px; background: #886644; position: absolute; top: 34px; left: 5px; border-radius: 4px; z-index: 1; }
+        .gnome-leg { width: 7px; height: 10px; background: #554433; position: absolute; top: 44px; border-radius: 2px 2px 3px 3px; transform-origin: top center; }
+        .gnome-leg.left { left: 8px; animation: gLegL .3s ease-in-out infinite; }
+        .gnome-leg.right { right: 8px; animation: gLegR .3s ease-in-out infinite; }
+        @keyframes gLegL { 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(18deg)} }
+        @keyframes gLegR { 0%,100%{transform:rotate(18deg)} 50%{transform:rotate(-18deg)} }
+        .gnome-arm { width: 6px; height: 14px; background: #886644; position: absolute; top: 34px; border-radius: 3px; transform-origin: top center; }
+        .gnome-arm.left { left: 0; animation: gArmL .3s ease-in-out infinite; }
+        .gnome-arm.right { right: 0; animation: gArmR .3s ease-in-out infinite; }
+        @keyframes gArmL { 0%,100%{transform:rotate(15deg)} 50%{transform:rotate(-15deg)} }
+        @keyframes gArmR { 0%,100%{transform:rotate(-15deg)} 50%{transform:rotate(15deg)} }
+
+        /* Henchmanian (triangle minion) */
+        .hench-char { width: 40px; height: 50px; position: relative; animation: henchBob .5s ease-in-out infinite alternate; }
+        .hench-body { width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-bottom: 36px solid #ffcc00; position: absolute; top: 0; left: 0; filter: drop-shadow(0 0 6px rgba(255,200,0,0.5)); }
+        .hench-eye { width: 14px; height: 14px; background: white; border-radius: 50%; position: absolute; top: 18px; left: 13px; z-index: 2; }
+        .hench-eye::after { content: ''; width: 8px; height: 8px; background: #333; border-radius: 50%; position: absolute; top: 3px; left: 3px; }
+        .hench-hat { width: 12px; height: 10px; background: #333; position: absolute; top: -6px; left: 14px; border-radius: 3px 3px 0 0; z-index: 3; }
+        .hench-hat::after { content: ''; position: absolute; bottom: -2px; left: -3px; width: 18px; height: 4px; background: #333; border-radius: 2px; }
+        .hench-arm { width: 5px; height: 14px; background: #ffcc00; position: absolute; top: 26px; border-radius: 3px; transform-origin: top center; }
+        .hench-arm.left { left: 2px; animation: gArmL .35s ease-in-out infinite; }
+        .hench-arm.right { right: 2px; animation: gArmR .35s ease-in-out infinite; }
+        .hench-leg { width: 6px; height: 10px; background: #333; position: absolute; top: 40px; border-radius: 2px; transform-origin: top center; }
+        .hench-leg.left { left: 12px; animation: gLegL .35s ease-in-out infinite; }
+        .hench-leg.right { right: 12px; animation: gLegR .35s ease-in-out infinite; }
+        @keyframes henchBob { from{transform:translateY(0)} to{transform:translateY(-3px)} }
+
+        /* Gideon-bot */
+        .gbot-char { width: 38px; height: 52px; position: relative; }
+        .gbot-head { width: 26px; height: 20px; background: linear-gradient(#ccc, #999); border-radius: 4px 4px 2px 2px; position: absolute; top: 4px; left: 6px; z-index: 2; border: 1px solid #888; }
+        .gbot-visor { width: 18px; height: 6px; background: #ff3333; position: absolute; top: 8px; left: 4px; border-radius: 2px; animation: visorBlink 2s step-end infinite; box-shadow: 0 0 6px rgba(255,0,0,0.5); }
+        @keyframes visorBlink { 0%,90%{opacity:1} 95%{opacity:0} 100%{opacity:1} }
+        .gbot-body { width: 30px; height: 18px; background: linear-gradient(#aaa, #777); border-radius: 4px; position: absolute; top: 22px; left: 4px; border: 1px solid #888; }
+        .gbot-star { position: absolute; top: 4px; left: 9px; font-size: 10px; color: #ffdd00; line-height: 1; }
+        .gbot-arm { width: 8px; height: 16px; background: linear-gradient(#bbb, #888); border-radius: 3px; position: absolute; top: 23px; transform-origin: top center; }
+        .gbot-arm.left { left: -2px; animation: gArmL .4s ease-in-out infinite; }
+        .gbot-arm.right { right: -2px; animation: gArmR .4s ease-in-out infinite; }
+        .gbot-leg { width: 8px; height: 12px; background: linear-gradient(#999, #666); border-radius: 2px 2px 4px 4px; position: absolute; top: 40px; transform-origin: top center; }
+        .gbot-leg.left { left: 8px; animation: gLegL .4s ease-in-out infinite; }
+        .gbot-leg.right { right: 8px; animation: gLegR .4s ease-in-out infinite; }
+
+        /* Death effect */
+        .enemy-death { position: absolute; pointer-events: none; z-index: 25; }
+        .death-piece { position: absolute; border-radius: 2px; animation: deathFly .5s ease-out forwards; }
+        @keyframes deathFly { from{opacity:1} to{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot))} }
+
+        /* ===== HUD ===== */
+        #hud {
+            position: fixed; top: 0; left: 0; right: 0; height: 50px;
+            background: rgba(0,0,0,0.7); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 10px; z-index: 100;
+            font-size: clamp(10px, 2.5vw, 14px);
+        }
+        .hud-section { display: flex; gap: 8px; align-items: center; }
+        .hud-item { display: flex; align-items: center; gap: 3px; }
+        .hud-icon { width: 14px; height: 14px; border-radius: 2px; display: inline-block; }
+        .icon-wood { background: #8B6914; } .icon-metal { background: linear-gradient(135deg,#aaa,#666); }
+        .icon-crystal { background: #bb33ee; } .icon-journal { background: #cc2200; }
+        #wave-display { color: #ffdd00; font-weight: bold; font-size: clamp(12px, 3vw, 16px); }
+
+        /* Mini-map / location status */
+        #location-status {
+            position: fixed; top: 54px; left: 10px; right: 10px;
+            display: flex; gap: 6px; z-index: 100;
+            font-size: 10px;
+        }
+        .loc-status-item {
+            flex: 1; background: rgba(0,0,0,0.6); border-radius: 6px;
+            padding: 3px 6px; text-align: center;
+        }
+        .loc-status-item.destroyed { opacity: 0.4; }
+        .loc-status-name { color: #ffdd00; font-weight: bold; margin-bottom: 2px; }
+        .loc-status-hp { height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; overflow: hidden; margin-bottom: 1px; }
+        .loc-status-hp-fill { height: 100%; background: #44ff44; border-radius: 3px; transition: width 0.3s, background 0.3s; }
+        .loc-status-def { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        .loc-status-def-fill { height: 100%; background: #4488ff; border-radius: 2px; transition: width 0.3s; }
+        .loc-status-item.nearest { border: 1px solid #ffdd00; }
+
+        /* ===== BUILD MENU ===== */
+        #build-menu {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            max-height: 55vh;
+            background: rgba(0,0,0,0.9); padding: 8px; z-index: 100; display: none;
+            overflow-y: auto;
+        }
+        #build-menu::-webkit-scrollbar { width: 8px; }
+        #build-menu::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        #build-menu::-webkit-scrollbar-thumb { background: #ffdd00; border-radius: 4px; }
+        #build-menu h3 { text-align: center; color: #ffdd00; margin-bottom: 6px; font-size: 14px; }
+        .build-options {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 6px; padding-bottom: 5px;
+        }
+        .build-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 8px; text-align: center; }
+        .build-card h4 { font-size: 12px; color: #ffdd00; margin-bottom: 4px; }
+        .build-card .cost { font-size: 10px; color: #aaa; margin-bottom: 4px; }
+        .build-card .effect { font-size: 10px; color: #88ff88; margin-bottom: 6px; }
+        .build-btn { padding: 5px 12px; font-size: 11px; background: #ffdd00; color: #111; border: none; border-radius: 4px; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; }
+        .build-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
+        .close-build-btn { background: #ff4444; color: white; border: none; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; margin-left: 10px; }
+
+        /* Build/pause buttons */
+        #build-toggle { position: fixed; bottom: 10px; right: 10px; width: 50px; height: 50px; background: #ffdd00; color: #111; border: none; border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer; z-index: 99; }
+        #pause-btn { position: fixed; top: 5px; right: 60px; width: 40px; height: 40px; background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; color: white; font-size: 18px; cursor: pointer; z-index: 101; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', monospace; }
+
+        /* Wave announcement */
+        #wave-announce { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: clamp(1.5rem,6vw,3rem); color: #ffdd00; text-shadow: 0 0 20px #ff6600; z-index: 200; display: none; text-align: center; pointer-events: none; }
+
+        /* Popups */
+        .collect-popup { position: absolute; color: #ffdd00; font-size: 18px; font-weight: bold; pointer-events: none; z-index: 50; text-shadow: 0 0 6px #ff8800; animation: popUp 1s ease-out forwards; }
+        @keyframes popUp { 0%{opacity:1;transform:translateY(0) scale(1.3)} 50%{opacity:1;transform:translateY(-20px) scale(1)} 100%{opacity:0;transform:translateY(-45px) scale(.8)} }
+        .collect-sparkle { position: absolute; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 50; animation: sparkle .6s ease-out forwards; }
+        @keyframes sparkle { 0%{opacity:1;transform:scale(1) translate(0,0)} 100%{opacity:0;transform:scale(.3) translate(var(--sx),var(--sy))} }
+
+        /* Damage */
+        .damage-flash { position: fixed; inset: 0; background: rgba(255,0,0,0.4); z-index: 150; pointer-events: none; animation: flashOut .4s ease-out forwards; }
+        @keyframes flashOut { 0%{opacity:1} 100%{opacity:0} }
+
+        /* Overlays */
+        #pause-overlay, #game-over {
+            position: fixed; inset: 0; display: none; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 300;
+        }
+        #pause-overlay { background: rgba(0,0,0,0.75); z-index: 300; }
+        #pause-overlay h1 { font-size: clamp(2rem,7vw,4rem); color: #ffdd00; text-shadow: 0 0 20px #ff6600; margin-bottom: 20px; }
+        #pause-overlay p { color: #aaa; margin-bottom: 30px; }
+        #game-over { background: rgba(0,0,0,0.9); z-index: 500; }
+        #game-over h1 { font-size: clamp(2rem,7vw,4rem); color: #ff3333; text-shadow: 0 0 20px #ff0000; margin-bottom: 10px; }
+        #game-over p { color: #ffdd00; font-size: clamp(1rem,3vw,1.5rem); margin-bottom: 20px; }
+
+        /* Mobile */
+        #mobile-controls { position: fixed; bottom: 70px; left: 10px; z-index: 98; display: none; }
+        .dpad { display: grid; grid-template-columns: 40px 40px 40px; grid-template-rows: 40px 40px 40px; gap: 2px; }
+        .dpad-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 5px; color: white; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .dpad-center { background: transparent; border: none; }
+
+        /* Scenery */
+        .tree { position: absolute; z-index: 8; pointer-events: none; }
+        .tree-trunk { width: 10px; height: 25px; background: #4a3010; margin: 0 auto; }
+        .tree-top { width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-bottom: 30px solid #1a4a1a; }
+        .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; z-index: 1; animation: twinkle 2s ease-in-out infinite; }
+        @keyframes twinkle { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+        /* Arrow indicators for off-screen locations */
+        .loc-arrow {
+            position: fixed; z-index: 90; pointer-events: none;
+            width: 0; height: 0;
+            border-top: 12px solid transparent; border-bottom: 12px solid transparent;
+        }
+        .loc-arrow.arrow-left { left: 5px; border-right: 16px solid #ffdd00; }
+        .loc-arrow.arrow-right { right: 5px; border-left: 16px solid #ffdd00; }
+        .loc-arrow-label {
+            position: fixed; z-index: 90; pointer-events: none;
+            color: #ffdd00; font-size: 9px; font-weight: bold;
+        }
+        /* ===== INSTRUCTIONS MODAL ===== */
+        #instructions-modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85); z-index: 2000;
+            overflow-y: auto; padding: 20px;
+        }
+        #instructions-modal .modal-content {
+            max-width: 500px; margin: 20px auto;
+            background: linear-gradient(180deg, #2d0a4e, #1a0a2e);
+            border: 2px solid #ffdd00; border-radius: 10px;
+            padding: 25px; color: #fff; font-family: 'Courier New', monospace;
+        }
+        #instructions-modal h2 { color: #ffdd00; text-align: center; margin-bottom: 15px; font-size: 1.4rem; }
+        #instructions-modal h3 { color: #ff6644; margin-top: 15px; margin-bottom: 5px; font-size: 1rem; }
+        #instructions-modal p, #instructions-modal li { font-size: 0.85rem; line-height: 1.5; color: #ddd; }
+        #instructions-modal ul { padding-left: 20px; margin-bottom: 10px; }
+        #instructions-modal li { margin-bottom: 4px; }
+        .instructions-close {
+            display: block; margin: 20px auto 0; padding: 10px 30px;
+            background: #ffdd00; color: #1a0a2e; border: none;
+            font-family: 'Courier New', monospace; font-weight: bold;
+            font-size: 1rem; cursor: pointer; border-radius: 5px;
+        }
+        .instructions-close:hover { background: #ffee44; }
+        .key-badge {
+            display: inline-block; background: #444; color: #ffdd00;
+            padding: 1px 6px; border-radius: 3px; font-size: 0.8rem;
+            border: 1px solid #666;
         }
     </style>
 </head>
 <body>
-    <h1>James's Game</h1>
+
+<div id="title-screen">
+    <div class="bill-triangle"></div>
+    <h1>23-5-9-18-4-13-1-7-5-4-4-15-14</h1>
+    <h2>Defend Gravity Falls!</h2>
+    <div id="difficulty-select" style="margin-bottom:15px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+        <button class="start-btn diff-btn" data-diff="easy" style="font-size:1rem;padding:10px 20px;background:#44dd44;color:#111;">EASY</button>
+        <button class="start-btn diff-btn" data-diff="mid" style="font-size:1rem;padding:10px 20px;background:#ffaa00;color:#111;">MEDIUM</button>
+        <button class="start-btn diff-btn" data-diff="hard" style="font-size:1rem;padding:10px 20px;background:#ff4444;color:#fff;">HARD</button>
+    </div>
+    <button class="start-btn" id="title-load-btn" style="margin-top:5px;font-size:1rem;padding:10px 25px;background:#4488ff;color:#fff;display:none;">CONTINUE SAVE</button>
+    <button class="start-btn" id="how-to-play-btn" style="margin-top:10px;font-size:0.9rem;padding:8px 20px;background:transparent;color:#ffdd00;border:2px solid #ffdd00;">HOW TO PLAY</button>
+</div>
+
+<div id="instructions-modal">
+    <div class="modal-content">
+        <h2>HOW TO PLAY</h2>
+
+        <h3>THE STORY</h3>
+        <p>Bill Cipher has opened a rift above Gravity Falls! Monsters are pouring through. You play as Dipper — defend the town's buildings and survive as many waves as you can!</p>
+
+        <h3>CONTROLS</h3>
+        <ul>
+            <li><span class="key-badge">Arrow Keys</span> or <span class="key-badge">D-pad</span> — Move Dipper around</li>
+            <li><span class="key-badge">ESC</span> — Pause the game</li>
+            <li><span class="key-badge">+ Button</span> — Open the build menu</li>
+            <li>Walk into materials to pick them up</li>
+            <li>Walk into enemies to attack them</li>
+        </ul>
+
+        <h3>GAMEPLAY</h3>
+        <p>The game has two phases that repeat:</p>
+        <ul>
+            <li><strong style="color:#44dd44;">Collect Phase</strong> — Gather materials (wood, metal, crystals, journals) scattered around the map. Use them to build defenses!</li>
+            <li><strong style="color:#ff4444;">Wave Phase</strong> — Monsters attack! Eye-bats, gnomes, and triangle minions come for the buildings. Fight them off!</li>
+        </ul>
+
+        <h3>BUILDINGS</h3>
+        <p>You're protecting three locations:</p>
+        <ul>
+            <li><strong style="color:#ffdd00;">Water Tower</strong> — on the left</li>
+            <li><strong style="color:#ffdd00;">Mystery Shack</strong> — in the middle</li>
+            <li><strong style="color:#ffdd00;">Greasy's Diner</strong> — on the right</li>
+        </ul>
+        <p>Each building has a health bar (red/green) and a defense bar (blue). If all three are destroyed, it's game over!</p>
+
+        <h3>BUILDING DEFENSES</h3>
+        <p>Press the <span class="key-badge">+</span> button to open the build menu. Stand near a building and spend your materials to:</p>
+        <ul>
+            <li>Build barricades, walls, and shields (adds defense)</li>
+            <li>Repair damaged buildings (restores health)</li>
+            <li>Recruit allies — Mabel, Grunkle Stan, and Wendy will fight alongside you!</li>
+        </ul>
+
+        <h3>DIFFICULTY</h3>
+        <ul>
+            <li><strong style="color:#44dd44;">Easy</strong> — More time to collect, tougher buildings, fewer enemies</li>
+            <li><strong style="color:#ffaa00;">Medium</strong> — The standard challenge</li>
+            <li><strong style="color:#ff4444;">Hard</strong> — Less time, weaker buildings, more and stronger enemies</li>
+        </ul>
+
+        <h3>TIPS</h3>
+        <ul>
+            <li>Don't forget to build defenses during the collect phase!</li>
+            <li>Allies are really helpful — recruit them early</li>
+            <li>You can save your game from the pause menu</li>
+            <li>Journals are rare but needed for the most powerful upgrades</li>
+        </ul>
+
+        <button class="instructions-close" id="close-instructions">GOT IT!</button>
+    </div>
+</div>
+
+<div id="game-container">
+    <div id="hud">
+        <div class="hud-section">
+            <div class="hud-item"><span class="hud-icon icon-wood"></span><span id="wood-count">0</span></div>
+            <div class="hud-item"><span class="hud-icon icon-metal"></span><span id="metal-count">0</span></div>
+            <div class="hud-item"><span class="hud-icon icon-crystal"></span><span id="crystal-count">0</span></div>
+            <div class="hud-item"><span class="hud-icon icon-journal"></span><span id="journal-count">0</span></div>
+        </div>
+        <div style="text-align:center;"><div id="diff-label" style="font-size:9px;color:#aaa;margin-bottom:2px;"></div><div id="wave-display">COLLECT PHASE</div></div>
+        <div class="hud-section">
+            <button id="pause-btn">||</button>
+        </div>
+    </div>
+    <div id="location-status"></div>
+
+    <div id="game-world">
+        <div class="sky-rift"></div>
+        <div class="ground"></div>
+    </div>
+
+    <div id="pause-overlay">
+        <h1>PAUSED</h1>
+        <p>Press ESC or tap Resume to continue</p>
+        <button class="start-btn" id="resume-btn">RESUME</button>
+        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+            <button class="start-btn" id="save-btn" style="font-size:1rem;padding:10px 25px;background:#44dd44;color:#111;">SAVE</button>
+            <button class="start-btn" id="load-btn" style="font-size:1rem;padding:10px 25px;background:#4488ff;color:#fff;">LOAD</button>
+            <button class="start-btn" id="restart-pause-btn" style="font-size:1rem;padding:10px 25px;background:#ff4444;color:#fff;">RESTART</button>
+        </div>
+        <p id="save-msg" style="margin-top:10px;font-size:0.8rem;color:#88ff88;display:none;"></p>
+    </div>
+    <div id="wave-announce"></div>
+    <button id="build-toggle">+</button>
+    <div id="build-menu">
+        <h3>BUILD DEFENSES <button id="close-build" class="close-build-btn">X</button></h3>
+        <div id="build-target-label" style="text-align:center;font-size:11px;color:#88ff88;margin-bottom:6px;"></div>
+        <div class="build-options" id="build-options"></div>
+    </div>
+    <div id="mobile-controls">
+        <div class="dpad">
+            <div></div><div class="dpad-btn" data-dir="up">^</div><div></div>
+            <div class="dpad-btn" data-dir="left">&lt;</div><div class="dpad-center"></div><div class="dpad-btn" data-dir="right">&gt;</div>
+            <div></div><div class="dpad-btn" data-dir="down">v</div><div></div>
+        </div>
+    </div>
+    <div id="game-over">
+        <h1>BILL WINS...</h1>
+        <p>Gravity Falls has fallen!</p>
+        <p id="final-wave">You survived 0 waves</p>
+        <button class="start-btn" id="restart-btn">TRY AGAIN</button>
+    </div>
+</div>
+
+<script>
+var WORLD_W = 1800;
+var SCREEN_W = window.innerWidth;
+var SCREEN_H = window.innerHeight;
+
+// ===== LOCATIONS =====
+var locations = [
+    { id: 'tower', name: 'Water Tower', x: 250, health: 80, maxHealth: 80, defense: 5, maxDefense: 100, alive: true },
+    { id: 'shack', name: 'Mystery Shack', x: 850, health: 120, maxHealth: 120, defense: 10, maxDefense: 100, alive: true },
+    { id: 'diner', name: "Greasy's Diner", x: 1450, health: 80, maxHealth: 80, defense: 5, maxDefense: 100, alive: true },
+];
+
+// ===== UPGRADES =====
+var upgrades = [
+    { name: 'Wood Barricade', cost: { wood: 4 }, defenseBoost: 8, desc: '+8 Defense' },
+    { name: 'Metal Walls', cost: { wood: 3, metal: 3 }, defenseBoost: 15, desc: '+15 Defense' },
+    { name: 'Crystal Shield', cost: { crystal: 3, metal: 2 }, defenseBoost: 20, desc: '+20 Defense' },
+    { name: 'Magic Barrier', cost: { crystal: 4, journal: 1 }, defenseBoost: 30, desc: '+30 Defense' },
+    { name: 'Repair', cost: { wood: 3, metal: 2 }, defenseBoost: 0, heal: 30, desc: '+30 Health' },
+    { name: 'Zodiac Shield', cost: { journal: 2, crystal: 5, metal: 5 }, defenseBoost: 50, desc: '+50 Defense!' },
+];
+
+// ===== ALLIES =====
+var allyTypes = [
+    { id: 'mabel', name: 'Mabel', cost: { wood: 3, crystal: 2 }, desc: 'Fast fighter, loves sparkles', speed: 3.5, range: 45, dmg: 1 },
+    { id: 'stan', name: 'Grunkle Stan', cost: { metal: 4, wood: 3 }, desc: 'Tough brawler, hits hard', speed: 2, range: 50, dmg: 2 },
+    { id: 'wendy', name: 'Wendy', cost: { wood: 2, metal: 2, crystal: 1 }, desc: 'Fast and strong', speed: 4, range: 45, dmg: 1 },
+];
+
+// ===== STATE =====
+var difficultySettings = {
+    easy:   { collectDuration: 25, playerMaxHp: 8, locHealthMult: 1.5, enemyCountMult: 0.6, enemyHpMult: 0.7, enemySpeedMult: 0.8, spawnDelay: 800, materialBonus: 5 },
+    mid:    { collectDuration: 18, playerMaxHp: 5, locHealthMult: 1,   enemyCountMult: 1,   enemyHpMult: 1,   enemySpeedMult: 1,   spawnDelay: 600, materialBonus: 0 },
+    hard:   { collectDuration: 12, playerMaxHp: 3, locHealthMult: 0.7, enemyCountMult: 1.5, enemyHpMult: 1.3, enemySpeedMult: 1.2, spawnDelay: 400, materialBonus: -3 },
+};
+var currentDifficulty = 'mid';
+
+var state = {
+    wood: 0, metal: 0, crystal: 0, journal: 0,
+    wave: 0, phase: 'collect',
+    collectTimer: 0, collectDuration: 18,
+    playerX: 850, playerY: 0, playerSpeed: 5,
+    playerHp: 5, playerMaxHp: 5, playerHitCooldown: 0,
+    cameraX: 0,
+    running: false, paused: false,
+    enemies: [], materials: [], allies: [],
+    gameLoop: null, spawnTimer: null, waveTimer: null,
+    spawningDone: false,
+};
+
+// ===== DOM =====
+var dom = {};
+function cacheDom() {
+    dom.titleScreen = document.getElementById('title-screen');
+    dom.gameContainer = document.getElementById('game-container');
+    dom.gameWorld = document.getElementById('game-world');
+    dom.waveDisplay = document.getElementById('wave-display');
+    dom.buildMenu = document.getElementById('build-menu');
+    dom.buildOptions = document.getElementById('build-options');
+    dom.buildToggle = document.getElementById('build-toggle');
+    dom.buildTargetLabel = document.getElementById('build-target-label');
+    dom.waveAnnounce = document.getElementById('wave-announce');
+    dom.gameOver = document.getElementById('game-over');
+    dom.finalWave = document.getElementById('final-wave');
+    dom.pauseOverlay = document.getElementById('pause-overlay');
+    dom.mobileControls = document.getElementById('mobile-controls');
+    dom.locStatus = document.getElementById('location-status');
+    dom.woodCount = document.getElementById('wood-count');
+    dom.metalCount = document.getElementById('metal-count');
+    dom.crystalCount = document.getElementById('crystal-count');
+    dom.journalCount = document.getElementById('journal-count');
+}
+cacheDom();
+
+// ===== EVENTS =====
+document.querySelectorAll('.diff-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        currentDifficulty = btn.dataset.diff;
+        startGame();
+    });
+});
+document.getElementById('restart-btn').addEventListener('click', restartGame);
+document.getElementById('resume-btn').addEventListener('click', togglePause);
+document.getElementById('pause-btn').addEventListener('click', togglePause);
+dom.buildToggle.addEventListener('click', toggleBuildMenu);
+document.getElementById('save-btn').addEventListener('click', saveGame);
+document.getElementById('load-btn').addEventListener('click', loadGame);
+document.getElementById('restart-pause-btn').addEventListener('click', function() {
+    dom.pauseOverlay.style.display = 'none';
+    state.paused = false;
+    restartGame();
+});
+var titleLoadBtn = document.getElementById('title-load-btn');
+if (localStorage.getItem('weirdmageddon_save')) titleLoadBtn.style.display = 'block';
+titleLoadBtn.addEventListener('click', function() {
+    dom.titleScreen.style.display = 'none';
+    dom.gameContainer.style.display = 'block';
+    SCREEN_W = window.innerWidth; SCREEN_H = window.innerHeight;
+    if ('ontouchstart' in window) dom.mobileControls.style.display = 'block';
+    // Need to do a basic init first so DOM refs work
+    state.playerY = SCREEN_H * 0.55;
+    loadGame();
+});
+document.getElementById('close-build').addEventListener('click', function() { dom.buildMenu.style.display = 'none'; });
+document.getElementById('how-to-play-btn').addEventListener('click', function() { document.getElementById('instructions-modal').style.display = 'block'; });
+document.getElementById('close-instructions').addEventListener('click', function() { document.getElementById('instructions-modal').style.display = 'none'; });
+
+var keys = {};
+document.addEventListener('keydown', function(e) { keys[e.key] = true; if (e.key === 'Escape') togglePause(); });
+document.addEventListener('keyup', function(e) { keys[e.key] = false; });
+document.querySelectorAll('.dpad-btn').forEach(function(btn) {
+    var dir = btn.dataset.dir;
+    btn.addEventListener('touchstart', function(e) { e.preventDefault(); keys[dir] = true; });
+    btn.addEventListener('touchend', function(e) { e.preventDefault(); keys[dir] = false; });
+    btn.addEventListener('mousedown', function() { keys[dir] = true; });
+    btn.addEventListener('mouseup', function() { keys[dir] = false; });
+});
+
+// ===== HELPERS =====
+function el(tag, cls, parent) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (parent) parent.appendChild(e);
+    return e;
+}
+
+// ===== PAUSE =====
+function togglePause() {
+    if (!state.running && !state.paused) return;
+    state.paused = !state.paused;
+    if (state.paused) { state.running = false; dom.pauseOverlay.style.display = 'flex'; }
+    else { state.running = true; dom.pauseOverlay.style.display = 'none'; gameLoop(); }
+}
+
+// ===== SAVE / LOAD =====
+function saveGame() {
+    var saveData = {
+        wood: state.wood, metal: state.metal, crystal: state.crystal, journal: state.journal,
+        wave: state.wave, phase: state.phase,
+        difficulty: currentDifficulty,
+        playerX: state.playerX, playerY: state.playerY,
+        locations: locations.map(function(l){ return { id: l.id, health: l.health, defense: l.defense, alive: l.alive }; }),
+        allies: state.allies.map(function(a){ return { type: a.type, locId: a.assignedLoc.id, x: a.x, y: a.y }; }),
+    };
+    try {
+        localStorage.setItem('weirdmageddon_save', JSON.stringify(saveData));
+        var msg = document.getElementById('save-msg');
+        msg.textContent = 'Game saved!';
+        msg.style.display = 'block';
+        msg.style.color = '#88ff88';
+        setTimeout(function(){ msg.style.display = 'none'; }, 2000);
+    } catch(e) {
+        var msg = document.getElementById('save-msg');
+        msg.textContent = 'Save failed!';
+        msg.style.display = 'block';
+        msg.style.color = '#ff4444';
+    }
+}
+
+function loadGame() {
+    try {
+        var raw = localStorage.getItem('weirdmageddon_save');
+        if (!raw) {
+            var msg = document.getElementById('save-msg');
+            msg.textContent = 'No save found!';
+            msg.style.display = 'block';
+            msg.style.color = '#ffaa00';
+            setTimeout(function(){ msg.style.display = 'none'; }, 2000);
+            return;
+        }
+        var data = JSON.parse(raw);
+
+        // Reset everything first
+        state.enemies = []; state.materials = []; state.allies = [];
+        if (state.waveTimer) clearInterval(state.waveTimer);
+        if (state.spawnTimer) clearInterval(state.spawnTimer);
+        dom.gameWorld.querySelectorAll('.location, #player, .ally, .material, .enemy, .tree, .star, .collect-popup, .dust-puff, .enemy-death').forEach(function(e) { e.remove(); });
+
+        // Restore state
+        if (data.difficulty) currentDifficulty = data.difficulty;
+        var diff = difficultySettings[currentDifficulty];
+        state.wood = data.wood; state.metal = data.metal;
+        state.crystal = data.crystal; state.journal = data.journal;
+        state.wave = data.wave;
+        state.collectDuration = diff.collectDuration;
+        state.playerMaxHp = diff.playerMaxHp;
+        state.playerHp = diff.playerMaxHp;
+        state.playerX = data.playerX; state.playerY = data.playerY;
+        state.running = true; state.paused = false;
+        state.spawningDone = false;
+
+        // Restore locations
+        data.locations.forEach(function(saved) {
+            var loc = locations.find(function(l){return l.id === saved.id;});
+            if (loc) { loc.health = saved.health; loc.defense = saved.defense; loc.alive = saved.alive; }
+        });
+
+        // Rebuild world
+        locations.forEach(buildLocationDOM);
+        locations.forEach(function(loc) {
+            if (!loc.alive && loc.el) loc.el.style.opacity = '0.3';
+        });
+        buildLocationStatus();
+        buildPlayerDOM();
+        addScenery();
+
+        // Restore allies
+        if (data.allies) {
+            data.allies.forEach(function(saved) {
+                var loc = locations.find(function(l){return l.id === saved.locId;});
+                if (loc) spawnAlly(saved.type, loc);
+            });
+        }
+
+        spawnMaterials(8);
+        updateHUD();
+        updateCamera();
+        dom.pauseOverlay.style.display = 'none';
+        dom.gameOver.style.display = 'none';
+        dom.buildMenu.style.display = 'none';
+
+        startCollectPhase();
+        if (state.gameLoop) cancelAnimationFrame(state.gameLoop);
+        gameLoop();
+
+        announce('Game loaded! Wave ' + state.wave);
+    } catch(e) {
+        var msg = document.getElementById('save-msg');
+        msg.textContent = 'Load failed!';
+        msg.style.display = 'block';
+        msg.style.color = '#ff4444';
+    }
+}
+
+// ===== BUILD LOCATIONS =====
+function buildLocationDOM(loc) {
+    var wrap = el('div', 'location', dom.gameWorld);
+    wrap.id = 'loc-' + loc.id;
+    wrap.style.left = loc.x + 'px';
+
+    var label = el('div', 'location-label', wrap);
+    label.textContent = loc.name;
+    var hpBar = el('div', 'location-healthbar', wrap);
+    var hpFill = el('div', 'location-healthfill', hpBar);
+    hpFill.id = 'hp-' + loc.id;
+    var defBar = el('div', 'location-defensebar', wrap);
+    var defFill = el('div', 'location-defensefill', defBar);
+    defFill.id = 'def-' + loc.id;
+
+    if (loc.id === 'shack') {
+        wrap.style.bottom = '20%';
+        var roof = el('div', 'shack-roof', wrap);
+        var body = el('div', 'shack-body', wrap);
+        el('div', 'shack-window l', body);
+        el('div', 'shack-window r', body);
+        el('div', 'shack-door', body);
+    } else if (loc.id === 'tower') {
+        wrap.style.bottom = '20%';
+        var tank = el('div', 'tower-tank', wrap);
+        var legs = el('div', 'tower-legs', wrap);
+        el('div', 'tower-leg', legs);
+        el('div', 'tower-leg', legs);
+        el('div', 'tower-leg', legs);
+    } else if (loc.id === 'diner') {
+        wrap.style.bottom = '20%';
+        var sign = el('div', 'diner-sign', wrap);
+        sign.textContent = "GREASY'S DINER";
+        var roof2 = el('div', 'diner-roof', wrap);
+        var body2 = el('div', 'diner-body', wrap);
+        el('div', 'diner-window l', body2);
+        el('div', 'diner-window m', body2);
+        el('div', 'diner-window r', body2);
+        el('div', 'diner-door', body2);
+    }
+    loc.el = wrap;
+}
+
+function buildLocationStatus() {
+    dom.locStatus.textContent = '';
+    locations.forEach(function(loc) {
+        var item = el('div', 'loc-status-item', dom.locStatus);
+        item.id = 'locstat-' + loc.id;
+        var name = el('div', 'loc-status-name', item);
+        name.textContent = loc.name;
+        var hp = el('div', 'loc-status-hp', item);
+        var hpf = el('div', 'loc-status-hp-fill', hp);
+        hpf.id = 'locstat-hp-' + loc.id;
+        var def = el('div', 'loc-status-def', item);
+        var deff = el('div', 'loc-status-def-fill', def);
+        deff.id = 'locstat-def-' + loc.id;
+    });
+}
+
+// Build player DOM
+function buildPlayerDOM() {
+    var p = el('div', '', dom.gameWorld);
+    p.id = 'player';
+    // Health bar
+    var hpBar = el('div', 'char-hp-bar', p);
+    hpBar.style.top = '-12px';
+    hpBar.style.width = '40px';
+    var hpFill = el('div', 'char-hp-fill', hpBar);
+    hpFill.style.width = '100%';
+    // Character
+    var ch = el('div', 'player-char', p);
+    var hat = el('div', 'player-hat', ch);
+    el('div', 'player-hat-top', hat);
+    el('div', 'player-head', ch);
+    el('div', 'player-arm left', ch);
+    el('div', 'player-arm right', ch);
+    var body = el('div', 'player-body', ch);
+    el('div', 'player-vest', body);
+    el('div', 'player-leg left', ch);
+    el('div', 'player-leg right', ch);
+    dom.player = p;
+    state.playerHp = state.playerMaxHp;
+    state.playerHitCooldown = 0;
+}
+
+// ===== INIT =====
+function startGame() {
+    dom.titleScreen.style.display = 'none';
+    dom.gameContainer.style.display = 'block';
+    SCREEN_W = window.innerWidth;
+    SCREEN_H = window.innerHeight;
+    if ('ontouchstart' in window) dom.mobileControls.style.display = 'block';
+    initGame();
+}
+
+function initGame() {
+    var diff = difficultySettings[currentDifficulty];
+    state.wood = 0; state.metal = 0; state.crystal = 0; state.journal = 0;
+    state.wave = 0; state.phase = 'collect';
+    state.enemies = []; state.materials = []; state.allies = [];
+    state.running = true; state.paused = false; state.collectTimer = 0;
+    state.spawningDone = false;
+    state.collectDuration = diff.collectDuration;
+    state.playerMaxHp = diff.playerMaxHp;
+    state.playerHp = diff.playerMaxHp;
+    state.playerX = 850; state.playerY = SCREEN_H * 0.55;
+    dom.pauseOverlay.style.display = 'none';
+    dom.gameOver.style.display = 'none';
+    dom.buildMenu.style.display = 'none';
+
+    // Reset locations with difficulty scaling
+    var lm = diff.locHealthMult;
+    locations[0].health = Math.round(80 * lm); locations[0].maxHealth = Math.round(80 * lm); locations[0].defense = 5; locations[0].alive = true;
+    locations[1].health = Math.round(120 * lm); locations[1].maxHealth = Math.round(120 * lm); locations[1].defense = 10; locations[1].alive = true;
+    locations[2].health = Math.round(80 * lm); locations[2].maxHealth = Math.round(80 * lm); locations[2].defense = 5; locations[2].alive = true;
+
+    // Show difficulty
+    var diffLabel = document.getElementById('diff-label');
+    var diffNames = { easy: 'EASY MODE', mid: 'MEDIUM MODE', hard: 'HARD MODE' };
+    var diffColors = { easy: '#44dd44', mid: '#ffaa00', hard: '#ff4444' };
+    diffLabel.textContent = diffNames[currentDifficulty];
+    diffLabel.style.color = diffColors[currentDifficulty];
+
+    // Clear world
+    dom.gameWorld.querySelectorAll('.location, #player, .ally, .material, .enemy, .tree, .star, .collect-popup, .dust-puff, .enemy-death').forEach(function(e) { e.remove(); });
+
+    // Build
+    locations.forEach(buildLocationDOM);
+    buildLocationStatus();
+    buildPlayerDOM();
+    addScenery();
+    spawnMaterials(15);
+    updateHUD();
+    updateCamera();
+    startCollectPhase();
+
+    if (state.gameLoop) cancelAnimationFrame(state.gameLoop);
+    gameLoop();
+}
+
+function addScenery() {
+    for (var i = 0; i < 20; i++) {
+        var tree = el('div', 'tree', dom.gameWorld);
+        el('div', 'tree-top', tree);
+        el('div', 'tree-trunk', tree);
+        tree.style.left = (Math.random() * (WORLD_W - 40)) + 'px';
+        tree.style.bottom = (SCREEN_H * 0.2 + Math.random() * SCREEN_H * 0.1) + 'px';
+    }
+    for (var i = 0; i < 60; i++) {
+        var star = el('div', 'star', dom.gameWorld);
+        star.style.left = (Math.random() * WORLD_W) + 'px';
+        star.style.top = Math.random() * 40 + '%';
+        star.style.animationDelay = Math.random() * 2 + 's';
+    }
+}
+
+// ===== CAMERA =====
+function updateCamera() {
+    var halfScreen = SCREEN_W / 2;
+    state.cameraX = Math.max(0, Math.min(WORLD_W - SCREEN_W, state.playerX - halfScreen));
+    dom.gameWorld.style.transform = 'translateX(' + (-state.cameraX) + 'px)';
+
+    // Update player visual position
+    dom.player.style.left = state.playerX + 'px';
+    dom.player.style.top = state.playerY + 'px';
+}
+
+// ===== NEAREST LOCATION =====
+function getNearestAliveLocation(x) {
+    var best = null; var bestDist = Infinity;
+    locations.forEach(function(loc) {
+        if (!loc.alive) return;
+        var d = Math.abs(loc.x - x);
+        if (d < bestDist) { bestDist = d; best = loc; }
+    });
+    return best;
+}
+
+// ===== PHASES =====
+function startCollectPhase() {
+    state.phase = 'collect';
+    state.collectTimer = state.collectDuration;
+    dom.waveDisplay.textContent = 'COLLECT!';
+    dom.waveDisplay.style.color = '#88ff88';
+    spawnMaterials(Math.max(5, 8 + state.wave * 2 + difficultySettings[currentDifficulty].materialBonus));
+    if (state.waveTimer) clearInterval(state.waveTimer);
+    state.waveTimer = setInterval(function() {
+        state.collectTimer--;
+        if (state.collectTimer <= 0) { clearInterval(state.waveTimer); startWave(); }
+        else { dom.waveDisplay.textContent = 'COLLECT! ' + state.collectTimer + 's'; }
+    }, 1000);
+}
+
+function startWave() {
+    state.wave++;
+    state.phase = 'defend';
+    state.spawningDone = false;
+
+    // Pick one alive location for this wave to attack
+    var aliveLocs = locations.filter(function(l){return l.alive;});
+    if (aliveLocs.length === 0) return;
+    state.waveTarget = aliveLocs[Math.floor(Math.random() * aliveLocs.length)];
+
+    dom.waveAnnounce.textContent = 'WAVE ' + state.wave + ' - ' + state.waveTarget.name + ' under attack!';
+    dom.waveAnnounce.style.display = 'block';
+    setTimeout(function() { dom.waveAnnounce.style.display = 'none'; }, 2500);
+    dom.waveDisplay.textContent = 'WAVE ' + state.wave + ' - ' + state.waveTarget.name;
+    dom.waveDisplay.style.color = '#ff4444';
+    var diff = difficultySettings[currentDifficulty];
+    var enemyCount = Math.round((4 + state.wave * 3) * diff.enemyCountMult);
+    var spawned = 0;
+    if (state.spawnTimer) clearInterval(state.spawnTimer);
+    state.spawnTimer = setInterval(function() {
+        if (spawned >= enemyCount || !state.running) {
+            clearInterval(state.spawnTimer); state.spawnTimer = null; state.spawningDone = true; return;
+        }
+        spawnEnemy(); spawned++;
+    }, diff.spawnDelay);
+}
+
+// ===== MATERIALS =====
+function spawnMaterials(count) {
+    var types = ['wood','wood','wood','metal','metal','crystal','journal'];
+    for (var i = 0; i < count; i++) {
+        var type = types[Math.floor(Math.random() * types.length)];
+        var mat = el('div', 'material material-' + type, dom.gameWorld);
+        mat.dataset.type = type;
+        var x = 50 + Math.random() * (WORLD_W - 100);
+        var y = SCREEN_H * 0.55 + Math.random() * (SCREEN_H * 0.35);
+        mat.style.left = x + 'px';
+        mat.style.top = y + 'px';
+        mat.style.animationDelay = Math.random() * 2 + 's';
+        mat.addEventListener('click', makeCollector(mat));
+        mat.addEventListener('touchstart', makeTouchCollector(mat));
+        state.materials.push(mat);
+    }
+}
+function makeCollector(m) { return function() { collectMaterial(m); }; }
+function makeTouchCollector(m) { return function(e) { e.preventDefault(); collectMaterial(m); }; }
+
+function collectMaterial(mat) {
+    if (!mat.parentNode) return;
+    var type = mat.dataset.type;
+    state[type]++;
+    var popup = el('div', 'collect-popup', dom.gameWorld);
+    popup.textContent = '+1 ' + type;
+    popup.style.left = mat.style.left; popup.style.top = mat.style.top;
+    setTimeout(function() { popup.remove(); }, 1000);
+    var colors = { wood:'#ffaa33', metal:'#ccddff', crystal:'#ee55ff', journal:'#ff4422' };
+    var c = colors[type] || '#ffdd00';
+    for (var s = 0; s < 6; s++) {
+        var sp = el('div', 'collect-sparkle', dom.gameWorld);
+        sp.style.left = mat.style.left; sp.style.top = mat.style.top;
+        sp.style.background = c; sp.style.boxShadow = '0 0 6px ' + c;
+        sp.style.setProperty('--sx', (Math.random()*60-30)+'px');
+        sp.style.setProperty('--sy', (Math.random()*60-30)+'px');
+        (function(s2){setTimeout(function(){s2.remove();},700);})(sp);
+    }
+    mat.remove();
+    state.materials = state.materials.filter(function(m){return m!==mat;});
+    updateHUD();
+}
+
+// ===== ENEMIES =====
+function spawnEnemy() {
+    var enemy = el('div', 'enemy', dom.gameWorld);
+
+    // Pick enemy type based on wave and randomness
+    // Early waves: gnomes and eye-bats. Henchmanians appear wave 3+. Gideon-bots appear wave 5+.
+    var roll = Math.random();
+    var enemyType;
+    if (state.wave >= 5 && roll < 0.2) {
+        enemyType = 'gbot';
+    } else if (state.wave >= 3 && roll < 0.4) {
+        enemyType = 'hench';
+    } else if (roll < 0.7) {
+        enemyType = 'eyebat';
+    } else {
+        enemyType = 'gnome';
+    }
+
+    var isFlyer = (enemyType === 'eyebat');
+
+    if (enemyType === 'eyebat') {
+        var bat = el('div', 'eye-bat', enemy);
+        var wl = el('div', 'eye-bat-wing left', bat); el('div', 'wing-membrane', wl);
+        var body = el('div', 'eye-bat-body', bat); el('div', 'eye-bat-pupil', body);
+        var wr = el('div', 'eye-bat-wing right', bat); el('div', 'wing-membrane', wr);
+        el('div', 'eye-bat-tail', bat);
+    } else if (enemyType === 'gnome') {
+        var gn = el('div', 'gnome-char', enemy);
+        el('div', 'gnome-hat', gn); el('div', 'gnome-face', gn); el('div', 'gnome-beard', gn);
+        el('div', 'gnome-arm left', gn); el('div', 'gnome-arm right', gn);
+        el('div', 'gnome-body-part', gn);
+        el('div', 'gnome-leg left', gn); el('div', 'gnome-leg right', gn);
+    } else if (enemyType === 'hench') {
+        var hc = el('div', 'hench-char', enemy);
+        el('div', 'hench-hat', hc);
+        el('div', 'hench-body', hc);
+        el('div', 'hench-eye', hc);
+        el('div', 'hench-arm left', hc); el('div', 'hench-arm right', hc);
+        el('div', 'hench-leg left', hc); el('div', 'hench-leg right', hc);
+    } else if (enemyType === 'gbot') {
+        var gb = el('div', 'gbot-char', enemy);
+        var head = el('div', 'gbot-head', gb); el('div', 'gbot-visor', head);
+        var gbody = el('div', 'gbot-body', gb);
+        var star = el('div', 'gbot-star', gbody); star.textContent = '\u2605';
+        el('div', 'gbot-arm left', gb); el('div', 'gbot-arm right', gb);
+        el('div', 'gbot-leg left', gb); el('div', 'gbot-leg right', gb);
+    }
+    enemy.dataset.type = enemyType;
+
+    // All enemies in a wave target the same location
+    var target = state.waveTarget;
+    if (!target || !target.alive) {
+        var aliveLocs = locations.filter(function(l){return l.alive;});
+        if (aliveLocs.length === 0) return;
+        target = aliveLocs[Math.floor(Math.random() * aliveLocs.length)];
+        state.waveTarget = target;
+    }
+    enemy.dataset.target = target.id;
+
+    // Spawn from left or right edge of world
+    var side = Math.random() > 0.5 ? 'left' : 'right';
+    var x = side === 'left' ? -40 : WORLD_W + 10;
+    var y = isFlyer
+        ? SCREEN_H * 0.25 + Math.random() * SCREEN_H * 0.25
+        : SCREEN_H * 0.6 + Math.random() * SCREEN_H * 0.2;
+
+    enemy.style.left = x + 'px';
+    enemy.style.top = y + 'px';
+    // HP by type, scaled by difficulty
+    var diff = difficultySettings[currentDifficulty];
+    var maxHp;
+    if (enemyType === 'eyebat') maxHp = 2 + Math.floor(state.wave / 3);
+    else if (enemyType === 'gnome') maxHp = 3 + Math.floor(state.wave / 2);
+    else if (enemyType === 'hench') maxHp = 3 + Math.floor(state.wave / 2);
+    else maxHp = 5 + Math.floor(state.wave / 2); // gbot - tanky
+    maxHp = Math.max(1, Math.round(maxHp * diff.enemyHpMult));
+    enemy.dataset.hp = maxHp;
+    enemy.dataset.maxhp = maxHp;
+    var spd;
+    if (enemyType === 'eyebat') spd = 1.5 + state.wave * 0.2;
+    else if (enemyType === 'hench') spd = 1.3 + state.wave * 0.15;
+    else if (enemyType === 'gbot') spd = 0.8 + state.wave * 0.1;
+    else spd = 1 + state.wave * 0.12;
+    enemy.dataset.speed = spd * diff.enemySpeedMult;
+
+    // Health bar
+    var hpBar = el('div', 'char-hp-bar', enemy);
+    var hpFill = el('div', 'char-hp-fill', hpBar);
+    hpFill.style.width = '100%';
+
+    state.enemies.push(enemy);
+}
+
+function moveEnemies() {
+    var toRemove = [];
+    state.enemies.forEach(function(enemy) {
+        if (!enemy.parentNode) { toRemove.push(enemy); return; }
+
+        var targetLoc = locations.find(function(l){return l.id === enemy.dataset.target;});
+        if (!targetLoc || !targetLoc.alive) {
+            // Retarget
+            var alive = locations.filter(function(l){return l.alive;});
+            if (alive.length === 0) return;
+            targetLoc = alive[Math.floor(Math.random() * alive.length)];
+            enemy.dataset.target = targetLoc.id;
+        }
+
+        var ex = parseFloat(enemy.style.left);
+        var ey = parseFloat(enemy.style.top);
+        var speed = parseFloat(enemy.dataset.speed);
+        var tx = targetLoc.x + 50;
+        var ty = SCREEN_H * 0.7;
+        var dx = tx - ex; var dy = ty - ey;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+
+        // Hit location
+        if (dist < 50) {
+            var dmg = Math.max(1, 5 - Math.floor(targetLoc.defense / 20));
+            targetLoc.health -= dmg;
+            var flash = el('div', 'damage-flash', document.body);
+            setTimeout(function(){flash.remove();}, 400);
+            if (targetLoc.el) {
+                targetLoc.el.classList.remove('shaking');
+                void targetLoc.el.offsetWidth;
+                targetLoc.el.classList.add('shaking');
+                setTimeout(function(){targetLoc.el.classList.remove('shaking');}, 300);
+            }
+            enemy.remove(); toRemove.push(enemy);
+            if (targetLoc.health <= 0) {
+                targetLoc.health = 0; targetLoc.alive = false;
+                if (targetLoc.el) targetLoc.el.style.opacity = '0.3';
+                announce(targetLoc.name + ' DESTROYED!');
+                if (locations.every(function(l){return !l.alive;})) gameOverScreen();
+            }
+            updateHUD(); return;
+        }
+
+        // Player collision
+        var px = state.playerX; var py = state.playerY;
+        var pd = Math.sqrt((px-ex)*(px-ex)+(py-ey)*(py-ey));
+        if (pd < 40) {
+            dom.player.classList.add('attacking');
+            setTimeout(function(){dom.player.classList.remove('attacking');}, 200);
+            var hp = parseInt(enemy.dataset.hp) - 1;
+            if (hp <= 0) {
+                spawnDeathEffect(ex, ey, enemy.dataset.type);
+                enemy.remove(); toRemove.push(enemy);
+                if (Math.random() < 0.4) {
+                    var types = ['wood','metal','crystal'];
+                    var t = types[Math.floor(Math.random()*types.length)];
+                    state[t]++;
+                    var popup = el('div','collect-popup',dom.gameWorld);
+                    popup.textContent = '+1 ' + t + '!';
+                    popup.style.left = ex+'px'; popup.style.top = ey+'px';
+                    setTimeout(function(){popup.remove();}, 800);
+                    updateHUD();
+                }
+                return;
+            }
+            enemy.dataset.hp = hp;
+            updateCharHpBar(enemy, hp, parseInt(enemy.dataset.maxhp));
+            enemy.classList.add('hit');
+            setTimeout(function(){enemy.classList.remove('hit');}, 150);
+            enemy.style.left = (ex - dx/dist*30)+'px';
+            enemy.style.top = (ey - dy/dist*30)+'px';
+            return;
+        }
+
+        // Enemy hurts player on contact (if not attacking)
+        if (pd < 50 && state.playerHitCooldown <= 0) {
+            state.playerHp -= 1;
+            state.playerHitCooldown = 30;
+            updateCharHpBar(dom.player, state.playerHp, state.playerMaxHp);
+            var flash = el('div', 'damage-flash', document.body);
+            setTimeout(function(){flash.remove();}, 300);
+            if (state.playerHp <= 0) {
+                // Player knocked out - respawn after delay
+                state.playerHp = state.playerMaxHp;
+                state.playerX = 850; state.playerY = SCREEN_H * 0.55;
+                updateCharHpBar(dom.player, state.playerHp, state.playerMaxHp);
+                announce('Dipper knocked out! Respawning...');
+            }
+        }
+
+        enemy.style.left = (ex + dx/dist*speed)+'px';
+        enemy.style.top = (ey + dy/dist*speed)+'px';
+    });
+    state.enemies = state.enemies.filter(function(e){return !toRemove.includes(e);});
+    if (state.phase === 'defend' && state.spawningDone && state.enemies.length === 0) {
+        startCollectPhase();
+    }
+}
+
+// ===== PLAYER =====
+function movePlayer() {
+    if (state.playerHitCooldown > 0) state.playerHitCooldown--;
+    var speed = state.playerSpeed;
+    var moving = false;
+    if (keys['ArrowUp']||keys['w']||keys['up']) { state.playerY -= speed; moving = true; }
+    if (keys['ArrowDown']||keys['s']||keys['down']) { state.playerY += speed; moving = true; }
+    if (keys['ArrowLeft']||keys['a']||keys['left']) { state.playerX -= speed; moving = true; dom.player.classList.add('facing-left'); dom.player.classList.remove('facing-right'); }
+    if (keys['ArrowRight']||keys['d']||keys['right']) { state.playerX += speed; moving = true; dom.player.classList.add('facing-right'); dom.player.classList.remove('facing-left'); }
+
+    if (moving) {
+        dom.player.classList.add('walking');
+        if (Math.random() < 0.3) {
+            var dust = el('div', 'dust-puff', dom.gameWorld);
+            dust.style.left = (state.playerX+10+Math.random()*10)+'px';
+            dust.style.top = (state.playerY+55)+'px';
+            setTimeout(function(){dust.remove();},500);
+        }
+    } else {
+        dom.player.classList.remove('walking');
+        dom.player.classList.remove('facing-left');
+    }
+
+    state.playerX = Math.max(25, Math.min(WORLD_W - 60, state.playerX));
+    state.playerY = Math.max(80, Math.min(SCREEN_H - 50, state.playerY));
+
+    updateCamera();
+
+    // Auto-collect
+    state.materials.slice().forEach(function(mat) {
+        if (!mat.parentNode) return;
+        var mx = parseFloat(mat.style.left); var my = parseFloat(mat.style.top);
+        if (Math.sqrt((state.playerX-mx)*(state.playerX-mx)+(state.playerY-my)*(state.playerY-my)) < 40) {
+            collectMaterial(mat);
+        }
+    });
+}
+
+// ===== BUILD =====
+function toggleBuildMenu() {
+    if (dom.buildMenu.style.display === 'block') { dom.buildMenu.style.display = 'none'; }
+    else { dom.buildMenu.style.display = 'block'; renderBuildOptions(); }
+}
+
+function renderBuildOptions() {
+    while (dom.buildOptions.firstChild) dom.buildOptions.removeChild(dom.buildOptions.firstChild);
+    var nearest = getNearestAliveLocation(state.playerX);
+    if (!nearest) { dom.buildTargetLabel.textContent = 'No locations alive!'; return; }
+    dom.buildTargetLabel.textContent = 'Building at: ' + nearest.name;
+
+    upgrades.forEach(function(up, i) {
+        var card = el('div', 'build-card', dom.buildOptions);
+        var title = el('h4', null, card); title.textContent = up.name;
+        var cost = el('div', 'cost', card);
+        cost.textContent = Object.entries(up.cost).map(function(e){return e[1]+' '+e[0];}).join(', ');
+        var eff = el('div', 'effect', card); eff.textContent = up.desc;
+        var can = Object.entries(up.cost).every(function(e){return state[e[0]]>=e[1];});
+        var btn = el('button', 'build-btn', card);
+        btn.textContent = 'BUILD'; btn.disabled = !can;
+        btn.addEventListener('click', (function(idx){return function(){buildUpgrade(idx);};})(i));
+    });
+
+    // Recruit allies
+    allyTypes.forEach(function(at) {
+        var card = el('div', 'build-card', dom.buildOptions);
+        card.style.borderColor = '#88ff88';
+        var title = el('h4', null, card); title.textContent = 'Recruit ' + at.name;
+        var cost = el('div', 'cost', card);
+        cost.textContent = Object.entries(at.cost).map(function(e){return e[1]+' '+e[0];}).join(', ');
+        var eff = el('div', 'effect', card); eff.textContent = at.desc;
+        var can = Object.entries(at.cost).every(function(e){return state[e[0]]>=e[1];});
+        var btn = el('button', 'build-btn', card);
+        btn.textContent = 'RECRUIT'; btn.disabled = !can;
+        btn.style.background = can ? '#88ff88' : '#555';
+        btn.addEventListener('click', (function(allyId){return function(){recruitAlly(allyId);};})(at.id));
+    });
+}
+
+function buildUpgrade(index) {
+    var up = upgrades[index];
+    var can = Object.entries(up.cost).every(function(e){return state[e[0]]>=e[1];});
+    if (!can) return;
+    var nearest = getNearestAliveLocation(state.playerX);
+    if (!nearest) return;
+    Object.entries(up.cost).forEach(function(e){ state[e[0]] -= e[1]; });
+    nearest.defense = Math.min(nearest.maxDefense, nearest.defense + up.defenseBoost);
+    if (up.heal) nearest.health = Math.min(nearest.maxHealth, nearest.health + up.heal);
+    updateHUD(); renderBuildOptions();
+    announce('Built ' + up.name + ' at ' + nearest.name + '!');
+}
+
+function recruitAlly(typeId) {
+    var atype = allyTypes.find(function(a){return a.id===typeId;});
+    if (!atype) return;
+    var can = Object.entries(atype.cost).every(function(e){return state[e[0]]>=e[1];});
+    if (!can) return;
+    var nearest = getNearestAliveLocation(state.playerX);
+    if (!nearest) return;
+    Object.entries(atype.cost).forEach(function(e){ state[e[0]] -= e[1]; });
+    spawnAlly(typeId, nearest);
+    updateHUD(); renderBuildOptions();
+    announce(atype.name + ' joins the fight!');
+}
+
+// ===== HUD =====
+function updateHUD() {
+    dom.woodCount.textContent = state.wood;
+    dom.metalCount.textContent = state.metal;
+    dom.crystalCount.textContent = state.crystal;
+    dom.journalCount.textContent = state.journal;
+
+    var nearest = getNearestAliveLocation(state.playerX);
+    locations.forEach(function(loc) {
+        var hpPct = Math.max(0, loc.health / loc.maxHealth * 100);
+        var defPct = Math.max(0, loc.defense / loc.maxDefense * 100);
+
+        var hpEl = document.getElementById('hp-' + loc.id);
+        var defEl = document.getElementById('def-' + loc.id);
+        if (hpEl) { hpEl.style.width = hpPct + '%'; hpEl.style.background = hpPct > 50 ? '#44ff44' : hpPct > 25 ? '#ffaa00' : '#ff4444'; }
+        if (defEl) defEl.style.width = defPct + '%';
+
+        var statHp = document.getElementById('locstat-hp-' + loc.id);
+        var statDef = document.getElementById('locstat-def-' + loc.id);
+        var statItem = document.getElementById('locstat-' + loc.id);
+        if (statHp) { statHp.style.width = hpPct + '%'; statHp.style.background = hpPct > 50 ? '#44ff44' : hpPct > 25 ? '#ffaa00' : '#ff4444'; }
+        if (statDef) statDef.style.width = defPct + '%';
+        if (statItem) {
+            statItem.classList.toggle('destroyed', !loc.alive);
+            statItem.classList.toggle('nearest', nearest === loc);
+        }
+    });
+}
+
+function announce(text) {
+    dom.waveAnnounce.textContent = text;
+    dom.waveAnnounce.style.display = 'block';
+    setTimeout(function(){ dom.waveAnnounce.style.display = 'none'; }, 2000);
+}
+
+// ===== ALLIES =====
+function spawnAlly(typeId, assignedLoc) {
+    var atype = allyTypes.find(function(a){return a.id===typeId;});
+    if (!atype) return;
+
+    var ally = el('div', 'ally', dom.gameWorld);
+    var charDiv = el('div', 'ally-char', ally);
+    var nameTag = el('div', 'ally-name', charDiv);
+    nameTag.textContent = atype.name;
+
+    if (typeId === 'mabel') {
+        el('div', 'mabel-band', charDiv);
+        el('div', 'mabel-hair', charDiv);
+        var head = el('div', 'ally-head mabel-head', charDiv);
+        el('div', 'ally-arm mabel-arm left', charDiv);
+        el('div', 'ally-arm mabel-arm right', charDiv);
+        var body = el('div', 'ally-body mabel-body', charDiv);
+        var star = el('div', 'mabel-star', body); star.textContent = '*';
+        el('div', 'ally-leg mabel-leg left', charDiv);
+        el('div', 'ally-leg mabel-leg right', charDiv);
+    } else if (typeId === 'stan') {
+        el('div', 'stan-fez', charDiv);
+        var head2 = el('div', 'ally-head stan-head', charDiv);
+        el('div', 'stan-glasses', charDiv);
+        el('div', 'ally-arm stan-arm left', charDiv);
+        el('div', 'ally-arm stan-arm right', charDiv);
+        var body2 = el('div', 'ally-body stan-body', charDiv);
+        el('div', 'stan-tie', body2);
+        el('div', 'ally-leg stan-leg left', charDiv);
+        el('div', 'ally-leg stan-leg right', charDiv);
+    } else if (typeId === 'wendy') {
+        el('div', 'wendy-hat', charDiv);
+        el('div', 'wendy-hair', charDiv);
+        var head3 = el('div', 'ally-head wendy-head', charDiv);
+        el('div', 'ally-arm wendy-arm left', charDiv);
+        el('div', 'ally-arm wendy-arm right', charDiv);
+        el('div', 'ally-body wendy-body', charDiv);
+        el('div', 'ally-leg wendy-leg left', charDiv);
+        el('div', 'ally-leg wendy-leg right', charDiv);
+    }
+
+    // Health bar for ally
+    var hpBar = el('div', 'char-hp-bar', ally);
+    hpBar.style.top = '-10px';
+    var hpFill = el('div', 'char-hp-fill', hpBar);
+    hpFill.style.width = '100%';
+
+    var allyMaxHp = typeId === 'stan' ? 6 : 4;
+    var allyData = {
+        el: ally,
+        type: typeId,
+        x: assignedLoc.x + 50,
+        y: SCREEN_H * 0.6,
+        speed: atype.speed,
+        range: atype.range,
+        dmg: atype.dmg,
+        hp: allyMaxHp,
+        maxHp: allyMaxHp,
+        assignedLoc: assignedLoc,
+        patrolDir: 1,
+        attackCooldown: 0,
+        hitCooldown: 0,
+    };
+    ally.style.left = allyData.x + 'px';
+    ally.style.top = allyData.y + 'px';
+    state.allies.push(allyData);
+}
+
+function moveAllies() {
+    state.allies.forEach(function(a) {
+        if (!a.el.parentNode) return;
+
+        // Healing logic
+        if (a.healing) {
+            a.healTimer--;
+            if (a.healTimer <= 0) {
+                a.healing = false;
+                a.hp = a.maxHp;
+                a.el.style.opacity = '1';
+                a.el.classList.remove('healing');
+                updateCharHpBar(a.el, a.hp, a.maxHp);
+                announce(allyTypes.find(function(t){return t.id===a.type;}).name + ' is back!');
+            }
+            return; // Skip all other behavior while healing
+        }
+
+        var loc = a.assignedLoc;
+        // If assigned location is destroyed, retarget to nearest alive
+        if (!loc.alive) {
+            var alive = locations.filter(function(l){return l.alive;});
+            if (alive.length === 0) return;
+            loc = alive[Math.floor(Math.random() * alive.length)];
+            a.assignedLoc = loc;
+        }
+
+        // Find nearest enemy
+        var nearestEnemy = null; var nearestDist = Infinity;
+        state.enemies.forEach(function(enemy) {
+            if (!enemy.parentNode) return;
+            var ex = parseFloat(enemy.style.left);
+            var ey = parseFloat(enemy.style.top);
+            var d = Math.sqrt((a.x-ex)*(a.x-ex)+(a.y-ey)*(a.y-ey));
+            if (d < nearestDist) { nearestDist = d; nearestEnemy = enemy; }
+        });
+
+        var moving = false;
+        if (a.attackCooldown > 0) a.attackCooldown--;
+        if (a.hitCooldown > 0) a.hitCooldown--;
+
+        // Check if any enemy is hurting this ally
+        state.enemies.forEach(function(enemy) {
+            if (!enemy.parentNode || a.hitCooldown > 0) return;
+            var eex = parseFloat(enemy.style.left); var eey = parseFloat(enemy.style.top);
+            var ed = Math.sqrt((a.x-eex)*(a.x-eex)+(a.y-eey)*(a.y-eey));
+            if (ed < 35) {
+                a.hp -= 1;
+                a.hitCooldown = 20;
+                updateCharHpBar(a.el, a.hp, a.maxHp);
+                if (a.hp <= 0 && !a.healing) {
+                    a.healing = true;
+                    a.healTimer = 300; // ~5 seconds at 60fps
+                    a.el.style.opacity = '0.3';
+                    a.el.classList.remove('walking', 'attacking');
+                    a.el.classList.add('healing');
+                    announce(allyTypes.find(function(t){return t.id===a.type;}).name + ' is healing...');
+                }
+            }
+        });
+
+        // If enemy nearby, chase it
+        if (nearestEnemy && nearestDist < 200) {
+            var ex = parseFloat(nearestEnemy.style.left);
+            var ey = parseFloat(nearestEnemy.style.top);
+            var dx = ex - a.x; var dy = ey - a.y;
+            var dist = Math.sqrt(dx*dx+dy*dy);
+
+            if (dist < a.range && a.attackCooldown <= 0) {
+                // Attack!
+                a.el.classList.add('attacking');
+                setTimeout(function(){a.el.classList.remove('attacking');}, 200);
+                a.attackCooldown = 15;
+
+                var hp = parseInt(nearestEnemy.dataset.hp) - a.dmg;
+                if (hp <= 0) {
+                    var eex = parseFloat(nearestEnemy.style.left);
+                    var eey = parseFloat(nearestEnemy.style.top);
+                    spawnDeathEffect(eex, eey, nearestEnemy.dataset.type);
+                    nearestEnemy.remove();
+                    // Drop loot
+                    if (Math.random() < 0.3) {
+                        var types = ['wood','metal','crystal'];
+                        var t = types[Math.floor(Math.random()*types.length)];
+                        state[t]++;
+                        var popup = el('div','collect-popup',dom.gameWorld);
+                        popup.textContent = '+1 ' + t + '!';
+                        popup.style.left = eex+'px'; popup.style.top = eey+'px';
+                        setTimeout(function(){popup.remove();}, 800);
+                        updateHUD();
+                    }
+                } else {
+                    nearestEnemy.dataset.hp = hp;
+                    updateCharHpBar(nearestEnemy, hp, parseInt(nearestEnemy.dataset.maxhp));
+                    nearestEnemy.classList.add('hit');
+                    setTimeout(function(){nearestEnemy.classList.remove('hit');}, 150);
+                    if (dist > 0) {
+                        nearestEnemy.style.left = (ex + dx/dist*15)+'px';
+                        nearestEnemy.style.top = (ey + dy/dist*15)+'px';
+                    }
+                }
+            } else if (dist > a.range) {
+                // Move toward enemy
+                a.x += dx/dist * a.speed;
+                a.y += dy/dist * a.speed;
+                moving = true;
+                if (dx < 0) { a.el.classList.add('facing-left'); } else { a.el.classList.remove('facing-left'); }
+            }
+        } else {
+            // Patrol near assigned location
+            var patrolCenter = loc.x + 50;
+            var patrolRange = 80;
+            a.x += a.patrolDir * a.speed * 0.5;
+            moving = true;
+            if (a.x > patrolCenter + patrolRange) { a.patrolDir = -1; a.el.classList.add('facing-left'); }
+            if (a.x < patrolCenter - patrolRange) { a.patrolDir = 1; a.el.classList.remove('facing-left'); }
+        }
+
+        if (moving) { a.el.classList.add('walking'); } else { a.el.classList.remove('walking'); }
+
+        // Keep on ground
+        a.y = Math.max(SCREEN_H * 0.5, Math.min(SCREEN_H * 0.8, a.y));
+        a.el.style.left = a.x + 'px';
+        a.el.style.top = a.y + 'px';
+    });
+
+    // Clean dead enemies and dead allies
+    state.enemies = state.enemies.filter(function(e){return e.parentNode;});
+    state.allies = state.allies.filter(function(a){return (a.hp > 0 || a.healing) && a.el.parentNode;});
+}
+
+// ===== HEALTH BAR HELPER =====
+function updateCharHpBar(element, hp, maxHp) {
+    var fill = element.querySelector('.char-hp-fill');
+    if (!fill) return;
+    var pct = Math.max(0, hp / maxHp * 100);
+    fill.style.width = pct + '%';
+    fill.className = 'char-hp-fill';
+    if (pct <= 50) fill.classList.add('hurt');
+    if (pct <= 25) fill.classList.add('critical');
+}
+
+// ===== DEATH =====
+function spawnDeathEffect(x, y, type) {
+    var colorMap = {
+        eyebat: ['#ff4444','#cc0000','#ff6666','#880000'],
+        gnome: ['#cc0000','#886644','#fff','#554433'],
+        hench: ['#ffcc00','#ffdd44','#333','#ffaa00'],
+        gbot: ['#cccccc','#888888','#ff3333','#666666']
+    };
+    var colors = colorMap[type] || colorMap.gnome;
+    var c = el('div', 'enemy-death', dom.gameWorld);
+    c.style.left = x+'px'; c.style.top = y+'px';
+    for (var i = 0; i < 8; i++) {
+        var p = el('div', 'death-piece', c);
+        p.style.background = colors[Math.floor(Math.random()*colors.length)];
+        p.style.setProperty('--dx',(Math.random()*80-40)+'px');
+        p.style.setProperty('--dy',(Math.random()*80-40)+'px');
+        p.style.setProperty('--rot',(Math.random()*720-360)+'deg');
+        p.style.width = (5+Math.random()*8)+'px';
+        p.style.height = (5+Math.random()*8)+'px';
+    }
+    setTimeout(function(){c.remove();}, 600);
+}
+
+// ===== GAME LOOP =====
+function gameLoop() {
+    if (!state.running || state.paused) return;
+    movePlayer();
+    moveAllies();
+    if (state.phase === 'defend') moveEnemies();
+    updateHUD();
+    state.gameLoop = requestAnimationFrame(gameLoop);
+}
+
+// ===== GAME OVER =====
+function gameOverScreen() {
+    state.running = false;
+    if (state.waveTimer) clearInterval(state.waveTimer);
+    if (state.spawnTimer) clearInterval(state.spawnTimer);
+    dom.gameOver.style.display = 'flex';
+    dom.finalWave.textContent = 'You survived ' + state.wave + ' wave' + (state.wave !== 1 ? 's' : '') + '!';
+}
+
+function restartGame() {
+    state.running = false;
+    if (state.waveTimer) clearInterval(state.waveTimer);
+    if (state.spawnTimer) clearInterval(state.spawnTimer);
+    if (state.gameLoop) cancelAnimationFrame(state.gameLoop);
+    dom.gameOver.style.display = 'none';
+    dom.buildMenu.style.display = 'none';
+    dom.gameContainer.style.display = 'none';
+    dom.titleScreen.style.display = 'flex';
+}
+
+window.addEventListener('resize', function() {
+    SCREEN_W = window.innerWidth;
+    SCREEN_H = window.innerHeight;
+});
+</script>
 </body>
 </html>

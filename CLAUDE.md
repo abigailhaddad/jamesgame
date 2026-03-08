@@ -31,12 +31,18 @@ This is a game being designed by James, age 9. James describes what he wants the
 ```
 web/index.html    — the game (served by Netlify)
 netlify.toml      — tells Netlify to serve from web/
+STATUS.md         — tracks what James has asked for and what's been built
 ```
 
+## Status Tracking
+- **Keep `STATUS.md` up to date.** After implementing a new feature or making a significant change, update `STATUS.md` to reflect what was added. This helps James's mom (and future sessions) understand the current state of the game.
+- Add new requests to the "What James Has Asked For" list and update the "Current Features" section as needed.
+
 ## Workflow
-- **Commit and push frequently.** After every meaningful change, commit and push to `main` so James can see it live.
-- **Tell James to check the site.** After pushing, tell him to go to https://gamejames.netlify.app/ and refresh. Give it a minute to deploy.
-- **Don't ask James to preview locally.** Always push to see changes live on the Netlify URL.
+- **Use VS Code preview for development.** After making changes, tell James to check the preview in VS Code. No need to push for every small change.
+- **Commit regularly.** Make small, frequent commits to keep a good history of changes.
+- **Push only to publish.** Only push to `main` when things are in a good state — a feature is done, the game is stable, etc.
+- **Tell James to check the live site after pushing.** After pushing, tell him to go to https://gamejames.netlify.app/ and refresh. Give it a minute to deploy.
 
 ## Deploying
 Netlify serves the `web/` directory. Any changes pushed to `main` go live automatically.
