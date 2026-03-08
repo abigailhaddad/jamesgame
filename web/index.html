@@ -112,6 +112,8 @@
         /* Mystery Shack */
         .shack-body { width: 120px; height: 80px; background: linear-gradient(180deg, #8B6914, #6B4914); border: 2px solid #4a3010; position: relative; }
         .shack-roof { width: 0; height: 0; border-left: 75px solid transparent; border-right: 75px solid transparent; border-bottom: 50px solid #5a2a2a; position: relative; left: -15px; }
+        .shack-roof-sign { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); color: #ff2222; font-size: 9px; font-weight: bold; z-index: 5; text-shadow: 1px 1px 0 #000; letter-spacing: 1px; text-align: center; line-height: 1.2; }
+        .shack-s { display: inline-block; transform: rotate(180deg) translateY(-2px); position: relative; top: 2px; }
         .shack-door { width: 25px; height: 35px; background: #3a2010; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border: 1px solid #2a1508; }
         .shack-window { width: 20px; height: 20px; background: #ffee88; border: 2px solid #4a3010; position: absolute; top: 15px; }
         .shack-window.l { left: 15px; } .shack-window.r { right: 15px; }
@@ -124,13 +126,15 @@
         .tower-legs { display: flex; justify-content: space-between; width: 60px; margin: 0 auto; }
         .tower-leg { width: 6px; height: 60px; background: #556677; }
 
-        /* Greasy's Diner */
-        .diner-body { width: 130px; height: 60px; background: linear-gradient(180deg, #cc8844, #aa6633); border: 2px solid #885522; position: relative; border-radius: 0 0 4px 4px; }
-        .diner-roof { width: 140px; height: 16px; background: #dd4444; border-radius: 4px 4px 0 0; margin: 0 auto; }
-        .diner-sign { text-align: center; font-size: 8px; color: #ffdd00; background: #dd4444; padding: 1px 6px; border-radius: 2px; display: inline-block; }
-        .diner-window { width: 25px; height: 20px; background: #ffee88; border: 2px solid #885522; position: absolute; top: 10px; }
+        /* Greasy's Diner - log cabin style */
+        .diner-body { width: 130px; height: 60px; background: repeating-linear-gradient(180deg, #b8793a 0px, #a06828 6px, #8B5E14 8px, #9a6e30 10px, #b8793a 12px); border: 2px solid #6B4914; position: relative; border-radius: 12px; }
+        .diner-body::before { content: ''; position: absolute; left: -6px; top: 4px; bottom: 4px; width: 8px; background: repeating-linear-gradient(180deg, #9a6e30 0px, #7a5020 5px, #9a6e30 10px); border-radius: 50%; }
+        .diner-body::after { content: ''; position: absolute; right: -6px; top: 4px; bottom: 4px; width: 8px; background: repeating-linear-gradient(180deg, #9a6e30 0px, #7a5020 5px, #9a6e30 10px); border-radius: 50%; }
+        .diner-roof { width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 35px solid #5a2a2a; position: relative; left: -15px; }
+        .diner-sign { text-align: center; font-size: 8px; color: #ffdd00; background: #dd4444; padding: 2px 8px; border-radius: 3px; display: inline-block; }
+        .diner-window { width: 25px; height: 20px; background: #ffee88; border: 2px solid #6B4914; position: absolute; top: 12px; border-radius: 4px; }
         .diner-window.l { left: 12px; } .diner-window.m { left: 52px; } .diner-window.r { right: 12px; }
-        .diner-door { width: 22px; height: 35px; background: #664422; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border: 1px solid #553311; }
+        .diner-door { width: 22px; height: 35px; background: #553311; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border: 1px solid #442208; border-radius: 4px 4px 0 0; }
 
         /* Gravity Falls Sign (bonus location) */
         .sign-post { width: 8px; height: 70px; background: #6B4914; margin: 0 auto; }
@@ -195,6 +199,16 @@
         .ally-leg.mabel-leg { background: #335; }
         .ally-leg.left { left: 12px; } .ally-leg.right { right: 12px; }
         .ally-leg::after { content: ''; position: absolute; bottom: 0; left: -1px; width: 10px; height: 4px; background: #333; border-radius: 2px; }
+        /* Dipper (ally) */
+        .ally-head.dipper-head { background: #ffcc99; }
+        .ally-head.dipper-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 8px; left: 5px; box-shadow: 8px 0 0 #333; }
+        .dipper-hat { position: absolute; top: 0px; left: 6px; width: 32px; height: 12px; background: #fff; border-radius: 6px 6px 0 0; z-index: 4; }
+        .dipper-hat-top { position: absolute; top: -8px; left: 15px; width: 14px; height: 10px; background: #0055cc; border-radius: 4px 4px 0 0; z-index: 5; }
+        .dipper-hat-top::after { content: ''; position: absolute; top: 2px; left: 3px; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 6px solid #00cc44; }
+        .ally-body.dipper-body { background: #ff6644; }
+        .dipper-vest { position: absolute; inset: 0; border-left: 5px solid #4488ff; border-right: 5px solid #4488ff; border-radius: 4px; }
+        .ally-arm.dipper-arm { background: #ff6644; }
+        .ally-leg.dipper-leg { background: #335; }
         /* Stan */
         .ally-head.stan-head { background: #ffbb88; }
         .ally-head.stan-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 8px; left: 5px; box-shadow: 8px 0 0 #333; }
@@ -219,10 +233,10 @@
         .ally-head.soos-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 9px; left: 6px; box-shadow: 9px 0 0 #333; }
         .soos-cap { position: absolute; top: 2px; left: 6px; width: 32px; height: 12px; background: #335588; border-radius: 6px 6px 0 0; z-index: 4; }
         .soos-cap::after { content: '?'; position: absolute; top: 0; left: 11px; color: #ffdd00; font-size: 10px; font-weight: bold; }
-        .ally-body.soos-body { background: #228833; width: 28px; height: 22px; left: 8px; position: relative; }
-        .soos-belly { position: absolute; top: 6px; left: 4px; width: 20px; height: 14px; background: #1a7728; border-radius: 50%; z-index: 1; }
-        .soos-question { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); color: #ffdd00; font-size: 11px; font-weight: bold; z-index: 2; }
-        .ally-arm.soos-arm { background: #228833; width: 8px; }
+        .ally-body.soos-body { background: #4488cc; width: 28px; height: 22px; left: 8px; position: relative; }
+        .soos-belly { position: absolute; top: 6px; left: 4px; width: 20px; height: 14px; background: #3a77bb; border-radius: 50%; z-index: 1; }
+        .soos-question { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); color: #ffffff; font-size: 11px; font-weight: bold; z-index: 2; }
+        .ally-arm.soos-arm { background: #4488cc; width: 8px; }
         .ally-leg.soos-leg { background: #445; width: 9px; }
         /* Ford */
         .ally-head.ford-head { background: #ffbb88; }
@@ -234,16 +248,24 @@
         .ford-coat::after { content: ''; position: absolute; top: 2px; left: 50%; width: 2px; height: 80%; background: #ccc; transform: translateX(-50%); }
         .ally-arm.ford-arm { background: #f0f0f0; }
         .ally-leg.ford-leg { background: #334; }
-        /* McGucket */
-        .ally-head.mcgucket-head { background: #ffcc99; width: 20px; height: 20px; left: 12px; }
-        .ally-head.mcgucket-head::before { content: ''; position: absolute; width: 3px; height: 3px; background: #333; border-radius: 50%; top: 6px; left: 4px; box-shadow: 7px 0 0 #333; }
-        .mcgucket-hat { position: absolute; top: -2px; left: 8px; width: 28px; height: 14px; background: #222; border-radius: 4px 4px 0 0; z-index: 4; }
-        .mcgucket-hat::before { content: ''; position: absolute; top: -4px; left: 6px; width: 16px; height: 6px; background: #222; border-radius: 3px 3px 0 0; }
-        .mcgucket-hat::after { content: ''; position: absolute; bottom: 0; left: -4px; width: 36px; height: 4px; background: #111; border-radius: 2px; }
-        .mcgucket-beard { position: absolute; top: 26px; left: 10px; width: 22px; height: 16px; background: #ddd; border-radius: 0 0 12px 12px; z-index: 2; }
-        .ally-body.mcgucket-body { background: #667744; }
-        .ally-arm.mcgucket-arm { background: #667744; }
-        .ally-leg.mcgucket-leg { background: #554; }
+        /* McGucket - scraggly inventor */
+        .ally-head.mcgucket-head { background: #ffcc88; width: 20px; height: 20px; left: 12px; }
+        .ally-head.mcgucket-head::before { content: ''; position: absolute; width: 4px; height: 4px; background: #333; border-radius: 50%; top: 5px; left: 3px; box-shadow: 8px 0 0 #333; }
+        .ally-head.mcgucket-head::after { content: ''; position: absolute; bottom: 1px; left: 6px; width: 8px; height: 3px; background: #cc8866; border-radius: 0 0 4px 4px; }
+        .mcgucket-hat { position: absolute; top: -6px; left: 5px; width: 34px; height: 16px; background: #1a1a1a; border-radius: 6px 6px 0 0; z-index: 4; }
+        .mcgucket-hat::before { content: ''; position: absolute; top: -6px; left: 8px; width: 18px; height: 8px; background: #1a1a1a; border-radius: 4px 4px 0 0; }
+        .mcgucket-hat::after { content: ''; position: absolute; bottom: -2px; left: -6px; width: 46px; height: 4px; background: #111; border-radius: 3px; }
+        .mcgucket-beard { position: absolute; top: 26px; left: 10px; width: 22px; height: 20px; background: #fff; border-radius: 2px 2px 10px 10px; z-index: 5; }
+        .mcgucket-beard::before { content: ''; position: absolute; bottom: -6px; left: 2px; width: 4px; height: 8px; background: #fff; border-radius: 0 0 4px 4px; transform: rotate(-8deg); }
+        .mcgucket-beard::after { content: ''; position: absolute; bottom: -4px; right: 3px; width: 3px; height: 6px; background: #fff; border-radius: 0 0 3px 3px; transform: rotate(12deg); }
+        .ally-body.mcgucket-body { background: #8B6914; position: relative; }
+        .mcgucket-overalls { position: absolute; inset: 0; border-radius: 4px; overflow: hidden; }
+        .mcgucket-overalls::before { content: ''; position: absolute; top: 0; left: 3px; width: 5px; height: 6px; background: #7a5a10; box-shadow: 12px 0 0 #7a5a10; }
+        .mcgucket-overalls::after { content: ''; position: absolute; top: 6px; left: 2px; right: 2px; bottom: 0; background: #7a5a10; border-radius: 2px; }
+        .ally-arm.mcgucket-arm { background: #ddd; width: 7px; }
+        .ally-arm.mcgucket-arm::after { content: ''; position: absolute; bottom: -1px; width: 5px; height: 5px; background: #eee; border-radius: 50%; left: 1px; }
+        .ally-leg.mcgucket-leg { background: #8B6914; }
+        .ally-leg.mcgucket-leg::after { content: ''; position: absolute; bottom: 0; left: -1px; width: 10px; height: 4px; background: #553311; border-radius: 2px; }
         /* Ally walking */
         .ally.walking .ally-leg.left { animation: aLegL .35s ease-in-out infinite; }
         .ally.walking .ally-leg.right { animation: aLegR .35s ease-in-out infinite; }
@@ -420,13 +442,100 @@
         #pause-btn { position: fixed; top: 5px; right: 60px; width: 40px; height: 40px; background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; color: white; font-size: 18px; cursor: pointer; z-index: 101; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', monospace; }
 
         /* Wave announcement */
-        #wave-announce { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: clamp(1.5rem,6vw,3rem); color: #ffdd00; text-shadow: 0 0 20px #ff6600; z-index: 200; display: none; text-align: center; pointer-events: none; }
+        #wave-announce { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: clamp(1.5rem,6vw,3rem); color: #ffdd00; text-shadow: 0 0 20px #ff6600; z-index: 250; display: none; text-align: center; pointer-events: none; }
 
         /* Popups */
         .collect-popup { position: absolute; color: #ffdd00; font-size: 18px; font-weight: bold; pointer-events: none; z-index: 50; text-shadow: 0 0 6px #ff8800; animation: popUp 1s ease-out forwards; }
         @keyframes popUp { 0%{opacity:1;transform:translateY(0) scale(1.3)} 50%{opacity:1;transform:translateY(-20px) scale(1)} 100%{opacity:0;transform:translateY(-45px) scale(.8)} }
         .collect-sparkle { position: absolute; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 50; animation: sparkle .6s ease-out forwards; }
         @keyframes sparkle { 0%{opacity:1;transform:scale(1) translate(0,0)} 100%{opacity:0;transform:scale(.3) translate(var(--sx),var(--sy))} }
+
+        /* Enter Building Prompt */
+        .enter-prompt { position: absolute; z-index: 25; background: rgba(0,0,0,0.7); color: #ffdd00; font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 4px; border: 1px solid #ffdd00; white-space: nowrap; pointer-events: auto; cursor: pointer; animation: promptPulse 1.5s ease-in-out infinite; }
+        @keyframes promptPulse { 0%,100%{opacity:0.7;transform:translateY(0)} 50%{opacity:1;transform:translateY(-3px)} }
+
+        /* Building Interior - walkable room */
+        #building-interior { position: fixed; inset: 0; z-index: 200; display: none; overflow: hidden; }
+        .interior-room { position: absolute; inset: 0; }
+        .interior-room.shack-interior {
+            background: #5a3a20;
+            background-image:
+                linear-gradient(180deg, #3a2010 0%, #5a3a20 15%, #6B4914 100%);
+        }
+        .interior-room.diner-interior {
+            background: #6a4025;
+            background-image:
+                linear-gradient(180deg, #4a2a15 0%, #6a4025 15%, #8a5530 100%);
+        }
+        /* Walls */
+        .room-wall-left, .room-wall-right { position: absolute; top: 0; bottom: 0; width: 20px; z-index: 3; }
+        .room-wall-left { left: 0; background: linear-gradient(90deg, #3a2010, #5a3520); }
+        .room-wall-right { right: 0; background: linear-gradient(90deg, #5a3520, #3a2010); }
+        .room-wall-top { position: absolute; top: 0; left: 0; right: 0; height: 60px; z-index: 3; }
+        .shack-interior .room-wall-top { background: linear-gradient(180deg, #2a1508 0%, #4a2a15 60%, transparent 100%); }
+        .diner-interior .room-wall-top { background: linear-gradient(180deg, #3a1a0a 0%, #5a3020 60%, transparent 100%); }
+        /* Floor */
+        .room-floor { position: absolute; bottom: 0; left: 0; right: 0; height: 45%; z-index: 1; }
+        .shack-interior .room-floor { background: repeating-linear-gradient(90deg, #6B4914 0px, #7a5820 30px, #5a3a10 32px, #6B4914 60px); }
+        .diner-interior .room-floor { background: repeating-linear-gradient(90deg, #8a6530 0px, #9a7540 20px, #7a5520 22px, #8a6530 40px); border-top: 3px solid #5a3a20; }
+        /* Furniture */
+        .room-furniture { position: absolute; z-index: 2; pointer-events: none; }
+        .furniture-table { width: 60px; height: 30px; background: #8B6914; border: 2px solid #5a3a10; border-radius: 3px; }
+        .furniture-counter { width: 120px; height: 25px; background: #aa7733; border: 2px solid #775522; border-radius: 2px; }
+        .furniture-shelf { width: 50px; height: 40px; background: #6B4914; border: 2px solid #4a3010; }
+        .furniture-shelf::before { content: ''; position: absolute; top: 50%; left: 2px; right: 2px; height: 2px; background: #4a3010; }
+        .furniture-stool { width: 18px; height: 22px; background: #aa7733; border: 2px solid #775522; border-radius: 3px 3px 0 0; }
+        .furniture-stool::after { content: ''; position: absolute; bottom: -6px; left: 4px; width: 8px; height: 6px; background: #775522; }
+        .furniture-booth { width: 45px; height: 35px; background: #cc3333; border: 2px solid #992222; border-radius: 4px 4px 0 0; }
+        /* Shack attractions */
+        .furniture-display { width: 40px; height: 50px; background: rgba(200,220,255,0.15); border: 2px solid #88aacc; border-radius: 3px; }
+        .furniture-display::after { content: ''; position: absolute; bottom: 0; left: -4px; right: -4px; height: 8px; background: #6B4914; border-radius: 2px; }
+        .furniture-attraction { position: relative; text-align: center; }
+        .attraction-icon { font-size: 28px; display: block; }
+        .attraction-label { font-size: 7px; color: #ffdd00; font-weight: bold; text-align: center; white-space: nowrap; text-shadow: 1px 1px 1px #000; }
+        .furniture-rope { width: 2px; height: 100%; background: #cc8844; position: absolute; }
+        .furniture-rope::before, .furniture-rope::after { content: ''; position: absolute; width: 8px; height: 8px; background: #aa6633; border-radius: 50%; left: -3px; }
+        .furniture-rope::before { top: -4px; }
+        .furniture-rope::after { bottom: -4px; }
+        .furniture-rug { border-radius: 50%; background: radial-gradient(circle, #884422, #663311); border: 2px solid #552211; }
+        .furniture-register { width: 30px; height: 25px; background: #888; border: 2px solid #555; border-radius: 3px 3px 0 0; }
+        .furniture-register::after { content: '$'; position: absolute; top: 3px; left: 50%; transform: translateX(-50%); color: #44dd44; font-size: 12px; font-weight: bold; }
+        /* Diner extras */
+        .furniture-jukebox { width: 30px; height: 45px; background: linear-gradient(180deg, #cc8844, #aa6633); border: 2px solid #885522; border-radius: 8px 8px 3px 3px; }
+        .furniture-jukebox::before { content: ''; position: absolute; top: 5px; left: 3px; right: 3px; height: 15px; background: linear-gradient(180deg, #ffee88, #ffdd44); border-radius: 4px; }
+        .furniture-jukebox::after { content: '♪'; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #885522; }
+        .furniture-plant { width: 15px; height: 20px; background: #44aa44; border-radius: 50% 50% 0 0; }
+        .furniture-plant::after { content: ''; position: absolute; bottom: -8px; left: 2px; width: 11px; height: 10px; background: #8B6914; border-radius: 2px; }
+        /* NPC characters */
+        .room-npc { position: absolute; z-index: 12; cursor: pointer; }
+        .room-npc .npc-speech { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff; font-size: 10px; padding: 6px 10px; border-radius: 6px; border: 1px solid #ffdd00; white-space: nowrap; z-index: 30; margin-bottom: 5px; }
+        .room-npc .npc-speech::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #ffdd00; }
+        .room-npc.talked .npc-speech { display: none; }
+        .room-npc .npc-prompt { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); color: #ffdd00; font-size: 8px; font-weight: bold; white-space: nowrap; animation: promptPulse 1.5s ease-in-out infinite; margin-bottom: 2px; }
+        .room-npc.talking .npc-speech { display: block; }
+        .room-npc.talking .npc-prompt { display: none; }
+        /* Interior items to pick up */
+        .room-pickup { position: absolute; z-index: 10; cursor: pointer; animation: pickupBob 1.5s ease-in-out infinite; }
+        .room-pickup .pickup-icon { font-size: 22px; display: block; filter: drop-shadow(0 0 4px rgba(255,221,0,0.6)); }
+        .room-pickup .pickup-label { font-size: 8px; color: #ffdd00; text-align: center; font-weight: bold; text-shadow: 1px 1px 1px #000; white-space: nowrap; }
+        @keyframes pickupBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+        .room-pickup.collected { animation: pickupCollect 0.4s ease-out forwards; pointer-events: none; }
+        @keyframes pickupCollect { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.5) translateY(-20px)} }
+        /* Interior player */
+        #interior-player { position: absolute; z-index: 20; }
+        #interior-player.walking .player-char, #interior-player.walking .ally-char { animation: pBounce .3s ease-in-out infinite; }
+        #interior-player.walking .player-leg.left, #interior-player.walking .ally-leg.left { animation: legL .3s ease-in-out infinite; }
+        #interior-player.walking .player-leg.right, #interior-player.walking .ally-leg.right { animation: legR .3s ease-in-out infinite; }
+        #interior-player.walking .player-arm.left, #interior-player.walking .ally-arm.left { animation: armL .3s ease-in-out infinite; }
+        #interior-player.walking .player-arm.right, #interior-player.walking .ally-arm.right { animation: armR .3s ease-in-out infinite; }
+        #interior-player.facing-left .player-char, #interior-player.facing-left .ally-char { transform: scaleX(-1); }
+        /* Door */
+        .room-door { position: absolute; z-index: 5; }
+        .room-door-frame { width: 35px; height: 50px; background: #3a2010; border: 3px solid #2a1508; border-radius: 4px 4px 0 0; position: relative; }
+        .room-door-frame::after { content: 'EXIT'; position: absolute; top: -16px; left: 50%; transform: translateX(-50%); color: #ffdd00; font-size: 8px; font-weight: bold; white-space: nowrap; }
+        .room-door-knob { position: absolute; top: 50%; right: 5px; width: 6px; height: 6px; background: #ffdd00; border-radius: 50%; }
+        /* Room title */
+        .room-title { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); color: #ffdd00; font-size: clamp(1rem,4vw,1.5rem); font-weight: bold; text-shadow: 0 0 10px #ff8800; z-index: 30; pointer-events: none; white-space: nowrap; }
 
         /* Damage */
         .damage-flash { position: fixed; inset: 0; background: rgba(255,0,0,0.4); z-index: 150; pointer-events: none; animation: flashOut .4s ease-out forwards; }
@@ -519,6 +628,65 @@
             padding: 1px 6px; border-radius: 3px; font-size: 0.8rem;
             border: 1px solid #666;
         }
+        /* ===== BILL CIPHER BOSS ===== */
+        .bill-boss { width: 100px; height: 80px; position: relative; animation: billFloat 1.5s ease-in-out infinite; }
+        @keyframes billFloat { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-6px) rotate(1deg)} }
+        .bill-boss-body { width: 0; height: 0; border-left: 50px solid transparent; border-right: 50px solid transparent; border-bottom: 80px solid #ffdd00; position: absolute; top: 0; left: 0; filter: drop-shadow(0 0 12px rgba(255,221,0,0.7)); border-bottom-color: #ffdd00; }
+        .bill-boss-body::before { content: ''; position: absolute; top: 76px; left: -52px; width: 104px; height: 4px; background: #111; border-radius: 2px; }
+        .bill-boss-eye { width: 24px; height: 24px; background: white; border-radius: 50%; position: absolute; top: 36px; left: 38px; z-index: 2; border: 2px solid #111; }
+        .bill-boss-eye::after { content: ''; width: 12px; height: 12px; background: #111; border-radius: 50%; position: absolute; top: 4px; left: 4px; }
+        .bill-boss-hat { position: absolute; top: -18px; left: 30px; z-index: 3; }
+        .bill-boss-hat::before { content: ''; display: block; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-bottom: 18px solid #111; }
+        .bill-boss-hat::after { content: ''; position: absolute; bottom: -3px; left: -6px; width: 40px; height: 6px; background: #111; border-radius: 3px; }
+        .bill-boss-arm { width: 4px; height: 20px; background: #111; position: absolute; top: 55px; transform-origin: top center; }
+        .bill-boss-arm.left { left: 8px; transform: rotate(30deg); }
+        .bill-boss-arm.right { right: 8px; transform: rotate(-30deg); }
+        .bill-boss-arm::after { content: ''; position: absolute; bottom: -3px; left: -3px; width: 10px; height: 6px; background: #111; border-radius: 3px; }
+        .bill-boss-leg { width: 4px; height: 16px; background: #111; position: absolute; bottom: -14px; }
+        .bill-boss-leg.left { left: 32px; transform: rotate(10deg); }
+        .bill-boss-leg.right { right: 32px; transform: rotate(-10deg); }
+        .bill-boss-leg::after { content: ''; position: absolute; bottom: -4px; left: -3px; width: 10px; height: 5px; background: #111; border-radius: 3px; }
+
+        /* ===== ABILITY BUTTON ===== */
+        #ability-btn {
+            position: fixed; bottom: 70px; right: 10px; z-index: 99;
+            padding: 8px 14px; background: #4488ff; color: #fff;
+            border: 2px solid #66aaff; border-radius: 8px;
+            font-family: 'Courier New', monospace; font-size: 11px;
+            font-weight: bold; cursor: pointer; text-align: center;
+            min-width: 80px;
+        }
+        #ability-btn:disabled { background: #335; border-color: #446; color: #668; cursor: not-allowed; }
+        #ability-btn .ability-cooldown { font-size: 9px; color: #aaccff; display: block; margin-top: 2px; }
+
+        /* ===== TOWER INTERIOR ===== */
+        .interior-room.tower-interior {
+            background: #3a4550;
+            background-image: linear-gradient(180deg, #2a3540 0%, #3a4550 15%, #4a5560 100%);
+        }
+        .tower-interior .room-wall-top { background: linear-gradient(180deg, #1a2530 0%, #2a3540 60%, transparent 100%); }
+        .tower-interior .room-floor { background: repeating-linear-gradient(90deg, #4a5560 0px, #5a6570 20px, #3a4550 22px, #4a5560 40px); border-top: 3px solid #2a3540; }
+        .furniture-ladder { width: 20px; background: #888; border: 2px solid #666; border-radius: 2px; position: relative; }
+        .furniture-ladder::before { content: ''; position: absolute; top: 20%; left: -2px; right: -2px; height: 3px; background: #777; box-shadow: 0 15px 0 #777, 0 30px 0 #777, 0 45px 0 #777, 0 60px 0 #777; }
+        .furniture-telescope { width: 30px; height: 20px; background: linear-gradient(90deg, #888, #aaa, #888); border-radius: 3px; border: 1px solid #666; position: relative; }
+        .furniture-telescope::after { content: ''; position: absolute; right: -12px; top: 3px; width: 14px; height: 14px; background: linear-gradient(135deg, #99bbdd, #aaccee); border-radius: 50%; border: 2px solid #666; }
+        .furniture-telescope::before { content: ''; position: absolute; left: -6px; top: 6px; width: 8px; height: 8px; background: #777; border-radius: 2px; }
+        .furniture-graffiti { color: rgba(255,255,255,0.15); font-size: 14px; font-weight: bold; position: absolute; pointer-events: none; }
+
+        /* ===== VICTORY SCREEN ===== */
+        #game-over.victory { background: rgba(0,0,0,0.95) !important; }
+        #game-over.victory h1 { color: #ffdd00 !important; text-shadow: 0 0 30px #ffaa00, 0 0 60px #ff6600 !important; }
+
+        /* ===== SPECIAL WAVE COLORS ===== */
+        .treasure-announce { color: #ffdd00 !important; text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff8800 !important; }
+        .swarm-announce { color: #ff4444 !important; text-shadow: 0 0 20px #ff0000, 0 0 40px #cc0000 !important; }
+
+        /* Material pulse for Journal Scan ability */
+        .material.ability-pulse { animation: matBob 2s ease-in-out infinite, abilityPulse 0.5s ease-in-out infinite !important; }
+        @keyframes abilityPulse { 0%,100%{transform:scale(1) translateY(0)} 50%{transform:scale(1.8) translateY(-5px)} }
+
+        /* Invincible effect for Wendy's ability */
+        #player.invincible { opacity: 0.5; filter: hue-rotate(180deg) brightness(1.5); }
     </style>
 </head>
 <body>
@@ -647,6 +815,9 @@
         </div>
         <p id="save-msg" style="margin-top:10px;font-size:0.8rem;color:#88ff88;display:none;"></p>
     </div>
+    <div id="building-interior">
+        <div id="interior-room" class="interior-room"></div>
+    </div>
     <div id="wave-announce"></div>
     <button id="build-toggle">+</button>
     <div id="build-menu">
@@ -662,9 +833,10 @@
         </div>
     </div>
     <div id="weapon-display"><span class="weapon-icon">👊</span>Fists</div>
+    <button id="ability-btn" style="display:none;">ABILITY</button>
     <div id="game-over">
-        <h1>BILL WINS...</h1>
-        <p>Gravity Falls has fallen!</p>
+        <h1 id="game-over-title">You died.</h1>
+        <p id="game-over-msg">Bill took over Gravity Falls.</p>
         <p id="final-wave">You survived 0 waves</p>
         <button class="start-btn" id="restart-btn">TRY AGAIN</button>
     </div>
@@ -705,6 +877,7 @@ var weapons = [
 
 // ===== ALLIES =====
 var allyTypes = [
+    { id: 'dipper', name: 'Dipper', cost: { wood: 2, crystal: 1 }, desc: 'Brave adventurer, well-rounded fighter', speed: 3, range: 45, dmg: 1 },
     { id: 'mabel', name: 'Mabel', cost: { wood: 3, crystal: 2 }, desc: 'Fast fighter, loves sparkles', speed: 3.5, range: 45, dmg: 1 },
     { id: 'stan', name: 'Grunkle Stan', cost: { metal: 4, wood: 3 }, desc: 'Tough brawler, hits hard', speed: 2, range: 50, dmg: 2 },
     { id: 'wendy', name: 'Wendy', cost: { wood: 2, metal: 2, crystal: 1 }, desc: 'Fast and strong', speed: 4, range: 45, dmg: 1 },
@@ -712,6 +885,17 @@ var allyTypes = [
     { id: 'ford', name: 'Ford', cost: { crystal: 4, journal: 1 }, desc: 'Genius inventor, high damage', speed: 2.5, range: 60, dmg: 3 },
     { id: 'mcgucket', name: 'McGucket', cost: { metal: 5, wood: 2 }, desc: 'Mad genius, builds robot turrets', speed: 2, range: 45, dmg: 1, special: 'turret' },
 ];
+
+// ===== CHARACTER ABILITIES =====
+var charAbilities = {
+    dipper: { name: 'Journal Scan', cooldown: 20, desc: 'Reveals all materials' },
+    mabel: { name: 'Grapple Rush', cooldown: 8, desc: 'Dash forward 200px' },
+    stan: { name: 'Haymaker', cooldown: 15, desc: '3x knockback for 3s' },
+    wendy: { name: 'High Ground', cooldown: 20, desc: 'Invincible 3s' },
+    soos: { name: 'Fix-It', cooldown: 25, desc: 'Repair building +20HP' },
+    ford: { name: 'Portal Blast', cooldown: 30, desc: 'Hit all enemies for 2' },
+    mcgucket: { name: 'Turret Frenzy', cooldown: 20, desc: '3 turret bolts' },
+};
 
 // ===== STATE =====
 var difficultySettings = {
@@ -733,6 +917,11 @@ var state = {
     gameLoop: null, spawnTimer: null, waveTimer: null,
     spawningDone: false,
     currentWeapon: 'fists',
+    insideBuilding: null,
+    abilityCooldown: 0,
+    abilityActive: false,
+    abilityTimer: 0,
+    bossesDefeated: 0,
 };
 
 // ===== DOM =====
@@ -843,7 +1032,8 @@ function buildCharPreview(parent, charId) {
             el('div', 'mcgucket-beard', wrap);
             el('div', 'ally-arm mcgucket-arm left', wrap);
             el('div', 'ally-arm mcgucket-arm right', wrap);
-            el('div', 'ally-body mcgucket-body', wrap);
+            var mcb = el('div', 'ally-body mcgucket-body', wrap);
+            el('div', 'mcgucket-overalls', mcb);
             el('div', 'ally-leg mcgucket-leg left', wrap);
             el('div', 'ally-leg mcgucket-leg right', wrap);
         }
@@ -906,7 +1096,17 @@ document.getElementById('how-to-play-btn').addEventListener('click', function() 
 document.getElementById('close-instructions').addEventListener('click', function() { document.getElementById('instructions-modal').style.display = 'none'; });
 
 var keys = {};
-document.addEventListener('keydown', function(e) { keys[e.key] = true; if (e.key === 'Escape') togglePause(); });
+document.addEventListener('keydown', function(e) {
+    keys[e.key] = true;
+    if (e.key === 'Escape') togglePause();
+    if (e.key === ' ' && state.running && !state.paused) { e.preventDefault(); useAbility(); }
+    if (e.key === 'Enter' && state.running && !state.paused && !state.insideBuilding) {
+        if (enterPrompt) {
+            var loc = locations.find(function(l) { return l.id === enterPrompt.dataset.locId; });
+            if (loc) enterBuilding(loc);
+        }
+    }
+});
 document.addEventListener('keyup', function(e) { keys[e.key] = false; });
 document.querySelectorAll('.dpad-btn').forEach(function(btn) {
     var dir = btn.dataset.dir;
@@ -1055,6 +1255,12 @@ function buildLocationDOM(loc) {
     if (loc.id === 'shack') {
         wrap.style.bottom = '20%';
         var roof = el('div', 'shack-roof', wrap);
+        var roofSign = el('div', 'shack-roof-sign', roof);
+        var signLine1 = document.createTextNode('MYSTERY');
+        roofSign.appendChild(signLine1);
+        roofSign.appendChild(document.createElement('br'));
+        var sLetter = el('span', 'shack-s', roofSign); sLetter.textContent = 'S';
+        roofSign.appendChild(document.createTextNode('HACK'));
         var body = el('div', 'shack-body', wrap);
         el('div', 'shack-window l', body);
         el('div', 'shack-window r', body);
@@ -1173,7 +1379,8 @@ function buildPlayerDOM() {
         el('div', 'mcgucket-beard', ch);
         el('div', 'ally-arm mcgucket-arm left', ch);
         el('div', 'ally-arm mcgucket-arm right', ch);
-        el('div', 'ally-body mcgucket-body', ch);
+        var mcb2 = el('div', 'ally-body mcgucket-body', ch);
+        el('div', 'mcgucket-overalls', mcb2);
         el('div', 'ally-leg mcgucket-leg left', ch);
         el('div', 'ally-leg mcgucket-leg right', ch);
     }
@@ -1200,6 +1407,13 @@ function initGame() {
     state.running = true; state.paused = false; state.collectTimer = 0;
     state.spawningDone = false;
     state.currentWeapon = 'fists';
+    state.insideBuilding = null;
+    state.abilityCooldown = 0;
+    state.abilityActive = false;
+    state.abilityTimer = 0;
+    state.bossesDefeated = 0;
+    document.getElementById('building-interior').style.display = 'none';
+    if (enterPrompt) { enterPrompt.remove(); enterPrompt = null; }
     state.collectDuration = diff.collectDuration;
     state.playerMaxHp = diff.playerMaxHp;
     state.playerHp = diff.playerMaxHp;
@@ -1233,6 +1447,7 @@ function initGame() {
     updateHUD();
     updateCamera();
     updateWeaponDisplay();
+    setupAbilityButton();
     startCollectPhase();
 
     if (state.gameLoop) cancelAnimationFrame(state.gameLoop);
@@ -1302,8 +1517,23 @@ function startWave() {
     if (aliveLocs.length === 0) return;
     state.waveTarget = aliveLocs[Math.floor(Math.random() * aliveLocs.length)];
 
+    // Check for boss wave (every 10 waves)
+    if (state.wave % 10 === 0) {
+        startBossWave();
+        return;
+    }
+
+    // Check for special waves (every 3rd wave, but not boss waves)
+    if (state.wave % 3 === 0) {
+        // Alternate between treasure and swarm
+        var specialType = (Math.floor(state.wave / 3) % 2 === 1) ? 'treasure' : 'swarm';
+        startSpecialWave(specialType);
+        return;
+    }
+
     dom.waveAnnounce.textContent = 'WAVE ' + state.wave + ' - ' + state.waveTarget.name + ' under attack!';
     dom.waveAnnounce.style.display = 'block';
+    dom.waveAnnounce.className = '';
     setTimeout(function() { dom.waveAnnounce.style.display = 'none'; }, 2500);
     dom.waveDisplay.textContent = 'WAVE ' + state.wave + ' - ' + state.waveTarget.name;
     dom.waveDisplay.style.color = '#ff4444';
@@ -1317,6 +1547,160 @@ function startWave() {
         }
         spawnEnemy(); spawned++;
     }, diff.spawnDelay);
+}
+
+function startBossWave() {
+    var bossNum = state.wave / 10;
+    state.bossesDefeated = bossNum - 1; // Track for HP calc
+
+    dom.waveAnnounce.textContent = 'WAVE ' + state.wave + ' - BILL CIPHER APPEARS!';
+    dom.waveAnnounce.style.display = 'block';
+    dom.waveAnnounce.className = '';
+    dom.waveAnnounce.style.color = '#ffdd00';
+    dom.waveAnnounce.style.textShadow = '0 0 30px #ff6600, 0 0 60px #ff3300';
+    setTimeout(function() {
+        dom.waveAnnounce.style.display = 'none';
+        dom.waveAnnounce.style.color = '';
+        dom.waveAnnounce.style.textShadow = '';
+    }, 3000);
+    dom.waveDisplay.textContent = 'WAVE ' + state.wave + ' - BOSS: BILL CIPHER';
+    dom.waveDisplay.style.color = '#ffdd00';
+
+    // Spawn Bill Cipher
+    spawnBillCipher(bossNum);
+
+    // Also spawn some regular enemies
+    var diff = difficultySettings[currentDifficulty];
+    var enemyCount = Math.round((2 + bossNum * 2) * diff.enemyCountMult);
+    var spawned = 0;
+    if (state.spawnTimer) clearInterval(state.spawnTimer);
+    state.spawnTimer = setInterval(function() {
+        if (spawned >= enemyCount || !state.running) {
+            clearInterval(state.spawnTimer); state.spawnTimer = null; state.spawningDone = true; return;
+        }
+        spawnEnemy(); spawned++;
+    }, diff.spawnDelay);
+}
+
+function spawnBillCipher(bossNum) {
+    var enemy = el('div', 'enemy', dom.gameWorld);
+    var bill = el('div', 'bill-boss', enemy);
+    el('div', 'bill-boss-hat', bill);
+    el('div', 'bill-boss-body', bill);
+    el('div', 'bill-boss-eye', bill);
+    el('div', 'bill-boss-arm left', bill);
+    el('div', 'bill-boss-arm right', bill);
+    el('div', 'bill-boss-leg left', bill);
+    el('div', 'bill-boss-leg right', bill);
+
+    enemy.dataset.type = 'bill';
+    var target = state.waveTarget;
+    enemy.dataset.target = target.id;
+
+    // Spawn from a random side
+    var side = Math.random() > 0.5 ? 'left' : 'right';
+    var x = side === 'left' ? -100 : WORLD_W + 10;
+    var y = SCREEN_H * 0.4;
+    enemy.style.left = x + 'px';
+    enemy.style.top = y + 'px';
+
+    var bossHp = 20 + (bossNum * 15);
+    enemy.dataset.hp = bossHp;
+    enemy.dataset.maxhp = bossHp;
+    enemy.dataset.speed = 0.6 + bossNum * 0.1;
+    enemy.dataset.boss = 'true';
+
+    var hpBar = el('div', 'char-hp-bar', enemy);
+    hpBar.style.width = '80px';
+    hpBar.style.height = '8px';
+    var hpFill = el('div', 'char-hp-fill', hpBar);
+    hpFill.style.width = '100%';
+
+    state.enemies.push(enemy);
+}
+
+function startSpecialWave(type) {
+    if (type === 'treasure') {
+        // Treasure wave — no enemies, extra materials
+        dom.waveAnnounce.textContent = 'TREASURE WAVE!';
+        dom.waveAnnounce.style.display = 'block';
+        dom.waveAnnounce.className = 'treasure-announce';
+        setTimeout(function() { dom.waveAnnounce.style.display = 'none'; dom.waveAnnounce.className = ''; }, 2500);
+        dom.waveDisplay.textContent = 'WAVE ' + state.wave + ' - TREASURE!';
+        dom.waveDisplay.style.color = '#ffdd00';
+
+        // Spawn 3x materials
+        var matCount = Math.max(5, 8 + state.wave * 2 + difficultySettings[currentDifficulty].materialBonus);
+        spawnMaterials(matCount * 3);
+
+        // Give 15 seconds to collect, then next wave
+        state.phase = 'collect';
+        state.collectTimer = 15;
+        dom.waveDisplay.textContent = 'TREASURE WAVE! ' + state.collectTimer + 's';
+        if (state.waveTimer) clearInterval(state.waveTimer);
+        state.waveTimer = setInterval(function() {
+            state.collectTimer--;
+            if (state.collectTimer <= 0) { clearInterval(state.waveTimer); startWave(); }
+            else { dom.waveDisplay.textContent = 'TREASURE WAVE! ' + state.collectTimer + 's'; }
+        }, 1000);
+    } else if (type === 'swarm') {
+        // Swarm wave — double enemies, all gnomes with half HP
+        dom.waveAnnounce.textContent = 'SWARM WAVE!';
+        dom.waveAnnounce.style.display = 'block';
+        dom.waveAnnounce.className = 'swarm-announce';
+        setTimeout(function() { dom.waveAnnounce.style.display = 'none'; dom.waveAnnounce.className = ''; }, 2500);
+        dom.waveDisplay.textContent = 'WAVE ' + state.wave + ' - SWARM!';
+        dom.waveDisplay.style.color = '#ff4444';
+
+        var diff = difficultySettings[currentDifficulty];
+        var enemyCount = Math.round((4 + state.wave * 3) * diff.enemyCountMult * 2);
+        var spawned = 0;
+        if (state.spawnTimer) clearInterval(state.spawnTimer);
+        state.spawnTimer = setInterval(function() {
+            if (spawned >= enemyCount || !state.running) {
+                clearInterval(state.spawnTimer); state.spawnTimer = null; state.spawningDone = true; return;
+            }
+            spawnSwarmGnome(); spawned++;
+        }, Math.max(200, diff.spawnDelay - 200));
+    }
+}
+
+function spawnSwarmGnome() {
+    var enemy = el('div', 'enemy', dom.gameWorld);
+    var gn = el('div', 'gnome-char', enemy);
+    el('div', 'gnome-hat', gn); el('div', 'gnome-face', gn); el('div', 'gnome-beard', gn);
+    el('div', 'gnome-arm left', gn); el('div', 'gnome-arm right', gn);
+    el('div', 'gnome-body-part', gn);
+    el('div', 'gnome-leg left', gn); el('div', 'gnome-leg right', gn);
+    enemy.dataset.type = 'gnome';
+
+    var target = state.waveTarget;
+    if (!target || !target.alive) {
+        var aliveLocs = locations.filter(function(l){return l.alive;});
+        if (aliveLocs.length === 0) return;
+        target = aliveLocs[Math.floor(Math.random() * aliveLocs.length)];
+        state.waveTarget = target;
+    }
+    enemy.dataset.target = target.id;
+
+    var side = Math.random() > 0.5 ? 'left' : 'right';
+    var x = side === 'left' ? -40 : WORLD_W + 10;
+    var y = SCREEN_H * 0.6 + Math.random() * SCREEN_H * 0.2;
+    enemy.style.left = x + 'px';
+    enemy.style.top = y + 'px';
+
+    var diff = difficultySettings[currentDifficulty];
+    var maxHp = Math.max(1, Math.round((1 + Math.floor(state.wave / 4)) * diff.enemyHpMult));
+    enemy.dataset.hp = maxHp;
+    enemy.dataset.maxhp = maxHp;
+    var spd = (1.5 + state.wave * 0.15) * diff.enemySpeedMult;
+    enemy.dataset.speed = spd;
+
+    var hpBar = el('div', 'char-hp-bar', enemy);
+    var hpFill = el('div', 'char-hp-fill', hpBar);
+    hpFill.style.width = '100%';
+
+    state.enemies.push(enemy);
 }
 
 // ===== MATERIALS =====
@@ -1486,6 +1870,7 @@ function moveEnemies() {
         // Hit location
         if (dist < 50) {
             var dmg = Math.max(1, 5 - Math.floor(targetLoc.defense / 20));
+            if (enemy.dataset.boss === 'true') dmg = Math.max(5, 15 - Math.floor(targetLoc.defense / 10));
             targetLoc.health -= dmg;
             var flash = el('div', 'damage-flash', document.body);
             setTimeout(function(){flash.remove();}, 400);
@@ -1499,8 +1884,8 @@ function moveEnemies() {
             if (targetLoc.health <= 0) {
                 targetLoc.health = 0; targetLoc.alive = false;
                 if (targetLoc.el) targetLoc.el.style.opacity = '0.3';
-                announce(targetLoc.name + ' DESTROYED!');
-                if (locations.every(function(l){return !l.alive;})) gameOverScreen();
+                if (state.insideBuilding === targetLoc.id) exitBuilding();
+                gameOverScreen(targetLoc.name);
             }
             updateHUD(); return;
         }
@@ -1516,15 +1901,16 @@ function moveEnemies() {
             if (hp <= 0) {
                 spawnDeathEffect(ex, ey, enemy.dataset.type);
                 enemy.remove(); toRemove.push(enemy);
-                if (Math.random() < 0.4) {
-                    var types = ['wood','metal','crystal'];
-                    var t = types[Math.floor(Math.random()*types.length)];
-                    state[t]++;
-                    var popup = el('div','collect-popup',dom.gameWorld);
-                    popup.textContent = '+1 ' + t + '!';
-                    popup.style.left = ex+'px'; popup.style.top = ey+'px';
-                    setTimeout(function(){popup.remove();}, 800);
-                    updateHUD();
+                dropEnemyLoot(enemy.dataset.type, ex, ey);
+                // Check if boss killed — victory on wave 10
+                if (enemy.dataset.boss === 'true') {
+                    state.bossesDefeated++;
+                    if (state.wave === 10) {
+                        showVictoryScreen();
+                        return;
+                    } else {
+                        announce('BILL CIPHER DEFEATED!');
+                    }
                 }
                 return;
             }
@@ -1538,18 +1924,19 @@ function moveEnemies() {
                 enemy.dataset.stunned = '20';
                 setTimeout(function(){enemy.style.filter='';}, 333);
             }
+            var kbMult = (state.abilityActive && selectedChar === 'stan') ? 3 : 1;
             if (wpn.special === 'pull') {
                 enemy.style.left = (ex + dx/dist*20)+'px';
                 enemy.style.top = (ey + dy/dist*20)+'px';
             } else {
-                enemy.style.left = (ex - dx/dist*wpn.knockback)+'px';
-                enemy.style.top = (ey - dy/dist*wpn.knockback)+'px';
+                enemy.style.left = (ex - dx/dist*wpn.knockback*kbMult)+'px';
+                enemy.style.top = (ey - dy/dist*wpn.knockback*kbMult)+'px';
             }
             return;
         }
 
-        // Enemy hurts player on contact (if not attacking)
-        if (pd < 50 && state.playerHitCooldown <= 0) {
+        // Enemy hurts player on contact (must be very close)
+        if (pd < 30 && state.playerHitCooldown <= 0 && !(state.abilityActive && selectedChar === 'wendy')) {
             state.playerHp -= 1;
             state.playerHitCooldown = 30;
             updateCharHpBar(dom.player, state.playerHp, state.playerMaxHp);
@@ -1767,7 +2154,17 @@ function spawnAlly(typeId, assignedLoc) {
     var nameTag = el('div', 'ally-name', charDiv);
     nameTag.textContent = atype.name;
 
-    if (typeId === 'mabel') {
+    if (typeId === 'dipper') {
+        var dhat = el('div', 'dipper-hat', charDiv);
+        el('div', 'dipper-hat-top', dhat);
+        el('div', 'ally-head dipper-head', charDiv);
+        el('div', 'ally-arm dipper-arm left', charDiv);
+        el('div', 'ally-arm dipper-arm right', charDiv);
+        var dbody = el('div', 'ally-body dipper-body', charDiv);
+        el('div', 'dipper-vest', dbody);
+        el('div', 'ally-leg dipper-leg left', charDiv);
+        el('div', 'ally-leg dipper-leg right', charDiv);
+    } else if (typeId === 'mabel') {
         el('div', 'mabel-band', charDiv);
         el('div', 'mabel-hair', charDiv);
         var head = el('div', 'ally-head mabel-head', charDiv);
@@ -1822,7 +2219,8 @@ function spawnAlly(typeId, assignedLoc) {
         el('div', 'mcgucket-beard', charDiv);
         el('div', 'ally-arm mcgucket-arm left', charDiv);
         el('div', 'ally-arm mcgucket-arm right', charDiv);
-        el('div', 'ally-body mcgucket-body', charDiv);
+        var mcb3 = el('div', 'ally-body mcgucket-body', charDiv);
+        el('div', 'mcgucket-overalls', mcb3);
         el('div', 'ally-leg mcgucket-leg left', charDiv);
         el('div', 'ally-leg mcgucket-leg right', charDiv);
     }
@@ -1934,16 +2332,11 @@ function moveAllies() {
                     var eey = parseFloat(nearestEnemy.style.top);
                     spawnDeathEffect(eex, eey, nearestEnemy.dataset.type);
                     nearestEnemy.remove();
-                    // Drop loot
-                    if (Math.random() < 0.3) {
-                        var types = ['wood','metal','crystal'];
-                        var t = types[Math.floor(Math.random()*types.length)];
-                        state[t]++;
-                        var popup = el('div','collect-popup',dom.gameWorld);
-                        popup.textContent = '+1 ' + t + '!';
-                        popup.style.left = eex+'px'; popup.style.top = eey+'px';
-                        setTimeout(function(){popup.remove();}, 800);
-                        updateHUD();
+                    dropEnemyLoot(nearestEnemy.dataset.type, eex, eey);
+                    if (nearestEnemy.dataset.boss === 'true') {
+                        state.bossesDefeated++;
+                        if (state.wave === 10) { showVictoryScreen(); return; }
+                        else { announce('BILL CIPHER DEFEATED!'); }
                     }
                 } else {
                     nearestEnemy.dataset.hp = hp;
@@ -2063,7 +2456,8 @@ function spawnDeathEffect(x, y, type) {
         eyebat: ['#ff4444','#cc0000','#ff6666','#880000'],
         gnome: ['#cc0000','#886644','#fff','#554433'],
         hench: ['#ffcc00','#ffdd44','#333','#ffaa00'],
-        gbot: ['#cccccc','#888888','#ff3333','#666666']
+        gbot: ['#cccccc','#888888','#ff3333','#666666'],
+        bill: ['#ffdd00','#ffee44','#111','#ffaa00','#ff6600']
     };
     var colors = colorMap[type] || colorMap.gnome;
     var c = el('div', 'enemy-death', dom.gameWorld);
@@ -2080,23 +2474,857 @@ function spawnDeathEffect(x, y, type) {
     setTimeout(function(){c.remove();}, 600);
 }
 
+// ===== ENTER BUILDINGS =====
+var enterPrompt = null;
+var enterableLocs = ['shack', 'diner', 'tower'];
+var interiorState = { playerX: 0, playerY: 0, pickups: [], npcs: [], doorX: 0, doorY: 0 };
+
+function checkBuildingProximity() {
+    if (state.insideBuilding) return;
+    var nearBuilding = null;
+    locations.forEach(function(loc) {
+        if (!loc.alive || enterableLocs.indexOf(loc.id) === -1) return;
+        var dx = Math.abs(state.playerX - loc.x);
+        if (dx < 60) nearBuilding = loc;
+    });
+
+    if (nearBuilding && !enterPrompt) {
+        enterPrompt = el('div', 'enter-prompt', dom.gameWorld);
+        enterPrompt.textContent = 'ENTER';
+        enterPrompt.dataset.locId = nearBuilding.id;
+        enterPrompt.style.left = (nearBuilding.x + 30) + 'px';
+        enterPrompt.style.bottom = '28%';
+        enterPrompt.addEventListener('click', function() { enterBuilding(nearBuilding); });
+        enterPrompt.addEventListener('touchstart', function(e) { e.preventDefault(); enterBuilding(nearBuilding); });
+    } else if (nearBuilding && enterPrompt) {
+        enterPrompt.dataset.locId = nearBuilding.id;
+        enterPrompt.style.left = (nearBuilding.x + 30) + 'px';
+    } else if (!nearBuilding && enterPrompt) {
+        enterPrompt.remove();
+        enterPrompt = null;
+    }
+}
+
+function enterBuilding(loc) {
+    state.insideBuilding = loc.id;
+    var interior = document.getElementById('building-interior');
+    var room = document.getElementById('interior-room');
+    interior.style.display = 'block';
+
+    // Clear old room
+    while (room.firstChild) room.removeChild(room.firstChild);
+    var roomClass = loc.id === 'shack' ? 'shack-interior' : loc.id === 'tower' ? 'tower-interior' : 'diner-interior';
+    room.className = 'interior-room ' + roomClass;
+
+    var sw = window.innerWidth;
+    var sh = window.innerHeight;
+
+    // Room title
+    var title = el('div', 'room-title', room);
+    title.textContent = loc.id === 'shack' ? 'Mystery Shack' : loc.id === 'tower' ? 'Water Tower' : "Greasy's Diner";
+
+    // Walls
+    el('div', 'room-wall-left', room);
+    el('div', 'room-wall-right', room);
+    el('div', 'room-wall-top', room);
+
+    // Floor
+    el('div', 'room-floor', room);
+
+    // Door (bottom-center)
+    var door = el('div', 'room-door', room);
+    var doorX = sw / 2 - 17;
+    var doorY = sh - 60;
+    door.style.left = doorX + 'px';
+    door.style.top = doorY + 'px';
+    var doorFrame = el('div', 'room-door-frame', door);
+    el('div', 'room-door-knob', doorFrame);
+    interiorState.doorX = doorX;
+    interiorState.doorY = doorY;
+
+    // Add furniture and pickups
+    interiorState.pickups = [];
+    interiorState.npcs = [];
+
+    if (loc.id === 'shack') {
+        buildShackInterior(room, sw, sh);
+    } else if (loc.id === 'tower') {
+        buildTowerInterior(room, sw, sh);
+    } else {
+        buildDinerInterior(room, sw, sh);
+    }
+
+    // Spawn player inside, near door
+    var ip = el('div', null, room);
+    ip.id = 'interior-player';
+    interiorState.playerX = sw / 2 - 25;
+    interiorState.playerY = sh - 120;
+    ip.style.left = interiorState.playerX + 'px';
+    ip.style.top = interiorState.playerY + 'px';
+
+    // Build player sprite inside
+    buildInteriorPlayerSprite(ip);
+}
+
+function addFurniture(room, cls, x, y, w, h) {
+    var f = el('div', 'room-furniture ' + cls, room);
+    f.style.left = x + 'px';
+    f.style.top = y + 'px';
+    if (w) f.style.width = w + 'px';
+    if (h) f.style.height = h + 'px';
+}
+
+function addPickup(room, def, x, y) {
+    var pickup = el('div', 'room-pickup', room);
+    pickup.style.left = x + 'px';
+    pickup.style.top = y + 'px';
+    var iconEl = el('span', 'pickup-icon', pickup); iconEl.textContent = def.icon;
+    var labelEl = el('span', 'pickup-label', pickup); labelEl.textContent = def.label;
+    interiorState.pickups.push({ el: pickup, x: x, y: y, def: def, collected: false });
+}
+
+function addAttraction(room, icon, label, x, y) {
+    var a = el('div', 'room-furniture furniture-attraction', room);
+    a.style.left = x + 'px';
+    a.style.top = y + 'px';
+    var disp = el('div', 'furniture-display', a);
+    var ic = el('span', 'attraction-icon', a); ic.textContent = icon;
+    ic.style.marginTop = '-40px';
+    var lb = el('span', 'attraction-label', a); lb.textContent = label;
+}
+
+function addNPC(room, npcData, x, y) {
+    var npc = el('div', 'room-npc', room);
+    npc.style.left = x + 'px';
+    npc.style.top = y + 'px';
+    npc.style.width = '44px';
+    npc.style.height = '62px';
+
+    var prompt = el('div', 'npc-prompt', npc);
+    prompt.textContent = 'TALK';
+
+    var speech = el('div', 'npc-speech', npc);
+    speech.textContent = npcData.speech;
+
+    // Build NPC sprite
+    var ch = el('div', 'ally-char', npc);
+    ch.style.width = '44px'; ch.style.height = '62px';
+    buildNPCSprite(ch, npcData.charId);
+
+    interiorState.npcs.push({
+        el: npc, x: x, y: y, data: npcData, talked: false
+    });
+}
+
+function buildNPCSprite(ch, charId) {
+    if (charId === 'soos') {
+        el('div', 'soos-cap', ch);
+        el('div', 'ally-head soos-head', ch);
+        el('div', 'ally-arm soos-arm left', ch);
+        el('div', 'ally-arm soos-arm right', ch);
+        var sb = el('div', 'ally-body soos-body', ch);
+        el('div', 'soos-belly', sb);
+        el('div', 'soos-question', sb).textContent = '?';
+        el('div', 'ally-leg soos-leg left', ch);
+        el('div', 'ally-leg soos-leg right', ch);
+    } else if (charId === 'stan') {
+        el('div', 'stan-fez', ch);
+        el('div', 'ally-head stan-head', ch);
+        el('div', 'stan-glasses', ch);
+        el('div', 'ally-arm stan-arm left', ch);
+        el('div', 'ally-arm stan-arm right', ch);
+        var stb = el('div', 'ally-body stan-body', ch);
+        el('div', 'stan-tie', stb);
+        el('div', 'ally-leg stan-leg left', ch);
+        el('div', 'ally-leg stan-leg right', ch);
+    } else if (charId === 'wendy') {
+        el('div', 'wendy-hat', ch);
+        el('div', 'wendy-hair', ch);
+        el('div', 'ally-head wendy-head', ch);
+        el('div', 'ally-arm wendy-arm left', ch);
+        el('div', 'ally-arm wendy-arm right', ch);
+        el('div', 'ally-body wendy-body', ch);
+        el('div', 'ally-leg wendy-leg left', ch);
+        el('div', 'ally-leg wendy-leg right', ch);
+    } else if (charId === 'lazy_susan') {
+        // Simple NPC - brown hair, apron
+        var head = el('div', 'ally-head', ch);
+        head.style.background = '#ffcc99';
+        head.style.cssText += '; width:22px; height:22px; left:11px;';
+        var hair = el('div', null, ch);
+        hair.style.cssText = 'position:absolute; top:2px; left:8px; width:28px; height:12px; background:#885522; border-radius:8px 8px 0 0; z-index:4;';
+        el('div', 'ally-arm', ch).style.cssText += '; background:#fff; left:4px; top:29px;';
+        el('div', 'ally-arm', ch).style.cssText += '; background:#fff; right:4px; left:auto; top:29px;';
+        var body = el('div', 'ally-body', ch);
+        body.style.cssText += '; background:#ffaacc;';
+        var apron = el('div', null, body);
+        apron.style.cssText = 'position:absolute; inset:2px 4px 0 4px; background:#fff; border-radius:2px;';
+        el('div', 'ally-leg', ch).style.cssText += '; background:#335; left:12px; top:46px;';
+        el('div', 'ally-leg', ch).style.cssText += '; background:#335; right:12px; left:auto; top:46px;';
+    }
+}
+
+function buildShackInterior(room, sw, sh) {
+    // Stan's fake attractions along the walls
+    addAttraction(room, '🦇', 'BAT-BOY', sw * 0.08, sh * 0.22);
+    addAttraction(room, '🐴', 'HORSE-ICORN', sw * 0.25, sh * 0.22);
+    addAttraction(room, '🧜', 'FIJI MERMAID', sw * 0.65, sh * 0.22);
+    addAttraction(room, '👁️', 'EYE OF PROVIDENCE', sw * 0.82, sh * 0.22);
+
+    // Ropes between attractions
+    addFurniture(room, 'furniture-rope', sw * 0.18, sh * 0.28, 2, 40);
+    addFurniture(room, 'furniture-rope', sw * 0.55, sh * 0.28, 2, 40);
+
+    // Gift shop counter with register
+    addFurniture(room, 'furniture-counter', sw * 0.55, sh * 0.45, 140, 25);
+    addFurniture(room, 'furniture-register', sw * 0.62, sh * 0.42, 30, 25);
+
+    // Shelves with stuff
+    addFurniture(room, 'furniture-shelf', sw * 0.08, sh * 0.50, 50, 40);
+    addFurniture(room, 'furniture-shelf', sw * 0.08, sh * 0.65, 50, 40);
+    addFurniture(room, 'furniture-shelf', sw * 0.82, sh * 0.50, 50, 40);
+
+    // Rug in the middle
+    addFurniture(room, 'furniture-rug', sw * 0.35, sh * 0.65, 70, 35);
+
+    // More attractions on the right
+    addAttraction(room, '🦷', 'GIANT TOOTH', sw * 0.82, sh * 0.65);
+
+    // Stan is here (if not the player) — behind the counter
+    if (selectedChar !== 'stan') {
+        addNPC(room, {
+            charId: 'stan',
+            speech: "Here, take this. Don't tell anyone!",
+            gifts: [
+                { type: 'metal', amount: 3 },
+                { type: 'crystal', amount: 1 },
+            ]
+        }, sw * 0.58, sh * 0.38);
+    }
+
+    // Soos is here (if not the player) — near the attractions
+    if (selectedChar !== 'soos') {
+        addNPC(room, {
+            charId: 'soos',
+            speech: "Dude, I found this behind the vending machine!",
+            gifts: [
+                { type: 'wood', amount: 2 },
+                { type: 'metal', amount: 2 },
+            ]
+        }, sw * 0.38, sh * 0.35);
+    }
+
+    // Wendy at the counter (if not the player)
+    if (selectedChar !== 'wendy') {
+        addNPC(room, {
+            charId: 'wendy',
+            speech: "Grabbed some stuff from the roof. Here.",
+            gifts: [
+                { type: 'wood', amount: 3 },
+            ]
+        }, sw * 0.72, sh * 0.38);
+    }
+
+    // Lots of loot scattered around
+    var shackPickups = [
+        { icon: '📦', label: 'Crate', type: 'wood', amount: 2 },
+        { icon: '📦', label: 'Crate', type: 'wood', amount: 1 },
+        { icon: '🔮', label: 'Crystal', type: 'crystal', amount: 1 },
+        { icon: '📖', label: 'Journal', type: 'journal', amount: 1 },
+        { icon: '🔧', label: 'Tools', type: 'metal', amount: 2 },
+        { icon: '💎', label: 'Gem', type: 'crystal', amount: 1 },
+        { icon: '🪵', label: 'Planks', type: 'wood', amount: 2 },
+        { icon: '⚙️', label: 'Gears', type: 'metal', amount: 1 },
+        { icon: '🔩', label: 'Bolts', type: 'metal', amount: 1 },
+        { icon: '📜', label: 'Old Page', type: 'journal', amount: 1 },
+    ];
+    shackPickups.sort(function() { return Math.random() - 0.5; });
+    var pickCount = 5 + Math.floor(Math.random() * 3);
+    for (var i = 0; i < pickCount && i < shackPickups.length; i++) {
+        var px = 35 + Math.random() * (sw - 90);
+        var py = sh * 0.32 + Math.random() * (sh * 0.50);
+        addPickup(room, shackPickups[i], px, py);
+    }
+}
+
+function buildDinerInterior(room, sw, sh) {
+    // Long counter across the top
+    addFurniture(room, 'furniture-counter', sw * 0.25, sh * 0.28, sw * 0.5, 25);
+
+    // Row of stools at the counter
+    var stoolCount = Math.max(4, Math.floor(sw / 80));
+    for (var s = 0; s < stoolCount; s++) {
+        var sx = sw * 0.27 + s * (sw * 0.48 / stoolCount);
+        addFurniture(room, 'furniture-stool', sx, sh * 0.36, 18, 22);
+    }
+
+    // Booths along left wall
+    addFurniture(room, 'furniture-booth', sw * 0.05, sh * 0.45, 45, 35);
+    addFurniture(room, 'furniture-table', sw * 0.05, sh * 0.58, 50, 22);
+    addFurniture(room, 'furniture-booth', sw * 0.05, sh * 0.62, 45, 35);
+    addFurniture(room, 'furniture-table', sw * 0.05, sh * 0.75, 50, 22);
+
+    // Booths along right wall
+    addFurniture(room, 'furniture-booth', sw * 0.82, sh * 0.45, 45, 35);
+    addFurniture(room, 'furniture-table', sw * 0.82, sh * 0.58, 50, 22);
+    addFurniture(room, 'furniture-booth', sw * 0.82, sh * 0.62, 45, 35);
+    addFurniture(room, 'furniture-table', sw * 0.82, sh * 0.75, 50, 22);
+
+    // Center tables
+    addFurniture(room, 'furniture-table', sw * 0.35, sh * 0.55, 55, 25);
+    addFurniture(room, 'furniture-table', sw * 0.55, sh * 0.55, 55, 25);
+    addFurniture(room, 'furniture-table', sw * 0.35, sh * 0.72, 55, 25);
+    addFurniture(room, 'furniture-table', sw * 0.55, sh * 0.72, 55, 25);
+
+    // Jukebox
+    addFurniture(room, 'furniture-jukebox', sw * 0.92, sh * 0.30, 30, 45);
+
+    // Plants
+    addFurniture(room, 'furniture-plant', sw * 0.03, sh * 0.28, 15, 20);
+    addFurniture(room, 'furniture-plant', sw * 0.93, sh * 0.75, 15, 20);
+
+    // Cash register behind counter
+    addFurniture(room, 'furniture-register', sw * 0.70, sh * 0.24, 30, 25);
+
+    // Lazy Susan is here
+    addNPC(room, {
+        charId: 'lazy_susan',
+        speech: "Eat up, honey! On the house!",
+        gifts: [
+            { type: 'heal', amount: 2 },
+        ]
+    }, sw * 0.45, sh * 0.24);
+
+    // Soos eating at a booth (if not the player)
+    if (selectedChar !== 'soos') {
+        addNPC(room, {
+            charId: 'soos',
+            speech: "Dude, want some of my fries? They're infinite!",
+            gifts: [
+                { type: 'heal', amount: 1 },
+            ]
+        }, sw * 0.10, sh * 0.50);
+    }
+
+    // Wendy on break (if not the player)
+    if (selectedChar !== 'wendy') {
+        addNPC(room, {
+            charId: 'wendy',
+            speech: "Found this under a table. Gross, but useful!",
+            gifts: [
+                { type: 'metal', amount: 2 },
+            ]
+        }, sw * 0.85, sh * 0.50);
+    }
+
+    // Tons of food scattered on tables
+    var dinerPickups = [
+        { icon: '🥞', label: 'Pancakes', type: 'heal', amount: 1 },
+        { icon: '🥞', label: 'Pancakes', type: 'heal', amount: 1 },
+        { icon: '☕', label: 'Coffee', type: 'heal', amount: 1 },
+        { icon: '☕', label: 'Coffee', type: 'heal', amount: 1 },
+        { icon: '🥧', label: 'Pie', type: 'heal', amount: 2 },
+        { icon: '🍔', label: 'Burger', type: 'heal', amount: 1 },
+        { icon: '🍟', label: 'Fries', type: 'heal', amount: 1 },
+        { icon: '🥤', label: 'Soda', type: 'heal', amount: 1 },
+        { icon: '🍩', label: 'Donut', type: 'heal', amount: 1 },
+        { icon: '🌭', label: 'Hot Dog', type: 'heal', amount: 1 },
+    ];
+    dinerPickups.sort(function() { return Math.random() - 0.5; });
+    var dPickCount = 5 + Math.floor(Math.random() * 4);
+    for (var d = 0; d < dPickCount && d < dinerPickups.length; d++) {
+        var dx = 35 + Math.random() * (sw - 90);
+        var dy = sh * 0.32 + Math.random() * (sh * 0.50);
+        addPickup(room, dinerPickups[d], dx, dy);
+    }
+}
+
+function buildInteriorPlayerSprite(container) {
+    // Reuse the same sprite as the main game
+    if (selectedChar === 'dipper') {
+        var ch = el('div', 'player-char', container);
+        var hat = el('div', 'player-hat', ch);
+        el('div', 'player-hat-top', hat);
+        el('div', 'player-head', ch);
+        el('div', 'player-arm left', ch);
+        el('div', 'player-arm right', ch);
+        var body = el('div', 'player-body', ch);
+        el('div', 'player-vest', body);
+        el('div', 'player-leg left', ch);
+        el('div', 'player-leg right', ch);
+    } else {
+        var ch2 = el('div', 'ally-char', container);
+        ch2.style.width = '44px'; ch2.style.height = '62px';
+        if (selectedChar === 'mabel') {
+            el('div', 'mabel-band', ch2);
+            el('div', 'mabel-hair', ch2);
+            el('div', 'ally-head mabel-head', ch2);
+            el('div', 'ally-arm mabel-arm left', ch2);
+            el('div', 'ally-arm mabel-arm right', ch2);
+            var mb = el('div', 'ally-body mabel-body', ch2);
+            el('div', 'mabel-star', mb).textContent = '*';
+            el('div', 'ally-leg mabel-leg left', ch2);
+            el('div', 'ally-leg mabel-leg right', ch2);
+        } else if (selectedChar === 'stan') {
+            el('div', 'stan-fez', ch2);
+            el('div', 'ally-head stan-head', ch2);
+            el('div', 'stan-glasses', ch2);
+            el('div', 'ally-arm stan-arm left', ch2);
+            el('div', 'ally-arm stan-arm right', ch2);
+            var sb = el('div', 'ally-body stan-body', ch2);
+            el('div', 'stan-tie', sb);
+            el('div', 'ally-leg stan-leg left', ch2);
+            el('div', 'ally-leg stan-leg right', ch2);
+        } else if (selectedChar === 'wendy') {
+            el('div', 'wendy-hat', ch2);
+            el('div', 'wendy-hair', ch2);
+            el('div', 'ally-head wendy-head', ch2);
+            el('div', 'ally-arm wendy-arm left', ch2);
+            el('div', 'ally-arm wendy-arm right', ch2);
+            el('div', 'ally-body wendy-body', ch2);
+            el('div', 'ally-leg wendy-leg left', ch2);
+            el('div', 'ally-leg wendy-leg right', ch2);
+        } else if (selectedChar === 'soos') {
+            el('div', 'soos-cap', ch2);
+            el('div', 'ally-head soos-head', ch2);
+            el('div', 'ally-arm soos-arm left', ch2);
+            el('div', 'ally-arm soos-arm right', ch2);
+            var soosb = el('div', 'ally-body soos-body', ch2);
+            el('div', 'soos-belly', soosb);
+            el('div', 'soos-question', soosb).textContent = '?';
+            el('div', 'ally-leg soos-leg left', ch2);
+            el('div', 'ally-leg soos-leg right', ch2);
+        } else if (selectedChar === 'ford') {
+            el('div', 'ford-hair', ch2);
+            el('div', 'ally-head ford-head', ch2);
+            el('div', 'ford-glasses', ch2);
+            el('div', 'ally-arm ford-arm left', ch2);
+            el('div', 'ally-arm ford-arm right', ch2);
+            var fb = el('div', 'ally-body ford-body', ch2);
+            el('div', 'ford-coat', fb);
+            el('div', 'ally-leg ford-leg left', ch2);
+            el('div', 'ally-leg ford-leg right', ch2);
+        } else if (selectedChar === 'mcgucket') {
+            el('div', 'mcgucket-hat', ch2);
+            el('div', 'ally-head mcgucket-head', ch2);
+            el('div', 'mcgucket-beard', ch2);
+            el('div', 'ally-arm mcgucket-arm left', ch2);
+            el('div', 'ally-arm mcgucket-arm right', ch2);
+            var mcb4 = el('div', 'ally-body mcgucket-body', ch2);
+            el('div', 'mcgucket-overalls', mcb4);
+            el('div', 'ally-leg mcgucket-leg left', ch2);
+            el('div', 'ally-leg mcgucket-leg right', ch2);
+        }
+    }
+}
+
+function moveInteriorPlayer() {
+    var speed = 4;
+    var moving = false;
+    var sw = window.innerWidth;
+    var sh = window.innerHeight;
+
+    if (keys['ArrowUp']||keys['w']||keys['up']) { interiorState.playerY -= speed; moving = true; }
+    if (keys['ArrowDown']||keys['s']||keys['down']) { interiorState.playerY += speed; moving = true; }
+    if (keys['ArrowLeft']||keys['a']||keys['left']) { interiorState.playerX -= speed; moving = true; }
+    if (keys['ArrowRight']||keys['d']||keys['right']) { interiorState.playerX += speed; moving = true; }
+
+    // Bounds — keep inside room
+    interiorState.playerX = Math.max(25, Math.min(sw - 65, interiorState.playerX));
+    interiorState.playerY = Math.max(70, Math.min(sh - 70, interiorState.playerY));
+
+    var ip = document.getElementById('interior-player');
+    if (!ip) return;
+    ip.style.left = interiorState.playerX + 'px';
+    ip.style.top = interiorState.playerY + 'px';
+
+    if (moving) {
+        ip.classList.add('walking');
+        if (keys['ArrowLeft']||keys['a']||keys['left']) { ip.classList.add('facing-left'); ip.classList.remove('facing-right'); }
+        if (keys['ArrowRight']||keys['d']||keys['right']) { ip.classList.add('facing-right'); ip.classList.remove('facing-left'); }
+    } else {
+        ip.classList.remove('walking');
+        ip.classList.remove('facing-left');
+    }
+
+    // Check pickup collisions
+    interiorState.pickups.forEach(function(p) {
+        if (p.collected) return;
+        var dx = interiorState.playerX - p.x;
+        var dy = interiorState.playerY - p.y;
+        if (Math.sqrt(dx*dx + dy*dy) < 35) {
+            p.collected = true;
+            p.el.classList.add('collected');
+            setTimeout(function() { if (p.el.parentNode) p.el.remove(); }, 400);
+            if (p.def.type === 'heal') {
+                if (state.playerHp < state.playerMaxHp) {
+                    state.playerHp = Math.min(state.playerMaxHp, state.playerHp + p.def.amount);
+                    announce('+' + p.def.amount + ' HP!');
+                } else {
+                    announce('Already full health!');
+                }
+            } else {
+                state[p.def.type] += p.def.amount;
+                announce('+' + p.def.amount + ' ' + p.def.type + '!');
+            }
+            updateHUD();
+        }
+    });
+
+    // Check NPC proximity
+    if (interiorState.npcs) {
+        interiorState.npcs.forEach(function(npc) {
+            var ndx = interiorState.playerX - npc.x;
+            var ndy = interiorState.playerY - npc.y;
+            var near = Math.sqrt(ndx*ndx + ndy*ndy) < 45;
+            if (near && !npc.talked) {
+                npc.talked = true;
+                npc.el.classList.add('talking');
+                // Give gifts
+                npc.data.gifts.forEach(function(gift) {
+                    if (gift.type === 'heal') {
+                        if (state.playerHp < state.playerMaxHp) {
+                            state.playerHp = Math.min(state.playerMaxHp, state.playerHp + gift.amount);
+                            announce('+' + gift.amount + ' HP!');
+                        }
+                    } else {
+                        state[gift.type] += gift.amount;
+                        announce('+' + gift.amount + ' ' + gift.type + '!');
+                    }
+                });
+                updateHUD();
+                // Hide speech after a few seconds
+                setTimeout(function() {
+                    npc.el.classList.remove('talking');
+                    npc.el.classList.add('talked');
+                }, 3000);
+            }
+        });
+    }
+
+    // Check door collision — exit
+    var dx2 = interiorState.playerX - interiorState.doorX;
+    var dy2 = interiorState.playerY - interiorState.doorY;
+    if (Math.sqrt(dx2*dx2 + dy2*dy2) < 35) {
+        exitBuilding();
+    }
+}
+
+function exitBuilding() {
+    state.insideBuilding = null;
+    document.getElementById('building-interior').style.display = 'none';
+    if (enterPrompt) { enterPrompt.remove(); enterPrompt = null; }
+}
+
+// ===== LOOT DROPS =====
+function dropEnemyLoot(enemyType, ex, ey) {
+    var types = ['wood','metal','crystal'];
+    var dropped = [];
+
+    if (enemyType === 'bill') {
+        // Boss always drops 5 of each
+        ['wood','metal','crystal','journal'].forEach(function(t) {
+            state[t] += 5;
+            dropped.push('+5 ' + t);
+        });
+    } else if (enemyType === 'gbot') {
+        if (Math.random() < 0.8) {
+            var amt = 2 + Math.floor(Math.random() * 2);
+            state.metal += amt;
+            dropped.push('+' + amt + ' metal');
+        }
+    } else if (enemyType === 'hench') {
+        if (Math.random() < 0.6) {
+            var count = 1 + Math.floor(Math.random() * 2);
+            for (var i = 0; i < count; i++) {
+                var t = Math.random() < 0.5 ? 'metal' : 'crystal';
+                state[t]++;
+                dropped.push('+1 ' + t);
+            }
+        }
+    } else if (enemyType === 'gnome') {
+        if (Math.random() < 0.4) {
+            var t = types[Math.floor(Math.random()*types.length)];
+            state[t]++;
+            dropped.push('+1 ' + t);
+        }
+    } else {
+        // eyebat
+        if (Math.random() < 0.3) {
+            var t = types[Math.floor(Math.random()*types.length)];
+            state[t]++;
+            dropped.push('+1 ' + t);
+        }
+    }
+
+    if (dropped.length > 0) {
+        var popup = el('div','collect-popup',dom.gameWorld);
+        popup.textContent = dropped.join(', ') + '!';
+        popup.style.left = ex+'px'; popup.style.top = ey+'px';
+        setTimeout(function(){popup.remove();}, 800);
+        updateHUD();
+    }
+}
+
+// ===== VICTORY SCREEN =====
+function showVictoryScreen() {
+    state.running = false;
+    if (state.waveTimer) clearInterval(state.waveTimer);
+    if (state.spawnTimer) clearInterval(state.spawnTimer);
+    dom.gameOver.classList.add('victory');
+    document.getElementById('game-over-title').textContent = 'YOU SAVED GRAVITY FALLS!';
+    document.getElementById('game-over-title').style.color = '#ffdd00';
+    document.getElementById('game-over-title').style.textShadow = '0 0 30px #ffaa00, 0 0 60px #ff6600';
+    document.getElementById('game-over-msg').textContent = 'Bill Cipher has been defeated!';
+    document.getElementById('game-over-msg').style.color = '#ffdd00';
+    dom.finalWave.textContent = 'You survived ' + state.wave + ' waves and defeated Bill Cipher!';
+    document.getElementById('restart-btn').textContent = 'PLAY AGAIN';
+    dom.gameOver.style.display = 'flex';
+    dom.gameOver.style.background = 'rgba(0,0,0,0.95)';
+}
+
+// ===== TOWER INTERIOR =====
+function buildTowerInterior(room, sw, sh) {
+    // Ladder on the left wall
+    addFurniture(room, 'furniture-ladder', sw * 0.06, sh * 0.30, 20, 200);
+
+    // Graffiti on walls
+    var g1 = el('div', 'furniture-graffiti', room);
+    g1.textContent = 'GF'; g1.style.left = sw * 0.75 + 'px'; g1.style.top = sh * 0.20 + 'px'; g1.style.fontSize = '28px';
+    var g2 = el('div', 'furniture-graffiti', room);
+    g2.textContent = 'CIPHER WAS HERE'; g2.style.left = sw * 0.15 + 'px'; g2.style.top = sh * 0.18 + 'px'; g2.style.fontSize = '10px'; g2.style.transform = 'rotate(-5deg)';
+    var g3 = el('div', 'furniture-graffiti', room);
+    g3.textContent = '3'; g3.style.left = sw * 0.85 + 'px'; g3.style.top = sh * 0.35 + 'px'; g3.style.fontSize = '20px'; g3.style.color = 'rgba(255,100,100,0.15)';
+
+    // Telescope / Lookout spot
+    var telescope = el('div', 'room-npc', room);
+    telescope.style.left = (sw * 0.65) + 'px';
+    telescope.style.top = (sh * 0.35) + 'px';
+    telescope.style.width = '50px';
+    telescope.style.height = '30px';
+
+    var tPrompt = el('div', 'npc-prompt', telescope);
+    tPrompt.textContent = 'LOOKOUT';
+
+    var tSpeech = el('div', 'npc-speech', telescope);
+    // Determine what location will be attacked next
+    var nextTarget = state.waveTarget ? state.waveTarget.name : 'unknown';
+    if (state.phase === 'collect') {
+        var aliveLocs = locations.filter(function(l){return l.alive;});
+        if (aliveLocs.length > 0) {
+            nextTarget = aliveLocs[Math.floor(Math.random() * aliveLocs.length)].name;
+        }
+    }
+    tSpeech.textContent = 'Enemies heading for ' + nextTarget + ' next wave!';
+
+    var tBody = el('div', 'furniture-telescope', telescope);
+    tBody.style.position = 'relative';
+
+    interiorState.npcs.push({
+        el: telescope, x: sw * 0.65, y: sh * 0.35,
+        data: { charId: null, speech: tSpeech.textContent, gifts: [] },
+        talked: false
+    });
+
+    // Material pickups — fewer since it's cramped
+    var towerPickups = [
+        { icon: '⚙️', label: 'Gears', type: 'metal', amount: 2 },
+        { icon: '🔩', label: 'Bolts', type: 'metal', amount: 1 },
+        { icon: '💎', label: 'Crystal', type: 'crystal', amount: 1 },
+    ];
+    towerPickups.sort(function() { return Math.random() - 0.5; });
+    var pickCount = 2 + Math.floor(Math.random() * 2);
+    for (var i = 0; i < pickCount && i < towerPickups.length; i++) {
+        var px = 40 + Math.random() * (sw - 100);
+        var py = sh * 0.40 + Math.random() * (sh * 0.35);
+        addPickup(room, towerPickups[i], px, py);
+    }
+}
+
+// ===== ABILITY SYSTEM =====
+function setupAbilityButton() {
+    var btn = document.getElementById('ability-btn');
+    var ability = charAbilities[selectedChar];
+    if (!ability) { btn.style.display = 'none'; return; }
+    btn.style.display = 'block';
+    btn.textContent = ability.name;
+    btn.disabled = false;
+    // Move weapon display up to make room
+    document.getElementById('weapon-display').style.bottom = '130px';
+    btn.addEventListener('click', useAbility);
+    btn.addEventListener('touchstart', function(e) { e.preventDefault(); useAbility(); });
+}
+
+function useAbility() {
+    if (state.abilityCooldown > 0 || !state.running || state.paused) return;
+    var ability = charAbilities[selectedChar];
+    if (!ability) return;
+
+    state.abilityCooldown = ability.cooldown * 60; // Convert seconds to frames
+
+    if (selectedChar === 'dipper') {
+        // Journal Scan — pulse all materials bigger for 5 seconds
+        state.materials.forEach(function(mat) {
+            if (mat.parentNode) mat.classList.add('ability-pulse');
+        });
+        announce('Journal Scan! Materials revealed!');
+        setTimeout(function() {
+            state.materials.forEach(function(mat) {
+                if (mat.parentNode) mat.classList.remove('ability-pulse');
+            });
+        }, 5000);
+    } else if (selectedChar === 'mabel') {
+        // Grapple Rush — dash 200px in facing direction
+        var facingLeft = dom.player.classList.contains('facing-left');
+        var dashDir = facingLeft ? -200 : 200;
+        state.playerX = Math.max(25, Math.min(WORLD_W - 60, state.playerX + dashDir));
+        updateCamera();
+        announce('Grappling Rush!');
+    } else if (selectedChar === 'stan') {
+        // Haymaker — 3x knockback for 3 seconds
+        state.abilityActive = true;
+        announce('HAYMAKER! 3x knockback!');
+        setTimeout(function() { state.abilityActive = false; }, 3000);
+    } else if (selectedChar === 'wendy') {
+        // High Ground — invincible for 3 seconds
+        state.abilityActive = true;
+        dom.player.classList.add('invincible');
+        announce('Invincible!');
+        setTimeout(function() {
+            state.abilityActive = false;
+            dom.player.classList.remove('invincible');
+        }, 3000);
+    } else if (selectedChar === 'soos') {
+        // Fix-It — repair nearest building by 20 HP
+        var nearest = getNearestAliveLocation(state.playerX);
+        if (nearest && nearest.health < nearest.maxHealth) {
+            nearest.health = Math.min(nearest.maxHealth, nearest.health + 20);
+            updateHUD();
+            announce('Fixed ' + nearest.name + ' +20 HP!');
+        } else {
+            announce('Nothing to repair!');
+            state.abilityCooldown = 0; // Don't waste cooldown
+        }
+    } else if (selectedChar === 'ford') {
+        // Portal Blast — 2 damage to all enemies on screen
+        var hitCount = 0;
+        state.enemies.slice().forEach(function(enemy) {
+            if (!enemy.parentNode) return;
+            var hp = parseInt(enemy.dataset.hp) - 2;
+            if (hp <= 0) {
+                var eex = parseFloat(enemy.style.left);
+                var eey = parseFloat(enemy.style.top);
+                spawnDeathEffect(eex, eey, enemy.dataset.type);
+                dropEnemyLoot(enemy.dataset.type, eex, eey);
+                enemy.remove();
+            } else {
+                enemy.dataset.hp = hp;
+                updateCharHpBar(enemy, hp, parseInt(enemy.dataset.maxhp));
+                enemy.classList.add('hit');
+                setTimeout(function(){enemy.classList.remove('hit');}, 150);
+            }
+            hitCount++;
+        });
+        state.enemies = state.enemies.filter(function(e){return e.parentNode;});
+        announce('Portal Blast! Hit ' + hitCount + ' enemies!');
+    } else if (selectedChar === 'mcgucket') {
+        // Turret Frenzy — fire 3 turret bolts at once
+        var targets = state.enemies.filter(function(e){return e.parentNode;});
+        if (targets.length === 0) {
+            announce('No enemies to shoot!');
+            state.abilityCooldown = 0;
+            return;
+        }
+        announce('Turret Frenzy!');
+        for (var i = 0; i < 3; i++) {
+            var target = targets[Math.floor(Math.random() * targets.length)];
+            fireTurretBolt(state.playerX, state.playerY, parseFloat(target.style.left), parseFloat(target.style.top));
+        }
+    }
+
+    updateAbilityButton();
+}
+
+function fireTurretBolt(fromX, fromY, toX, toY) {
+    var bolt = el('div', 'turret-bolt', dom.gameWorld);
+    bolt.style.left = fromX + 'px'; bolt.style.top = fromY + 'px';
+    bolt.style.position = 'absolute'; bolt.style.zIndex = '25';
+    bolt.style.width = '8px'; bolt.style.height = '8px';
+    bolt.style.background = '#00ffff'; bolt.style.borderRadius = '50%';
+    bolt.style.boxShadow = '0 0 8px #00ffff';
+    bolt.style.pointerEvents = 'none';
+    var bdx = toX - fromX; var bdy = toY - fromY;
+    var bdist = Math.sqrt(bdx*bdx+bdy*bdy);
+    if (bdist === 0) bdist = 1;
+    var bvx = bdx/bdist*6; var bvy = bdy/bdist*6;
+    var boltLife = 60;
+    (function animBolt() {
+        if (boltLife-- <= 0 || !bolt.parentNode) { if(bolt.parentNode) bolt.remove(); return; }
+        var bx = parseFloat(bolt.style.left) + bvx;
+        var by = parseFloat(bolt.style.top) + bvy;
+        bolt.style.left = bx + 'px'; bolt.style.top = by + 'px';
+        state.enemies.forEach(function(enemy) {
+            if (!enemy.parentNode) return;
+            var eex = parseFloat(enemy.style.left); var eey = parseFloat(enemy.style.top);
+            if (Math.sqrt((bx-eex)*(bx-eex)+(by-eey)*(by-eey)) < 30) {
+                var ehp = parseInt(enemy.dataset.hp) - 2;
+                if (ehp <= 0) {
+                    spawnDeathEffect(eex, eey, enemy.dataset.type);
+                    dropEnemyLoot(enemy.dataset.type, eex, eey);
+                    enemy.remove();
+                } else {
+                    enemy.dataset.hp = ehp;
+                    updateCharHpBar(enemy, ehp, parseInt(enemy.dataset.maxhp));
+                    enemy.classList.add('hit');
+                    setTimeout(function(){enemy.classList.remove('hit');}, 150);
+                }
+                bolt.remove();
+            }
+        });
+        if (bolt.parentNode) requestAnimationFrame(animBolt);
+    })();
+}
+
+function updateAbilityButton() {
+    var btn = document.getElementById('ability-btn');
+    var ability = charAbilities[selectedChar];
+    if (!ability || !btn) return;
+    if (state.abilityCooldown > 0) {
+        var secs = Math.ceil(state.abilityCooldown / 60);
+        btn.textContent = ability.name + ' (' + secs + 's)';
+        btn.disabled = true;
+    } else {
+        btn.textContent = ability.name;
+        btn.disabled = false;
+    }
+}
+
 // ===== GAME LOOP =====
 function gameLoop() {
     if (!state.running || state.paused) return;
-    movePlayer();
+    if (state.insideBuilding) {
+        moveInteriorPlayer();
+    } else {
+        movePlayer();
+        checkBuildingProximity();
+    }
     moveAllies();
     if (state.phase === 'defend') moveEnemies();
+    if (state.abilityCooldown > 0) { state.abilityCooldown--; updateAbilityButton(); }
     updateHUD();
     state.gameLoop = requestAnimationFrame(gameLoop);
 }
 
 // ===== GAME OVER =====
-function gameOverScreen() {
+function gameOverScreen(destroyedName) {
     state.running = false;
     if (state.waveTimer) clearInterval(state.waveTimer);
     if (state.spawnTimer) clearInterval(state.spawnTimer);
+    document.getElementById('game-over-title').textContent = 'You died.';
+    document.getElementById('game-over-msg').textContent = 'Bill took over Gravity Falls.';
     dom.gameOver.style.display = 'flex';
-    dom.finalWave.textContent = 'You survived ' + state.wave + ' wave' + (state.wave !== 1 ? 's' : '') + '!';
+    dom.gameOver.style.background = '#000';
+    dom.finalWave.textContent = (destroyedName || 'A location') + ' was destroyed. You survived ' + state.wave + ' wave' + (state.wave !== 1 ? 's' : '') + '.';
 }
 
 function restartGame() {
@@ -2105,9 +3333,19 @@ function restartGame() {
     if (state.spawnTimer) clearInterval(state.spawnTimer);
     if (state.gameLoop) cancelAnimationFrame(state.gameLoop);
     dom.gameOver.style.display = 'none';
+    dom.gameOver.classList.remove('victory');
+    document.getElementById('game-over-title').style.color = '';
+    document.getElementById('game-over-title').style.textShadow = '';
+    document.getElementById('game-over-msg').style.color = '';
+    document.getElementById('restart-btn').textContent = 'TRY AGAIN';
     dom.buildMenu.style.display = 'none';
     dom.gameContainer.style.display = 'none';
     dom.titleScreen.style.display = 'flex';
+    // Hide ability button
+    var abilityBtn = document.getElementById('ability-btn');
+    if (abilityBtn) abilityBtn.style.display = 'none';
+    // Reset weapon display position
+    document.getElementById('weapon-display').style.bottom = '70px';
 }
 
 window.addEventListener('resize', function() {

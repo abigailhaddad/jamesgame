@@ -25,6 +25,12 @@ A Gravity Falls tower defense game set during Weirdmageddon. Pick your character
 18. **More recruitable allies** (Soos, Ford, McGucket) - DONE
 19. **Character selection** at game start (chosen character can't be recruited) - DONE
 20. **Character costume details** - Ford's labcoat, Soos's ? shirt, McGucket's black scarecrow hat - DONE
+21. **Mystery Shack sign** - "MYSTERY" / "SHACK" in red on the roof, upside-down S - DONE
+22. **Soos's shirt changed to blue** with white ? - DONE
+23. **Greasy's Diner made log-shaped** like a log cabin - DONE
+24. **McGucket's beard made longer** and smoother - DONE
+25. **Dipper as recruitable ally** when not playing as him - DONE
+26. **Enter buildings** - walk into Mystery Shack or Greasy's Diner to find items/heal - DONE
 
 ## Current Features
 
@@ -44,6 +50,7 @@ A Gravity Falls tower defense game set during Weirdmageddon. Pick your character
 - **Soos** - tough handyman, slowly repairs nearby buildings, costs 3 wood + 2 metal
 - **Ford** - genius inventor, high damage, costs 4 crystal + 1 journal
 - **McGucket** - mad scientist, spawns turret bolts that auto-target enemies, costs 5 metal + 2 wood
+- **Dipper** - brave adventurer, costs 2 wood + 1 crystal
 - Whichever character you play as can't be recruited as an ally
 - Allies patrol near their assigned location, chase nearby enemies, and heal back after being knocked down
 
@@ -70,6 +77,10 @@ A Gravity Falls tower defense game set during Weirdmageddon. Pick your character
 - Death effects, walking animations, attack animations
 - Health bars on everything
 - Weapon indicator showing current equipped weapon
+- **Enter buildings**: Walk near Mystery Shack or Greasy's Diner and tap ENTER to go inside. Walk around the interior picking up items and talking to NPCs.
+  - **Mystery Shack**: Stan's fake attractions (Bat-Boy, Horse-icorn, Fiji Mermaid, Eye of Providence, Giant Tooth), gift shop counter, shelves, and a rug. 5-7 material pickups scattered around. Stan, Soos, and Wendy are inside and give you gifts when you walk up to them.
+  - **Greasy's Diner**: Counter with stools, booths, center tables, jukebox, plants. 5-8 food pickups that heal HP. Lazy Susan, Soos, and Wendy hang out inside and give you food/materials.
+  - Walk to the door at the bottom to exit. Items and NPCs refresh each visit.
 
 ## Tech Details
 - Everything is in one file: `web/index.html`
