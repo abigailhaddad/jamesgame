@@ -475,7 +475,7 @@
         .char-card:hover { border-color: #ffdd00; transform: scale(1.05); }
         .char-card .char-name { color: #ffdd00; font-weight: bold; font-size: 0.9rem; margin-top: 8px; }
         .char-card .char-desc { color: #aaa; font-size: 0.7rem; margin-top: 4px; }
-        .char-card .char-preview { height: 70px; display: flex; align-items: center; justify-content: center; }
+        .char-card .char-preview { height: 80px; display: flex; align-items: center; justify-content: center; }
 
         /* ===== WEAPON INDICATOR ===== */
         #weapon-display {
@@ -768,6 +768,85 @@ var playableChars = [
 ];
 var selectedChar = 'dipper';
 
+function buildCharPreview(parent, charId) {
+    // Build a mini sprite for the character select screen
+    var wrap = el('div', null, parent);
+    wrap.style.position = 'relative'; wrap.style.margin = '0 auto';
+    if (charId === 'dipper') {
+        wrap.style.width = '50px'; wrap.style.height = '70px';
+        var hat = el('div', 'player-hat', wrap);
+        el('div', 'player-hat-top', hat);
+        el('div', 'player-head', wrap);
+        el('div', 'player-arm left', wrap);
+        el('div', 'player-arm right', wrap);
+        var body = el('div', 'player-body', wrap);
+        el('div', 'player-vest', body);
+        el('div', 'player-leg left', wrap);
+        el('div', 'player-leg right', wrap);
+    } else {
+        wrap.style.width = '44px'; wrap.style.height = '62px';
+        if (charId === 'mabel') {
+            el('div', 'mabel-band', wrap);
+            el('div', 'mabel-hair', wrap);
+            el('div', 'ally-head mabel-head', wrap);
+            el('div', 'ally-arm mabel-arm left', wrap);
+            el('div', 'ally-arm mabel-arm right', wrap);
+            var mb = el('div', 'ally-body mabel-body', wrap);
+            var star = el('div', 'mabel-star', mb); star.textContent = '*';
+            el('div', 'ally-leg mabel-leg left', wrap);
+            el('div', 'ally-leg mabel-leg right', wrap);
+        } else if (charId === 'stan') {
+            el('div', 'stan-fez', wrap);
+            el('div', 'ally-head stan-head', wrap);
+            el('div', 'stan-glasses', wrap);
+            el('div', 'ally-arm stan-arm left', wrap);
+            el('div', 'ally-arm stan-arm right', wrap);
+            var sb = el('div', 'ally-body stan-body', wrap);
+            el('div', 'stan-tie', sb);
+            el('div', 'ally-leg stan-leg left', wrap);
+            el('div', 'ally-leg stan-leg right', wrap);
+        } else if (charId === 'wendy') {
+            el('div', 'wendy-hat', wrap);
+            el('div', 'wendy-hair', wrap);
+            el('div', 'ally-head wendy-head', wrap);
+            el('div', 'ally-arm wendy-arm left', wrap);
+            el('div', 'ally-arm wendy-arm right', wrap);
+            el('div', 'ally-body wendy-body', wrap);
+            el('div', 'ally-leg wendy-leg left', wrap);
+            el('div', 'ally-leg wendy-leg right', wrap);
+        } else if (charId === 'soos') {
+            el('div', 'soos-cap', wrap);
+            el('div', 'ally-head soos-head', wrap);
+            el('div', 'ally-arm soos-arm left', wrap);
+            el('div', 'ally-arm soos-arm right', wrap);
+            var soosb = el('div', 'ally-body soos-body', wrap);
+            el('div', 'soos-belly', soosb);
+            el('div', 'ally-leg soos-leg left', wrap);
+            el('div', 'ally-leg soos-leg right', wrap);
+        } else if (charId === 'ford') {
+            el('div', 'ford-hair', wrap);
+            el('div', 'ally-head ford-head', wrap);
+            el('div', 'ford-glasses', wrap);
+            el('div', 'ally-arm ford-arm left', wrap);
+            el('div', 'ally-arm ford-arm right', wrap);
+            var fb = el('div', 'ally-body ford-body', wrap);
+            el('div', 'ford-coat', fb);
+            el('div', 'ally-leg ford-leg left', wrap);
+            el('div', 'ally-leg ford-leg right', wrap);
+        } else if (charId === 'mcgucket') {
+            el('div', 'mcgucket-hat', wrap);
+            el('div', 'ally-head mcgucket-head', wrap);
+            el('div', 'mcgucket-beard', wrap);
+            el('div', 'ally-arm mcgucket-arm left', wrap);
+            el('div', 'ally-arm mcgucket-arm right', wrap);
+            el('div', 'ally-body mcgucket-body', wrap);
+            el('div', 'ally-leg mcgucket-leg left', wrap);
+            el('div', 'ally-leg mcgucket-leg right', wrap);
+        }
+    }
+    return wrap;
+}
+
 function showCharSelect() {
     dom.titleScreen.style.display = 'none';
     var charSelect = document.getElementById('char-select');
@@ -778,10 +857,7 @@ function showCharSelect() {
         var card = el('div', 'char-card', opts);
         card.style.borderColor = ch.color;
         var preview = el('div', 'char-preview', card);
-        var icon = el('div', null, preview);
-        icon.style.width = '40px'; icon.style.height = '50px';
-        icon.style.background = ch.color; icon.style.borderRadius = '8px';
-        icon.style.margin = '0 auto';
+        buildCharPreview(preview, ch.id);
         var nm = el('div', 'char-name', card); nm.textContent = ch.name;
         var desc = el('div', 'char-desc', card); desc.textContent = ch.desc;
         card.addEventListener('click', function() {
