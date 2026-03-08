@@ -155,9 +155,9 @@
         .tower-legs { display: flex; justify-content: space-between; width: 60px; margin: 0 auto; }
         .tower-leg { width: 6px; height: 60px; background: #8a5c20; }
         /* Red muffin graffiti on tank */
-        .tower-graffiti { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -48%); width: 40px; height: 36px; z-index: 2; }
-        .tower-graffiti::before { content: ''; position: absolute; top: 0; left: 3px; width: 34px; height: 22px; background: #cc2222; border-radius: 50% 50% 10% 10%; box-shadow: 0 0 4px #aa0000; }
-        .tower-graffiti::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 15px; background: #cc2222; clip-path: polygon(8% 0%, 92% 0%, 100% 100%, 0% 100%); box-shadow: 0 0 4px #aa0000; }
+        .tower-graffiti { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -46%); width: 56px; height: 48px; z-index: 2; }
+        .graffiti-top { position: absolute; top: 0; left: 0; width: 56px; height: 30px; background: #dd2222; border-radius: 55% 55% 10% 10%; }
+        .graffiti-wrapper { position: absolute; bottom: 0; left: 5px; width: 46px; height: 20px; background: repeating-linear-gradient(90deg, #dd2222 0, #dd2222 5px, #bb1111 5px, #bb1111 7px); clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%); }
 
         /* Greasy's Diner - log cabin style */
         .diner-body { width: 130px; height: 60px; background: repeating-linear-gradient(180deg, #b8793a 0px, #a06828 6px, #8B5E14 8px, #9a6e30 10px, #b8793a 12px); border: 2px solid #6B4914; position: relative; border-radius: 12px; }
@@ -1470,7 +1470,9 @@ function buildLocationDOM(loc) {
     } else if (loc.id === 'tower') {
         wrap.style.bottom = '20%';
         var tank = el('div', 'tower-tank', wrap);
-        el('div', 'tower-graffiti', tank);
+        var graffiti = el('div', 'tower-graffiti', tank);
+        el('div', 'graffiti-top', graffiti);
+        el('div', 'graffiti-wrapper', graffiti);
         var legs = el('div', 'tower-legs', wrap);
         el('div', 'tower-leg', legs);
         el('div', 'tower-leg', legs);
