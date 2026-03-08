@@ -1467,19 +1467,6 @@ function buildLocationDOM(loc) {
         el('div', 'shack-window l', body);
         el('div', 'shack-window r', body);
         el('div', 'shack-door', body);
-        // Giant muffin next to the shack
-        var muffin = el('div', 'giant-muffin', wrap);
-        muffin.style.left = '-90px';
-        muffin.style.bottom = '0';
-        var muffinTop = el('div', 'muffin-top', muffin);
-        var c1 = el('div', 'muffin-chip', muffinTop); c1.style.top='18px'; c1.style.left='14px';
-        var c2 = el('div', 'muffin-chip', muffinTop); c2.style.top='28px'; c2.style.left='36px';
-        var c3 = el('div', 'muffin-chip', muffinTop); c3.style.top='12px'; c3.style.left='44px';
-        el('div', 'muffin-wrapper', muffin);
-        var expl = el('div', 'muffin-explosion', muffin);
-        expl.style.top = '-10px'; expl.style.right = '-10px';
-        var cr1 = el('div', 'muffin-crack', muffin); cr1.style.bottom='28px'; cr1.style.left='25px'; cr1.style.height='18px'; cr1.style.transform='rotate(-20deg)';
-        var cr2 = el('div', 'muffin-crack', muffin); cr2.style.bottom='28px'; cr2.style.left='40px'; cr2.style.height='14px'; cr2.style.transform='rotate(15deg)';
     } else if (loc.id === 'tower') {
         wrap.style.bottom = '20%';
         var tank = el('div', 'tower-tank', wrap);
