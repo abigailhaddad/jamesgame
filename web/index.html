@@ -30,16 +30,31 @@
             text-align: center; margin-bottom: 10px; animation: flicker 3s infinite;
         }
         #title-screen h2 { font-size: clamp(1rem, 3vw, 1.5rem); color: #ff6644; margin-bottom: 40px; text-align: center; }
+        .bill-outer {
+            position: relative; margin-bottom: 30px; animation: float 2s ease-in-out infinite;
+            filter: drop-shadow(2px 0 0 #111) drop-shadow(-2px 0 0 #111) drop-shadow(0 2px 0 #111) drop-shadow(0 -2px 0 #111);
+        }
         .bill-triangle {
             width: 0; height: 0;
             border-left: 60px solid transparent; border-right: 60px solid transparent;
             border-bottom: 100px solid #ffdd00;
-            position: relative; margin-bottom: 30px; animation: float 2s ease-in-out infinite;
+            position: relative;
+        }
+        .bill-triangle::before {
+            content: ''; position: absolute; width: 24px; height: 24px;
+            background: white; border-radius: 50%; top: 28px; left: -12px; z-index: 3;
         }
         .bill-triangle::after {
-            content: ''; position: absolute; width: 20px; height: 20px;
-            background: #1a0a2e; border-radius: 50%; top: 30px; left: -10px;
+            content: ''; position: absolute; width: 12px; height: 16px;
+            background: #111; border-radius: 50%; top: 34px; left: -6px; z-index: 4;
         }
+        .bill-triangle-hat { position: absolute; top: -55px; left: -22px; width: 44px; height: 50px; background: #111; border-radius: 4px 4px 0 0; z-index: 2; }
+        .bill-triangle-hat::before { content: ''; position: absolute; bottom: -6px; left: -12px; width: 68px; height: 8px; background: #111; border-radius: 3px; }
+        .bill-triangle-hat::after { content: ''; position: absolute; top: 12px; left: 7px; right: 7px; height: 6px; background: rgba(255,221,0,0.4); border-radius: 2px; }
+        .bill-triangle-bowtie { position: absolute; top: 75px; left: -18px; width: 36px; height: 16px; z-index: 2; display: flex; align-items: center; justify-content: center; }
+        .bill-triangle-wing { width: 15px; height: 16px; background: #111; clip-path: polygon(100% 50%, 0% 0%, 0% 100%); }
+        .bill-triangle-wing.right { clip-path: polygon(0% 50%, 100% 0%, 100% 100%); }
+        .bill-triangle-knot { width: 6px; height: 10px; background: #111; border-radius: 1px; flex-shrink: 0; }
         .start-btn {
             padding: 15px 40px; font-size: clamp(1.2rem, 3vw, 1.8rem);
             background: #ffdd00; color: #1a0a2e; border: none;
@@ -112,6 +127,15 @@
         /* Mystery Shack */
         .shack-body { width: 120px; height: 80px; background: linear-gradient(180deg, #8B6914, #6B4914); border: 2px solid #4a3010; position: relative; }
         .shack-roof { width: 0; height: 0; border-left: 75px solid transparent; border-right: 75px solid transparent; border-bottom: 50px solid #5a2a2a; position: relative; left: -15px; }
+        .shack-roof-decor { position: absolute; top: 0; left: -75px; width: 150px; height: 50px; z-index: 6; pointer-events: none; }
+        .shack-bill-eye { position: absolute; top: 28px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; background: #fff; border-radius: 50%; border: 1px solid #111; }
+        .shack-bill-eye::after { content: ''; position: absolute; top: 2px; left: 2px; width: 5px; height: 5px; background: #111; border-radius: 50%; }
+        .shack-bill-hat { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 22px; height: 14px; background: #111; border-radius: 2px 2px 0 0; }
+        .shack-bill-hat::before { content: ''; position: absolute; bottom: -3px; left: -5px; width: 32px; height: 4px; background: #111; border-radius: 2px; }
+        .shack-bill-bowtie { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); width: 16px; height: 7px; }
+        .shack-bill-bowtie::before { content: ''; position: absolute; left: 0; top: 0; width: 0; height: 0; border-top: 3.5px solid transparent; border-bottom: 3.5px solid transparent; border-right: 8px solid #111; }
+        .shack-bill-bowtie::after { content: ''; position: absolute; right: 0; top: 0; width: 0; height: 0; border-top: 3.5px solid transparent; border-bottom: 3.5px solid transparent; border-left: 8px solid #111; }
+        .shack-bill-knot { position: absolute; top: 2px; left: 7px; width: 3px; height: 3px; background: #111; border-radius: 1px; }
         .shack-roof-sign { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); color: #ff2222; font-size: 9px; font-weight: bold; z-index: 5; text-shadow: 1px 1px 0 #000; letter-spacing: 1px; text-align: center; line-height: 1.2; }
         .shack-s { display: inline-block; transform: rotate(180deg) translateY(-2px); position: relative; top: 2px; }
         .shack-door { width: 25px; height: 35px; background: #3a2010; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border: 1px solid #2a1508; }
@@ -121,10 +145,19 @@
         @keyframes locShake { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-2deg) translateY(-3px)} 50%{transform:rotate(2deg)} 75%{transform:rotate(-1deg)} }
 
         /* Water Tower */
-        .tower-tank { width: 70px; height: 50px; background: linear-gradient(180deg, #778899, #556677); border: 2px solid #445566; border-radius: 8px 8px 0 0; position: relative; }
-        .tower-tank::after { content: 'GF'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #334455; font-size: 18px; font-weight: bold; }
+        .tower-tank {
+            width: 70px; height: 56px;
+            background: repeating-linear-gradient(90deg, #b8822a 0px, #c8963c 7px, #a07030 7px, #b8822a 8px);
+            border: 2px solid #7a5020; border-radius: 8px 8px 0 0; position: relative; overflow: hidden;
+        }
+        .tower-tank::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 8px; background: rgba(0,0,0,0.2); border-radius: 6px 6px 0 0; }
+        .tower-tank::after { content: ''; }
         .tower-legs { display: flex; justify-content: space-between; width: 60px; margin: 0 auto; }
-        .tower-leg { width: 6px; height: 60px; background: #556677; }
+        .tower-leg { width: 6px; height: 60px; background: #8a5c20; }
+        /* Red muffin graffiti on tank */
+        .tower-graffiti { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -48%); width: 40px; height: 36px; z-index: 2; }
+        .tower-graffiti::before { content: ''; position: absolute; top: 0; left: 3px; width: 34px; height: 22px; background: #cc2222; border-radius: 50% 50% 10% 10%; box-shadow: 0 0 4px #aa0000; }
+        .tower-graffiti::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 15px; background: #cc2222; clip-path: polygon(8% 0%, 92% 0%, 100% 100%, 0% 100%); box-shadow: 0 0 4px #aa0000; }
 
         /* Greasy's Diner - log cabin style */
         .diner-body { width: 130px; height: 60px; background: repeating-linear-gradient(180deg, #b8793a 0px, #a06828 6px, #8B5E14 8px, #9a6e30 10px, #b8793a 12px); border: 2px solid #6B4914; position: relative; border-radius: 12px; }
@@ -581,13 +614,22 @@
         /* ===== CHARACTER SELECT ===== */
         .char-card {
             background: rgba(255,255,255,0.08); border: 2px solid #555;
-            border-radius: 8px; padding: 12px; width: 130px; cursor: pointer;
+            border-radius: 8px; padding: 12px; width: 145px; cursor: pointer;
             text-align: center; transition: all 0.2s;
         }
         .char-card:hover { border-color: #ffdd00; transform: scale(1.05); }
         .char-card .char-name { color: #ffdd00; font-weight: bold; font-size: 0.9rem; margin-top: 8px; }
         .char-card .char-desc { color: #aaa; font-size: 0.7rem; margin-top: 4px; }
         .char-card .char-preview { height: 80px; display: flex; align-items: center; justify-content: center; }
+        .char-stats { margin-top: 8px; text-align: left; }
+        .char-stat-row { display: flex; align-items: center; justify-content: space-between; margin: 3px 0; font-size: 0.65rem; }
+        .char-stat-label { color: #aaa; width: 40px; flex-shrink: 0; }
+        .char-stat-dots { display: flex; gap: 3px; }
+        .char-stat-dot { width: 8px; height: 8px; border-radius: 50%; background: #333; border: 1px solid #555; }
+        .char-stat-dot.filled { background: #ffdd00; border-color: #ffdd00; }
+        .char-ability { margin-top: 8px; padding: 5px 7px; background: rgba(68,136,255,0.15); border: 1px solid rgba(68,136,255,0.3); border-radius: 4px; text-align: left; }
+        .char-ability-name { color: #4488ff; font-size: 0.65rem; font-weight: bold; }
+        .char-ability-desc { color: #aaccff; font-size: 0.6rem; margin-top: 2px; }
 
         /* ===== WEAPON INDICATOR ===== */
         #weapon-display {
@@ -635,9 +677,13 @@
         .bill-boss-body::before { content: ''; position: absolute; top: 76px; left: -52px; width: 104px; height: 4px; background: #111; border-radius: 2px; }
         .bill-boss-eye { width: 24px; height: 24px; background: white; border-radius: 50%; position: absolute; top: 36px; left: 38px; z-index: 2; border: 2px solid #111; }
         .bill-boss-eye::after { content: ''; width: 12px; height: 12px; background: #111; border-radius: 50%; position: absolute; top: 4px; left: 4px; }
-        .bill-boss-hat { position: absolute; top: -18px; left: 30px; z-index: 3; }
-        .bill-boss-hat::before { content: ''; display: block; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-bottom: 18px solid #111; }
-        .bill-boss-hat::after { content: ''; position: absolute; bottom: -3px; left: -6px; width: 40px; height: 6px; background: #111; border-radius: 3px; }
+        .bill-boss-hat { position: absolute; top: -26px; left: 26px; z-index: 3; width: 48px; height: 26px; background: #111; border-radius: 2px 2px 0 0; }
+        .bill-boss-hat::before { content: ''; position: absolute; bottom: -4px; left: -8px; width: 64px; height: 6px; background: #111; border-radius: 3px; }
+        .bill-boss-hat::after { content: ''; position: absolute; top: 6px; left: 4px; right: 4px; height: 4px; background: rgba(255,221,0,0.3); border-radius: 2px; }
+        .bill-boss-bowtie { position: absolute; z-index: 3; top: 68px; left: 36px; width: 28px; height: 10px; }
+        .bill-boss-bowtie::before { content: ''; position: absolute; left: 0; top: 0; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 14px solid #111; }
+        .bill-boss-bowtie::after { content: ''; position: absolute; right: 0; top: 0; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 14px solid #111; }
+        .bill-boss-bowtie-knot { position: absolute; top: 3px; left: 11px; width: 6px; height: 4px; background: #111; border-radius: 1px; }
         .bill-boss-arm { width: 4px; height: 20px; background: #111; position: absolute; top: 55px; transform-origin: top center; }
         .bill-boss-arm.left { left: 8px; transform: rotate(30deg); }
         .bill-boss-arm.right { right: 8px; transform: rotate(-30deg); }
@@ -672,6 +718,30 @@
         .furniture-telescope::after { content: ''; position: absolute; right: -12px; top: 3px; width: 14px; height: 14px; background: linear-gradient(135deg, #99bbdd, #aaccee); border-radius: 50%; border: 2px solid #666; }
         .furniture-telescope::before { content: ''; position: absolute; left: -6px; top: 6px; width: 8px; height: 8px; background: #777; border-radius: 2px; }
         .furniture-graffiti { color: rgba(255,255,255,0.15); font-size: 14px; font-weight: bold; position: absolute; pointer-events: none; }
+        .furniture-pipe { background: #667788; border: 2px solid #445566; border-radius: 4px; }
+        .furniture-pipe-h { height: 14px; }
+        .furniture-pipe-v { width: 14px; }
+        .furniture-valve { width: 24px; height: 24px; background: #cc4422; border: 2px solid #992211; border-radius: 50%; }
+        .furniture-valve::before { content: ''; position: absolute; top: 50%; left: -6px; right: -6px; height: 4px; background: #cc4422; transform: translateY(-50%); }
+        .furniture-valve::after { content: ''; position: absolute; left: 50%; top: -6px; bottom: -6px; width: 4px; background: #cc4422; transform: translateX(-50%); }
+        .furniture-gauge { width: 28px; height: 28px; background: #ddd; border: 3px solid #888; border-radius: 50%; }
+        .furniture-gauge::after { content: ''; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; border-radius: 50%; background: conic-gradient(#44aa44 0% 60%, #ff4444 60% 100%); }
+        .furniture-platform { height: 10px; background: #5a6a7a; border: 2px solid #3a4a5a; border-radius: 2px; }
+        .furniture-platform::before { content: ''; position: absolute; top: -18px; left: 10%; right: 10%; height: 20px; background: repeating-linear-gradient(90deg, #5a6a7a 0, #5a6a7a 3px, transparent 3px, transparent 12px); }
+        .furniture-warning { background: #ffdd00; border: 2px solid #cc9900; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; color: #333; }
+        .furniture-barrel { width: 22px; height: 28px; background: linear-gradient(90deg, #556677, #778899, #556677); border: 2px solid #334455; border-radius: 3px 3px 2px 2px; }
+        .furniture-barrel::before { content: ''; position: absolute; top: 8px; left: -2px; right: -2px; height: 3px; background: #334455; box-shadow: 0 10px 0 #334455; }
+        /* Giant muffin outside */
+        .giant-muffin { position: absolute; z-index: 9; pointer-events: none; }
+        .muffin-top { width: 70px; height: 55px; background: radial-gradient(ellipse at 40% 30%, #f5c87a, #d4922a); border-radius: 50% 50% 20% 20%; position: relative; }
+        .muffin-top::before { content: ''; position: absolute; top: 8px; left: 10px; width: 12px; height: 8px; background: rgba(255,255,255,0.25); border-radius: 50%; transform: rotate(-20deg); }
+        .muffin-top::after { content: ''; position: absolute; top: 5px; right: 12px; width: 8px; height: 6px; background: rgba(255,255,255,0.2); border-radius: 50%; }
+        .muffin-chip { position: absolute; width: 8px; height: 5px; background: #5a2a0a; border-radius: 2px; }
+        .muffin-wrapper { width: 58px; height: 28px; background: repeating-linear-gradient(90deg, #cc4444 0, #cc4444 6px, #fff 6px, #fff 12px); border-radius: 0 0 6px 6px; margin: 0 auto; position: relative; overflow: hidden; }
+        .muffin-wrapper::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: #d4922a; }
+        .muffin-explosion { position: absolute; pointer-events: none; }
+        .muffin-explosion::before { content: '💥'; font-size: 24px; position: absolute; top: -20px; left: -5px; }
+        .muffin-crack { position: absolute; width: 3px; background: #8B4513; border-radius: 2px; transform-origin: bottom center; }
 
         /* ===== VICTORY SCREEN ===== */
         #game-over.victory { background: rgba(0,0,0,0.95) !important; }
@@ -692,7 +762,16 @@
 <body>
 
 <div id="title-screen">
-    <div class="bill-triangle"></div>
+    <div class="bill-outer">
+        <div class="bill-triangle">
+            <div class="bill-triangle-hat"></div>
+            <div class="bill-triangle-bowtie">
+                <div class="bill-triangle-wing left"></div>
+                <div class="bill-triangle-knot"></div>
+                <div class="bill-triangle-wing right"></div>
+            </div>
+        </div>
+    </div>
     <h1>23-5-9-18-4-13-1-7-5-4-4-15-14</h1>
     <h2>Defend Gravity Falls!</h2>
     <div id="difficulty-select" style="margin-bottom:15px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
@@ -950,13 +1029,13 @@ cacheDom();
 
 // ===== CHARACTER SELECT =====
 var playableChars = [
-    { id: 'dipper', name: 'Dipper', desc: 'The classic hero', color: '#ff6644' },
-    { id: 'mabel', name: 'Mabel', desc: 'Fast and sparkly', color: '#ff66cc' },
-    { id: 'stan', name: 'Grunkle Stan', desc: 'Tough brawler', color: '#cc0000' },
-    { id: 'wendy', name: 'Wendy', desc: 'Fast and strong', color: '#336633' },
-    { id: 'soos', name: 'Soos', desc: 'Tough handyman', color: '#228833' },
-    { id: 'ford', name: 'Ford', desc: 'Genius inventor', color: '#8B4513' },
-    { id: 'mcgucket', name: 'McGucket', desc: 'Mad scientist', color: '#aa8844' },
+    { id: 'dipper', name: 'Dipper', desc: 'The classic hero', color: '#ff6644', speed: 3, hp: 5, dmg: 1 },
+    { id: 'mabel', name: 'Mabel', desc: 'Fast and sparkly', color: '#ff66cc', speed: 4, hp: 5, dmg: 1 },
+    { id: 'stan', name: 'Grunkle Stan', desc: 'Tough brawler', color: '#cc0000', speed: 2, hp: 6, dmg: 2 },
+    { id: 'wendy', name: 'Wendy', desc: 'Fast and strong', color: '#336633', speed: 5, hp: 5, dmg: 1 },
+    { id: 'soos', name: 'Soos', desc: 'Tough handyman', color: '#228833', speed: 2, hp: 6, dmg: 1 },
+    { id: 'ford', name: 'Ford', desc: 'Genius inventor', color: '#8B4513', speed: 2, hp: 4, dmg: 3 },
+    { id: 'mcgucket', name: 'McGucket', desc: 'Mad scientist', color: '#aa8844', speed: 2, hp: 4, dmg: 1 },
 ];
 var selectedChar = 'dipper';
 
@@ -1054,6 +1133,26 @@ function showCharSelect() {
         buildCharPreview(preview, ch.id);
         var nm = el('div', 'char-name', card); nm.textContent = ch.name;
         var desc = el('div', 'char-desc', card); desc.textContent = ch.desc;
+        var statsDiv = el('div', 'char-stats', card);
+        [{ label: 'Speed', val: ch.speed, max: 5 },
+         { label: 'HP', val: ch.hp, max: 6 },
+         { label: 'Damage', val: ch.dmg, max: 3 }].forEach(function(stat) {
+            var row = el('div', 'char-stat-row', statsDiv);
+            var lbl = el('span', 'char-stat-label', row); lbl.textContent = stat.label;
+            var dots = el('div', 'char-stat-dots', row);
+            for (var i = 1; i <= stat.max; i++) {
+                var dot = el('div', 'char-stat-dot', dots);
+                if (i <= stat.val) dot.classList.add('filled');
+            }
+        });
+        var ability = charAbilities[ch.id];
+        if (ability) {
+            var abilDiv = el('div', 'char-ability', card);
+            var abilName = el('div', 'char-ability-name', abilDiv);
+            abilName.textContent = '⚡ ' + ability.name;
+            var abilDesc = el('div', 'char-ability-desc', abilDiv);
+            abilDesc.textContent = ability.desc;
+        }
         card.addEventListener('click', function() {
             selectedChar = ch.id;
             charSelect.style.display = 'none';
@@ -1265,9 +1364,23 @@ function buildLocationDOM(loc) {
         el('div', 'shack-window l', body);
         el('div', 'shack-window r', body);
         el('div', 'shack-door', body);
+        // Giant muffin next to the shack
+        var muffin = el('div', 'giant-muffin', wrap);
+        muffin.style.left = '-90px';
+        muffin.style.bottom = '0';
+        var muffinTop = el('div', 'muffin-top', muffin);
+        var c1 = el('div', 'muffin-chip', muffinTop); c1.style.top='18px'; c1.style.left='14px';
+        var c2 = el('div', 'muffin-chip', muffinTop); c2.style.top='28px'; c2.style.left='36px';
+        var c3 = el('div', 'muffin-chip', muffinTop); c3.style.top='12px'; c3.style.left='44px';
+        el('div', 'muffin-wrapper', muffin);
+        var expl = el('div', 'muffin-explosion', muffin);
+        expl.style.top = '-10px'; expl.style.right = '-10px';
+        var cr1 = el('div', 'muffin-crack', muffin); cr1.style.bottom='28px'; cr1.style.left='25px'; cr1.style.height='18px'; cr1.style.transform='rotate(-20deg)';
+        var cr2 = el('div', 'muffin-crack', muffin); cr2.style.bottom='28px'; cr2.style.left='40px'; cr2.style.height='14px'; cr2.style.transform='rotate(15deg)';
     } else if (loc.id === 'tower') {
         wrap.style.bottom = '20%';
         var tank = el('div', 'tower-tank', wrap);
+        el('div', 'tower-graffiti', tank);
         var legs = el('div', 'tower-legs', wrap);
         el('div', 'tower-leg', legs);
         el('div', 'tower-leg', legs);
@@ -1588,6 +1701,8 @@ function spawnBillCipher(bossNum) {
     el('div', 'bill-boss-hat', bill);
     el('div', 'bill-boss-body', bill);
     el('div', 'bill-boss-eye', bill);
+    var bt = el('div', 'bill-boss-bowtie', bill);
+    el('div', 'bill-boss-bowtie-knot', bt);
     el('div', 'bill-boss-arm left', bill);
     el('div', 'bill-boss-arm right', bill);
     el('div', 'bill-boss-leg left', bill);
@@ -3085,21 +3200,78 @@ function showVictoryScreen() {
 
 // ===== TOWER INTERIOR =====
 function buildTowerInterior(room, sw, sh) {
-    // Ladder on the left wall
-    addFurniture(room, 'furniture-ladder', sw * 0.06, sh * 0.30, 20, 200);
+    // Curved ceiling feel — ribbed metal panels along the top
+    for (var rib = 0; rib < 6; rib++) {
+        var ribEl = el('div', 'room-furniture furniture-pipe-h', room);
+        ribEl.style.left = '0px'; ribEl.style.right = '0px'; ribEl.style.width = '100%';
+        ribEl.style.top = (sh * 0.12 + rib * 18) + 'px';
+        ribEl.style.height = '6px'; ribEl.style.opacity = '0.4';
+        ribEl.style.background = '#4a5a6a';
+    }
 
-    // Graffiti on walls
-    var g1 = el('div', 'furniture-graffiti', room);
-    g1.textContent = 'GF'; g1.style.left = sw * 0.75 + 'px'; g1.style.top = sh * 0.20 + 'px'; g1.style.fontSize = '28px';
-    var g2 = el('div', 'furniture-graffiti', room);
-    g2.textContent = 'CIPHER WAS HERE'; g2.style.left = sw * 0.15 + 'px'; g2.style.top = sh * 0.18 + 'px'; g2.style.fontSize = '10px'; g2.style.transform = 'rotate(-5deg)';
-    var g3 = el('div', 'furniture-graffiti', room);
-    g3.textContent = '3'; g3.style.left = sw * 0.85 + 'px'; g3.style.top = sh * 0.35 + 'px'; g3.style.fontSize = '20px'; g3.style.color = 'rgba(255,100,100,0.15)';
+    // BIG CENTRAL WATER PIPE running down the left side
+    addFurniture(room, 'furniture-pipe-v', sw * 0.08, sh * 0.18, 22, sh * 0.65);
 
-    // Telescope / Lookout spot
+    // Horizontal pipes branching off the main pipe
+    addFurniture(room, 'furniture-pipe-h', sw * 0.08, sh * 0.28, sw * 0.25, 14);
+    addFurniture(room, 'furniture-pipe-h', sw * 0.08, sh * 0.48, sw * 0.18, 14);
+    addFurniture(room, 'furniture-pipe-h', sw * 0.08, sh * 0.62, sw * 0.30, 14);
+
+    // Pipes on the right side too
+    addFurniture(room, 'furniture-pipe-v', sw * 0.88, sh * 0.20, 22, sh * 0.55);
+    addFurniture(room, 'furniture-pipe-h', sw * 0.60, sh * 0.38, sw * 0.28, 14);
+    addFurniture(room, 'furniture-pipe-h', sw * 0.65, sh * 0.56, sw * 0.23, 14);
+
+    // RED VALVES on the pipes
+    addFurniture(room, 'furniture-valve', sw * 0.30, sh * 0.265, 24, 24);
+    addFurniture(room, 'furniture-valve', sw * 0.22, sh * 0.465, 24, 24);
+    addFurniture(room, 'furniture-valve', sw * 0.35, sh * 0.615, 24, 24);
+    addFurniture(room, 'furniture-valve', sw * 0.58, sh * 0.365, 24, 24);
+
+    // WATER GAUGES
+    addFurniture(room, 'furniture-gauge', sw * 0.18, sh * 0.30, 28, 28);
+    addFurniture(room, 'furniture-gauge', sw * 0.70, sh * 0.44, 28, 28);
+
+    // PLATFORM / CROW'S NEST in the upper-center with railing
+    addFurniture(room, 'furniture-platform', sw * 0.30, sh * 0.30, sw * 0.40, 10);
+    addFurniture(room, 'furniture-platform', sw * 0.30, sh * 0.30, sw * 0.40, 10);
+
+    // LADDER up to the platform
+    addFurniture(room, 'furniture-ladder', sw * 0.47, sh * 0.30, 20, sh * 0.38);
+
+    // BARRELS in the corner
+    addFurniture(room, 'furniture-barrel', sw * 0.80, sh * 0.65, 22, 28);
+    addFurniture(room, 'furniture-barrel', sw * 0.84, sh * 0.63, 22, 28);
+    addFurniture(room, 'furniture-barrel', sw * 0.12, sh * 0.68, 22, 28);
+
+    // WARNING SIGN
+    var warn = addFurnitureEl(room, sw * 0.55, sh * 0.24, 50, 18);
+    warn.className = 'room-furniture furniture-warning';
+    warn.textContent = '⚠ DANGER';
+
+    // GRAFFITI — more of it, more interesting
+    var graffitiData = [
+        { text: 'GF', x: 0.72, y: 0.20, size: '32px', color: 'rgba(255,255,100,0.2)' },
+        { text: 'BILL WAS HERE', x: 0.14, y: 0.18, size: '10px', rot: '-5deg' },
+        { text: '★ WENDY RULES ★', x: 0.50, y: 0.22, size: '9px', color: 'rgba(100,255,100,0.2)' },
+        { text: '3', x: 0.85, y: 0.38, size: '22px', color: 'rgba(255,100,100,0.2)' },
+        { text: 'SOOS WAS HERE 2X', x: 0.60, y: 0.65, size: '8px', rot: '3deg' },
+        { text: '? ? ?', x: 0.20, y: 0.55, size: '11px', color: 'rgba(200,200,255,0.15)' },
+    ];
+    graffitiData.forEach(function(g) {
+        var gEl = el('div', 'furniture-graffiti', room);
+        gEl.textContent = g.text;
+        gEl.style.left = sw * g.x + 'px';
+        gEl.style.top = sh * g.y + 'px';
+        if (g.size) gEl.style.fontSize = g.size;
+        if (g.color) gEl.style.color = g.color;
+        if (g.rot) gEl.style.transform = 'rotate(' + g.rot + ')';
+    });
+
+    // TELESCOPE / LOOKOUT — now on the platform
     var telescope = el('div', 'room-npc', room);
-    telescope.style.left = (sw * 0.65) + 'px';
-    telescope.style.top = (sh * 0.35) + 'px';
+    telescope.style.left = (sw * 0.60) + 'px';
+    telescope.style.top = (sh * 0.22) + 'px';
     telescope.style.width = '50px';
     telescope.style.height = '30px';
 
@@ -3107,38 +3279,47 @@ function buildTowerInterior(room, sw, sh) {
     tPrompt.textContent = 'LOOKOUT';
 
     var tSpeech = el('div', 'npc-speech', telescope);
-    // Determine what location will be attacked next
     var nextTarget = state.waveTarget ? state.waveTarget.name : 'unknown';
     if (state.phase === 'collect') {
         var aliveLocs = locations.filter(function(l){return l.alive;});
-        if (aliveLocs.length > 0) {
-            nextTarget = aliveLocs[Math.floor(Math.random() * aliveLocs.length)].name;
-        }
+        if (aliveLocs.length > 0) nextTarget = aliveLocs[Math.floor(Math.random() * aliveLocs.length)].name;
     }
-    tSpeech.textContent = 'Enemies heading for ' + nextTarget + ' next wave!';
-
+    tSpeech.textContent = 'I can see enemies heading for ' + nextTarget + '!';
     var tBody = el('div', 'furniture-telescope', telescope);
     tBody.style.position = 'relative';
 
     interiorState.npcs.push({
-        el: telescope, x: sw * 0.65, y: sh * 0.35,
+        el: telescope, x: sw * 0.60, y: sh * 0.22,
         data: { charId: null, speech: tSpeech.textContent, gifts: [] },
         talked: false
     });
 
-    // Material pickups — fewer since it's cramped
+    // More pickups than before
     var towerPickups = [
         { icon: '⚙️', label: 'Gears', type: 'metal', amount: 2 },
-        { icon: '🔩', label: 'Bolts', type: 'metal', amount: 1 },
+        { icon: '🔩', label: 'Bolts', type: 'metal', amount: 2 },
         { icon: '💎', label: 'Crystal', type: 'crystal', amount: 1 },
+        { icon: '🔧', label: 'Wrench', type: 'metal', amount: 1 },
+        { icon: '🪨', label: 'Ore', type: 'metal', amount: 1 },
     ];
     towerPickups.sort(function() { return Math.random() - 0.5; });
-    var pickCount = 2 + Math.floor(Math.random() * 2);
+    var pickCount = 3 + Math.floor(Math.random() * 2);
     for (var i = 0; i < pickCount && i < towerPickups.length; i++) {
         var px = 40 + Math.random() * (sw - 100);
-        var py = sh * 0.40 + Math.random() * (sh * 0.35);
+        var py = sh * 0.35 + Math.random() * (sh * 0.40);
         addPickup(room, towerPickups[i], px, py);
     }
+}
+
+function addFurnitureEl(room, x, y, w, h) {
+    var f = document.createElement('div');
+    f.style.position = 'absolute';
+    f.style.left = x + 'px';
+    f.style.top = y + 'px';
+    if (w) f.style.width = w + 'px';
+    if (h) f.style.height = h + 'px';
+    room.appendChild(f);
+    return f;
 }
 
 // ===== ABILITY SYSTEM =====
