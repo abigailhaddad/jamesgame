@@ -1579,6 +1579,7 @@ function initGame() {
     state.wood = 0; state.metal = 0; state.crystal = 0; state.journal = 0;
     state.wave = 0; state.phase = 'collect';
     state.enemies = []; state.materials = []; state.allies = [];
+    state.recruitedAt = {};
     state.running = true; state.paused = false; state.collectTimer = 0;
     state.spawningDone = false;
     state.currentWeapon = 'fists';
@@ -2311,18 +2312,24 @@ function renderBuildOptions() {
     });
 
     // Recruit allies (skip selected character — they're already the player)
+    var nearestForAllies = getNearestAliveLocation(state.playerX);
+    var recruitedHere = (nearestForAllies && state.recruitedAt[nearestForAllies.id]) || [];
     allyTypes.filter(function(at){return at.id !== selectedChar;}).forEach(function(at) {
         var card = el('div', 'build-card', dom.buildOptions);
-        card.style.borderColor = '#88ff88';
+        var alreadyHere = recruitedHere.indexOf(at.id) >= 0;
+        card.style.borderColor = alreadyHere ? '#555' : '#88ff88';
+        if (alreadyHere) card.style.opacity = '0.6';
         var title = el('h4', null, card); title.textContent = 'Recruit ' + at.name;
         var cost = el('div', 'cost', card);
         cost.textContent = Object.entries(at.cost).map(function(e){return e[1]+' '+e[0];}).join(', ');
-        var eff = el('div', 'effect', card); eff.textContent = at.desc;
-        var can = Object.entries(at.cost).every(function(e){return state[e[0]]>=e[1];});
+        var eff = el('div', 'effect', card); eff.textContent = alreadyHere ? 'Already here!' : at.desc;
+        if (alreadyHere) eff.style.color = '#aaa';
+        var can = !alreadyHere && Object.entries(at.cost).every(function(e){return state[e[0]]>=e[1];});
         var btn = el('button', 'build-btn', card);
-        btn.textContent = 'RECRUIT'; btn.disabled = !can;
-        btn.style.background = can ? '#88ff88' : '#555';
-        btn.addEventListener('click', (function(allyId){return function(){recruitAlly(allyId);};})(at.id));
+        btn.textContent = alreadyHere ? 'HIRED' : 'RECRUIT';
+        btn.disabled = !can || alreadyHere;
+        btn.style.background = (can && !alreadyHere) ? '#88ff88' : '#555';
+        if (!alreadyHere) btn.addEventListener('click', (function(allyId){return function(){recruitAlly(allyId);};})(at.id));
     });
 }
 
@@ -2348,6 +2355,8 @@ function recruitAlly(typeId) {
     if (!nearest) return;
     Object.entries(atype.cost).forEach(function(e){ state[e[0]] -= e[1]; });
     spawnAlly(typeId, nearest);
+    if (!state.recruitedAt[nearest.id]) state.recruitedAt[nearest.id] = [];
+    state.recruitedAt[nearest.id].push(typeId);
     updateHUD(); renderBuildOptions();
     announce(atype.name + ' joins the fight!');
 }
